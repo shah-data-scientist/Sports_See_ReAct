@@ -180,28 +180,60 @@ def save_unified_test_cases(test_cases: list[UnifiedTestCase]):
             f.write(f'        question="{tc.question}",\n')
             f.write(f'        test_type=TestType.{tc.test_type.name},\n')
             f.write(f'        category={repr(tc.category)},\n')
+            f.write('\n')
+            f.write('        # SQL Expectations\n')
 
-            # SQL fields
+            # SQL fields - always write them (None if not applicable)
             if tc.expected_sql:
                 f.write(f'        expected_sql={repr(tc.expected_sql)},\n')
+            else:
+                f.write('        expected_sql=None,  # TODO: Fill for Vector/Hybrid\n')
+
             if tc.ground_truth_data:
                 f.write(f'        ground_truth_data={repr(tc.ground_truth_data)},\n')
+            else:
+                f.write('        ground_truth_data=None,  # TODO: Fill for Vector/Hybrid\n')
+
             if tc.query_type:
                 f.write(f'        query_type=QueryType.{tc.query_type.name},\n')
+            else:
+                f.write('        query_type=None,  # TODO: Fill for Vector/Hybrid\n')
 
-            # Vector fields
+            f.write('\n')
+            f.write('        # Vector Expectations\n')
+
+            # Vector fields - always write them
             if tc.ground_truth:
                 # Truncate long ground truth
                 gt = tc.ground_truth if len(tc.ground_truth) < 200 else tc.ground_truth[:200] + "..."
                 f.write(f'        ground_truth={repr(gt)},\n')
+            else:
+                f.write('        ground_truth=None,  # TODO: Fill for SQL/Hybrid\n')
+
+            f.write(f'        min_vector_sources={tc.min_vector_sources},  # TODO: Fill if needed\n')
+
+            if tc.expected_source_types:
+                f.write(f'        expected_source_types={repr(tc.expected_source_types)},\n')
+            else:
+                f.write('        expected_source_types=None,  # TODO: Fill if needed\n')
+
+            f.write('\n')
+            f.write('        # Answer Expectations\n')
 
             # Answer
             if tc.ground_truth_answer:
                 f.write(f'        ground_truth_answer={repr(tc.ground_truth_answer)},\n')
+            else:
+                f.write('        ground_truth_answer=None,  # TODO: Fill for all test types\n')
+
+            f.write('\n')
+            f.write('        # Optional: Conversation context\n')
 
             # Conversation
             if tc.conversation_thread:
                 f.write(f'        conversation_thread={repr(tc.conversation_thread)},\n')
+            else:
+                f.write('        conversation_thread=None,\n')
 
             f.write('    ),\n')
 
