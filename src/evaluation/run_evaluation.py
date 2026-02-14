@@ -28,16 +28,8 @@ from starlette.testclient import TestClient
 
 from src.api.main import create_app
 from src.api.dependencies import get_chat_service
-from src.evaluation.unified_test_cases import (
-    get_all_cases,
-    get_cases_by_type,
-    get_statistics,
-    SQL_TEST_CASES,
-    VECTOR_TEST_CASES,
-    HYBRID_TEST_CASES,
-)
-from src.evaluation.models.sql_models import QueryType
-from src.evaluation.models.vector_models import TestCategory
+from src.evaluation.consolidated_test_cases import ALL_TEST_CASES, get_statistics
+from src.evaluation.unified_model import UnifiedTestCase, TestType, QueryType, UnifiedEvaluationResult
 from src.models.feedback import ChatInteractionCreate
 from src.core.observability import logger
 
@@ -108,20 +100,9 @@ def _retry_api_call(api_call_func, max_retries: int = MAX_RETRIES):
     raise RuntimeError("Max retries exhausted")
 
 
-def _determine_test_type(test_case) -> str:
-    """Determine test type from test case object."""
-    if hasattr(test_case, 'query_type'):
-        # SQL or Hybrid test case
-        query_type = test_case.query_type
-        if query_type == QueryType.SQL_ONLY:
-            return "sql"
-        elif query_type in [QueryType.HYBRID, QueryType.CONTEXTUAL_ONLY]:
-            return "hybrid"
-    elif hasattr(test_case, 'category'):
-        # Vector test case
-        return "vector"
-
-    return "unknown"
+def _determine_test_type(test_case: UnifiedTestCase) -> str:
+    """Determine test type from unified test case object."""
+    return test_case.test_type.value  # Returns 'sql', 'vector', or 'hybrid'
 
 
 def run_unified_evaluation(
@@ -145,10 +126,11 @@ def run_unified_evaluation(
 
     # Select test cases based on type
     if test_type == "all":
-        test_cases = get_all_cases()
+        test_cases = ALL_TEST_CASES
         run_label = "UNIFIED (SQL + Vector + Hybrid)"
     else:
-        test_cases = get_cases_by_type(test_type)
+        # Filter by test_type
+        test_cases = [tc for tc in ALL_TEST_CASES if tc.test_type.value == test_type]
         run_label = f"{test_type.upper()}"
 
     if test_indices is not None:
@@ -205,12 +187,7 @@ def run_unified_evaluation(
                 type_stats[case_type] += 1
 
                 # Get category for logging
-                if hasattr(test_case, 'category'):
-                    category_str = test_case.category if isinstance(test_case.category, str) else test_case.category.value
-                elif hasattr(test_case, 'query_type'):
-                    category_str = test_case.query_type.value
-                else:
-                    category_str = "unknown"
+                category_str = test_case.category or "unknown"
 
                 logger.info(f"[{i + 1}/{total_cases}] [{case_type.upper()}] {category_str}: {test_case.question[:60]}...")
 
@@ -308,16 +285,21 @@ def run_unified_evaluation(
                             "response_preview": api_result.get("answer", "")[:150]
                         })
 
-                    # Record result
-                    result_entry = {
-                        "question": test_case.question,
-                        "test_type": case_type,
-                        "category": category_str,
-                        "response": api_result.get("answer", ""),
-                        "expected_routing": expected_routing,
-                        "actual_routing": actual_routing,
-                        "is_misclassified": is_misclassified,
-                        "sources": [
+                    # Record result using UnifiedEvaluationResult
+                    result_entry = UnifiedEvaluationResult(
+                        question=test_case.question,
+                        test_type=case_type,
+                        category=category_str,
+                        success=True,
+                        response=api_result.get("answer", ""),
+                        processing_time_ms=api_result.get("processing_time_ms", 0),
+                        expected_routing=expected_routing,
+                        actual_routing=actual_routing,
+                        is_misclassified=is_misclassified,
+                        generated_sql=api_result.get("generated_sql"),
+                        sql_results=None,  # Not returned by API
+                        visualization=api_result.get("visualization"),
+                        sources=[
                             {
                                 "text": s.get("text", "")[:500],
                                 "score": s.get("score", 0),
@@ -325,23 +307,17 @@ def run_unified_evaluation(
                             }
                             for s in api_result.get("sources", [])
                         ],
-                        "sources_count": len(api_result.get("sources", [])),
-                        "processing_time_ms": api_result.get("processing_time_ms", 0),
-                        "generated_sql": api_result.get("generated_sql"),
-                        "visualization": api_result.get("visualization"),
-                        "conversation_id": current_conversation_id,
-                        "success": True
-                    }
+                        sources_count=len(api_result.get("sources", [])),
+                        ragas_metrics=None,  # Calculated later in analysis
+                        ground_truth=test_case.ground_truth,
+                        ground_truth_answer=test_case.ground_truth_answer,
+                        ground_truth_data=test_case.ground_truth_data,
+                        conversation_id=current_conversation_id,
+                        turn_number=current_turn_number,
+                        timestamp=datetime.now().isoformat(),
+                    )
 
-                    # Add ground truth if available
-                    if hasattr(test_case, 'ground_truth'):
-                        result_entry["ground_truth"] = test_case.ground_truth
-                    if hasattr(test_case, 'ground_truth_answer'):
-                        result_entry["ground_truth_answer"] = test_case.ground_truth_answer
-                    if hasattr(test_case, 'ground_truth_data'):
-                        result_entry["ground_truth_data"] = test_case.ground_truth_data
-
-                    results.append(result_entry)
+                    results.append(result_entry.to_dict())
 
                     status = "[PASS]" if not is_misclassified else "[MISCLASS]"
                     logger.info(f"  {status} Expected: {expected_routing} | Actual: {actual_routing} | "
@@ -349,15 +325,17 @@ def run_unified_evaluation(
 
                 except Exception as e:
                     logger.error(f"  ✗ Failed: {str(e)}")
-                    results.append({
-                        "question": test_case.question,
-                        "test_type": case_type,
-                        "category": category_str,
-                        "error": str(e),
-                        "expected_routing": expected_routing if 'expected_routing' in locals() else "unknown",
-                        "actual_routing": "error",
-                        "success": False
-                    })
+                    error_result = UnifiedEvaluationResult(
+                        question=test_case.question,
+                        test_type=case_type,
+                        category=category_str,
+                        success=False,
+                        error=str(e),
+                        expected_routing=expected_routing if 'expected_routing' in locals() else "unknown",
+                        actual_routing="error",
+                        timestamp=datetime.now().isoformat(),
+                    )
+                    results.append(error_result.to_dict())
 
                 # Save checkpoint after EACH query
                 _save_checkpoint(checkpoint_path, results, i + 1, total_cases)

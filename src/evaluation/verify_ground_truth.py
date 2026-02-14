@@ -17,8 +17,8 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
-from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+from src.evaluation.consolidated_test_cases import ALL_TEST_CASES
+from src.evaluation.unified_model import TestType
 
 DB_PATH = Path(__file__).parent.parent.parent / "data" / "sql" / "nba_stats.db"
 
@@ -201,18 +201,22 @@ def verify_dataset(test_cases: list, dataset_name: str) -> dict:
 if __name__ == "__main__":
     mode = sys.argv[1].lower() if len(sys.argv) > 1 else "all"
 
+    # Filter test cases by type
+    sql_cases = [tc for tc in ALL_TEST_CASES if tc.test_type == TestType.SQL]
+    hybrid_cases = [tc for tc in ALL_TEST_CASES if tc.test_type == TestType.HYBRID]
+
     all_results = {}
 
     if mode in ("sql", "all"):
-        all_results["sql"] = verify_dataset(SQL_TEST_CASES, "SQL")
+        all_results["sql"] = verify_dataset(sql_cases, "SQL")
 
     if mode in ("hybrid", "all"):
-        all_results["hybrid"] = verify_dataset(HYBRID_TEST_CASES, "Hybrid")
+        all_results["hybrid"] = verify_dataset(hybrid_cases, "Hybrid")
 
     if mode == "all" and len(all_results) == 2:
         total_passed = sum(len(r["passed"]) for r in all_results.values())
         total_failed = sum(len(r["failed"]) for r in all_results.values())
-        total_cases = len(SQL_TEST_CASES) + len(HYBRID_TEST_CASES)
+        total_cases = len(sql_cases) + len(hybrid_cases)
 
         print(f"\n{'=' * 80}")
         print("OVERALL SUMMARY")
