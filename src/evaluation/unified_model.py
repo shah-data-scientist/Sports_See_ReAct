@@ -26,13 +26,6 @@ class TestType(Enum):
     HYBRID = "hybrid"
 
 
-class QueryType(Enum):
-    """Query type for routing expectations."""
-    SQL_ONLY = "sql_only"
-    CONTEXTUAL_ONLY = "contextual_only"
-    HYBRID = "hybrid"
-
-
 class TestCategory(Enum):
     """Test category for grouping and analysis."""
     # SQL categories
@@ -84,9 +77,6 @@ class UnifiedTestCase:
     - list[dict] for multiple rows
     """
 
-    query_type: QueryType | None = None
-    """Expected query routing type (SQL_ONLY, CONTEXTUAL_ONLY, HYBRID)."""
-
     # ========================================================================
     # VECTOR EXPECTATIONS (Required for VECTOR and HYBRID, None for SQL)
     # ========================================================================
@@ -102,9 +92,6 @@ class UnifiedTestCase:
 
     expected_source_types: list[str] | None = None
     """Expected source types (e.g., ['Reddit 1.pdf', 'Reddit 3.pdf', 'glossary'])."""
-
-    min_similarity_score: float = 0.5
-    """Minimum similarity score threshold for retrieved chunks."""
 
     # ========================================================================
     # ANSWER EXPECTATIONS (Required for all types)
@@ -128,15 +115,6 @@ class UnifiedTestCase:
     # ========================================================================
     # METADATA (Optional)
     # ========================================================================
-    description: str | None = None
-    """Human-readable description of what this test case validates."""
-
-    tags: list[str] = field(default_factory=list)
-    """Tags for filtering (e.g., ['top_n', 'player_stats', 'biographical'])."""
-
-    difficulty: str = "medium"
-    """Difficulty level: 'easy', 'medium', 'hard'."""
-
     notes: str | None = None
     """Additional notes about edge cases, known issues, etc."""
 
@@ -145,35 +123,23 @@ class UnifiedTestCase:
     # ========================================================================
 
     def is_valid(self) -> tuple[bool, list[str]]:
-        """Validate test case has required fields for its type.
+        """Validate test case has required fields.
+
+        All test types have the same validation requirements.
+        Fields that don't apply to a specific type should be None.
 
         Returns:
             (is_valid, list of missing/invalid fields)
         """
         issues = []
 
-        # Common required fields
+        # Required fields for ALL test types
         if not self.question:
             issues.append("question is required")
         if not self.test_type:
             issues.append("test_type is required")
-
-        # Type-specific validations
-        if self.test_type == TestType.SQL:
-            if not self.expected_sql:
-                issues.append("SQL test missing expected_sql")
-            if not self.ground_truth_data:
-                issues.append("SQL test missing ground_truth_data")
-
-        elif self.test_type == TestType.VECTOR:
-            if not self.ground_truth:
-                issues.append("Vector test missing ground_truth (contextual expectations)")
-
-        elif self.test_type == TestType.HYBRID:
-            if not self.expected_sql:
-                issues.append("Hybrid test missing expected_sql")
-            if not self.ground_truth:
-                issues.append("Hybrid test missing ground_truth (contextual expectations)")
+        if not self.ground_truth_answer:
+            issues.append("ground_truth_answer is required for all test types")
 
         return len(issues) == 0, issues
 
@@ -203,8 +169,6 @@ class UnifiedTestCase:
             missing["sql_fields"].append("expected_sql")
         if not self.ground_truth_data:
             missing["sql_fields"].append("ground_truth_data")
-        if not self.query_type:
-            missing["sql_fields"].append("query_type")
 
         # Check Vector fields
         if not self.ground_truth:
@@ -221,8 +185,6 @@ class UnifiedTestCase:
         # Check Optional fields
         if not self.category:
             missing["optional_fields"].append("category")
-        if not self.description:
-            missing["optional_fields"].append("description")
 
         # Remove empty categories
         return {k: v for k, v in missing.items() if v}
@@ -243,7 +205,6 @@ def migrate_from_sql_test_case(old_case) -> UnifiedTestCase:
         category=getattr(old_case, 'category', None),
         expected_sql=old_case.expected_sql,
         ground_truth_data=old_case.ground_truth_data,
-        query_type=old_case.query_type,
         ground_truth_answer=old_case.ground_truth_answer,
         conversation_thread=getattr(old_case, 'conversation_thread', None),
         # Vector fields will be None (SQL-only test)
@@ -272,7 +233,6 @@ def migrate_from_vector_test_case(old_case) -> UnifiedTestCase:
         # SQL fields will be None (Vector-only test)
         expected_sql=None,
         ground_truth_data=None,
-        query_type=None,
     )
 
 
@@ -291,7 +251,6 @@ def migrate_from_hybrid_test_case(old_case) -> UnifiedTestCase:
         category=getattr(old_case, 'category', None),
         expected_sql=old_case.expected_sql,
         ground_truth_data=old_case.ground_truth_data,
-        query_type=old_case.query_type,
         ground_truth_answer=old_case.ground_truth_answer,
         conversation_thread=getattr(old_case, 'conversation_thread', None),
         # Hybrid has both SQL and Vector expectations

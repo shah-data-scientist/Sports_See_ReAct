@@ -29,7 +29,7 @@ from starlette.testclient import TestClient
 from src.api.main import create_app
 from src.api.dependencies import get_chat_service
 from src.evaluation.consolidated_test_cases import ALL_TEST_CASES, get_statistics
-from src.evaluation.unified_model import UnifiedTestCase, TestType, QueryType, UnifiedEvaluationResult
+from src.evaluation.unified_model import UnifiedTestCase, TestType, UnifiedEvaluationResult
 from src.models.feedback import ChatInteractionCreate
 from src.core.observability import logger
 
