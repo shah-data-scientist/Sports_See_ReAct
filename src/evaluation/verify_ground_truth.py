@@ -1,14 +1,19 @@
 """
 FILE: verify_ground_truth.py
 STATUS: Active
-RESPONSIBILITY: Unified ground truth verification for SQL and Hybrid test cases against actual database
-LAST MAJOR UPDATE: 2026-02-13
+RESPONSIBILITY: Unified ground truth verification and establishment for ALL test cases
+LAST MAJOR UPDATE: 2026-02-15
 MAINTAINER: Shahu
 
+RESPONSIBILITIES:
+1. SQL/Hybrid Ground Truth VERIFICATION - Verify against actual database
+2. Vector Ground Truth ESTABLISHMENT - Provide LLM prompt for establishing ground truth
+
 Usage:
-    poetry run python src/evaluation/verify_ground_truth.py          # Verify all (SQL + Hybrid)
-    poetry run python src/evaluation/verify_ground_truth.py sql      # SQL only (80 cases)
-    poetry run python src/evaluation/verify_ground_truth.py hybrid   # Hybrid only (50 cases)
+    poetry run python src/evaluation/verify_ground_truth.py              # Verify SQL + Hybrid against DB
+    poetry run python src/evaluation/verify_ground_truth.py sql          # SQL only (80 cases)
+    poetry run python src/evaluation/verify_ground_truth.py hybrid       # Hybrid only (51 cases)
+    poetry run python src/evaluation/verify_ground_truth.py vector       # Show vector ground truth prompt
 """
 import sqlite3
 import sys
@@ -198,8 +203,162 @@ def verify_dataset(test_cases: list, dataset_name: str) -> dict:
     return results
 
 
+# ============================================================================
+# VECTOR GROUND TRUTH ESTABLISHMENT PROMPT
+# ============================================================================
+
+VECTOR_GROUND_TRUTH_PROMPT = """
+# VECTOR GROUND TRUTH ESTABLISHMENT PROMPT
+
+## Purpose
+This prompt establishes ground truth for Vector test cases based on actual document content
+stored in the FAISS vector index (358 chunks total).
+
+## Source Documents
+
+### A. Reddit Discussion PDFs (353 chunks - OCR-extracted)
+- Reddit 1.pdf: "Who are teams in the playoffs that have impressed you?" (u/MannerSuperb, 31 upvotes, 59 chunks, max comment: 88 upvotes)
+- Reddit 2.pdf: "How is it that the two best teams in the playoffs..." (u/mokaloca82, 457 upvotes, 106 chunks, max comment: 756 upvotes)
+- Reddit 3.pdf: "Reggie Miller is the most efficient first option in NBA playoff history" (u/hqppp, 1,300 upvotes, 158 chunks, max comment: 11,515 upvotes)
+- Reddit 4.pdf: "Which NBA team did not have home court advantage until the NBA Finals?" (u/DonT012, 272 upvotes, 30 chunks, max comment: 240 upvotes)
+
+Metadata per chunk: source, post_title, post_author, post_upvotes, comment_author, comment_upvotes, is_nba_official, quality_score
+
+### B. NBA Statistics Glossary (5 chunks)
+Source: regular NBA.xlsx → "Dictionnaire des données" sheet
+Contains 43 NBA statistical metric definitions in French (PTS, TS%, EFG%, DD2, TD3, OFFRTG, DEFRTG, NETRTG, PIE, etc.)
+
+## Retrieval Scoring Formula
+- Cosine similarity (50%): Semantic match via FAISS embeddings
+- BM25 (35%): Exact keyword matching
+- Metadata boost (15%): Comment upvotes (0-2%), post engagement (0-1%), NBA official (+2%)
+
+## LLM PROMPT TEMPLATE
+
+You are establishing ground truth for a RAG evaluation system.
+
+I will provide:
+1. Full OCR-extracted text of 4 Reddit discussion PDFs
+2. NBA statistics glossary ("Dictionnaire des données") - 43 metric definitions in French
+
+All content is chunked and stored in FAISS (358 chunks: 353 Reddit, 5 glossary).
+
+For each test question, generate a ground_truth description specifying:
+
+1. **Expected source document(s)**:
+   - Reddit: filename (e.g., "Reddit 1.pdf"), post title, author
+   - Glossary: "regular NBA.xlsx (glossary)"
+
+2. **Expected content themes**:
+   - Specific topics, names, statistics, arguments
+   - Include exact names, numbers, quotes when possible
+
+3. **Expected metadata**:
+   - Post author, post upvotes, top comment upvotes (affects ranking)
+
+4. **Expected similarity range**:
+   - Direct topic match: 80-95%
+   - Indirect/tangential: 68-80%
+   - Out-of-scope/no match: 50-70%
+
+5. **Expected retrieval behavior**:
+   - Chunk count (e.g., "2-5 chunks")
+   - Whether boosting affects ranking
+
+## Special Query Categories
+
+### Out-of-scope queries (weather, cooking, politics)
+Vector search WILL return chunks (always returns k results). State:
+- Out-of-scope
+- Retrieved chunks will be irrelevant (estimate low similarity)
+- LLM should DECLINE and state knowledge base covers NBA basketball only
+
+### Adversarial/security queries (XSS, SQL injection, path traversal)
+State:
+- System treats input as literal text, not execute it
+- Vector search returns random/irrelevant chunks
+- LLM should ask clarification or decline
+
+### Noisy/informal queries (typos, slang, abbreviations)
+State:
+- What query maps to after noise removal
+- Which document should be retrieved despite noise
+- Similarity will be LOWER (typically -5% to -10% vs clean equivalent)
+
+### Conversational/follow-up queries (pronouns, context references)
+State:
+- What pronoun/reference resolves to (e.g., "their" = Lakers from Turn 1)
+- System needs conversation context to resolve references
+- Which turn establishes context, which turns are follow-ups
+
+### Glossary/terminology queries (NBA metric definitions)
+State:
+- Glossary from regular NBA.xlsx should rank HIGHEST for metric definitions
+- Descriptions are in French (e.g., "Points marqués en moyenne par match")
+- If term NOT in glossary (e.g., "pick and roll", "zone defense"), state that glossary lacks definition
+- Glossary only covers statistical abbreviations (PTS, TS%, EFG%, DD2), NOT basketball concept definitions
+
+## Rules
+- ONLY reference content that actually exists in provided documents
+- Do NOT invent or assume content not present
+- If question asks about something not covered, state that explicitly
+- Include specific names, numbers, quotes to make ground truth verifiable
+- For engagement-related questions, reference actual upvote counts
+- For glossary queries, note descriptions are in French
+
+## Output Format
+Format each ground_truth as a single paragraph starting with "Should retrieve..." for use in UnifiedTestCase.
+
+EXAMPLE FORMATS:
+
+# Reddit discussion query
+"Should retrieve Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?' by u/MannerSuperb (31 post upvotes, max comment upvotes 88). Expected teams: Magic (Paolo Banchero, Franz Wagner), Indiana Pacers, Minnesota Timberwolves (Anthony Edwards), Pistons. Comments discuss exceeding expectations, young talent, surprising playoff performances. Expected sources: 2-5 chunks from Reddit 1.pdf with 75-85% similarity."
+
+# Glossary query
+"Should retrieve regular NBA.xlsx (glossary). Expected definition: TS% — 'True Shooting % (inclut FG et FT dans l'efficacité)'. Glossary should rank HIGHEST (85-95% similarity) for metric definition queries. Note: Reddit 3 also discusses TS% but glossary MUST rank higher for definition queries. Expected source: glossary chunk #1."
+
+# Out-of-scope query
+"Out-of-scope query. Vector search WILL retrieve irrelevant chunks (likely Reddit PDFs with ~65-70% similarity due to semantic overlap with 'Los Angeles'). However, LLM should recognize retrieved content is basketball-related, NOT weather, and respond with 'I don't have information about weather forecasts. My knowledge base contains NBA basketball discussions only.' Tests LLM's ability to reject irrelevant context. Expected: LLM declines."
+
+# Conversational follow-up
+"Follow-up question referencing 'their' = Lakers from Turn 1. System should: (1) maintain conversation context (Lakers = subject), (2) retrieve Lakers-specific content about strengths. Expected sources: Same Reddit chunks mentioning Lakers. Similarity: 70-80%. Tests context maintenance across turns. NOTE: Evaluation should provide Turn 1 question as context."
+
+Here are the source documents:
+[PASTE FULL OCR CONTENT OF ALL 4 REDDIT PDFs HERE]
+[PASTE CONTENT OF data/reference/nba_dictionary_vectorized.txt HERE]
+
+Here are the test questions:
+[LIST OF VECTOR TEST CASE QUESTIONS FROM consolidated_test_cases.py]
+"""
+
+
+def show_vector_prompt():
+    """Display the vector ground truth establishment prompt."""
+    vector_cases = [tc for tc in ALL_TEST_CASES if tc.test_type == TestType.VECTOR]
+
+    print(VECTOR_GROUND_TRUTH_PROMPT)
+    print(f"\n{'=' * 80}")
+    print(f"VECTOR TEST CASES ({len(vector_cases)} total)")
+    print(f"{'=' * 80}\n")
+
+    for i, tc in enumerate(vector_cases, 1):
+        print(f"{i}. {tc.question}")
+        if tc.category:
+            print(f"   Category: {tc.category}")
+        if tc.ground_truth:
+            print(f"   ✅ Has ground_truth")
+        else:
+            print(f"   ❌ Missing ground_truth")
+        print()
+
+
 if __name__ == "__main__":
     mode = sys.argv[1].lower() if len(sys.argv) > 1 else "all"
+
+    # Vector mode shows the LLM prompt for establishing ground truth
+    if mode == "vector":
+        show_vector_prompt()
+        sys.exit(0)
 
     # Filter test cases by type
     sql_cases = [tc for tc in ALL_TEST_CASES if tc.test_type == TestType.SQL]

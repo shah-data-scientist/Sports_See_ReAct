@@ -12,7 +12,7 @@ Single unified analysis module consolidating:
 - Hybrid analysis: routing quality, SQL/Vector components, hybrid combination
 
 USAGE:
-    from src.evaluation.analysis.quality_analysis import analyze_results
+    from src.evaluation.quality_analysis import analyze_results
 
     analysis = analyze_results(results, test_cases)
     # Automatically detects test type and runs appropriate analyses

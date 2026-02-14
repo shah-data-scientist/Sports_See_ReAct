@@ -13,21 +13,9 @@ from datetime import datetime
 from pathlib import Path
 
 from src.core.observability import logger
-from src.evaluation.analysis.sql_quality_analysis import (
-    analyze_error_taxonomy,
-    analyze_fallback_patterns,
-    analyze_response_quality,
-    analyze_query_structure,
-    analyze_query_complexity,
-    analyze_column_selection,
-)
-from src.evaluation.analysis.vector_quality_analysis import (
-    analyze_source_quality,
-    analyze_retrieval_performance,
-    analyze_response_patterns,
-)
-from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
-from src.evaluation.test_cases.vector_test_cases import EVALUATION_TEST_CASES
+from src.evaluation.quality_analysis import analyze_results
+from src.evaluation.consolidated_test_cases import ALL_TEST_CASES
+from src.evaluation.unified_model import TestType
 from src.models.chat import ChatRequest
 from src.services.chat import ChatService
 
