@@ -497,7 +497,9 @@ def generate_summary_report(
     type_stats: dict,
     misclassifications: list
 ) -> str:
-    """Generate summary markdown report."""
+    """Generate comprehensive markdown report with quality analysis and RAGAS metrics."""
+    from src.evaluation.quality_analysis import analyze_results
+
     report_path = Path("evaluation_results") / f"evaluation_{test_type}_report_{timestamp}.md"
 
     successful = sum(1 for r in results if r.get("success"))
@@ -509,6 +511,10 @@ def generate_summary_report(
     avg_time = sum(processing_times) / len(processing_times) if processing_times else 0
     min_time = min(processing_times) if processing_times else 0
     max_time = max(processing_times) if processing_times else 0
+
+    # Run comprehensive quality analysis
+    logger.info("Running quality analysis...")
+    analysis = analyze_results(results)
 
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(f"# Unified Evaluation Report - {test_type.upper()}\n\n")
@@ -575,6 +581,135 @@ def generate_summary_report(
             avg_time = sum(stats["times"]) / len(stats["times"]) if stats["times"] else 0
             f.write(f"| {cat} | {stats['count']} | {success_rate:.1f}% | {avg_time:.0f}ms |\n")
         f.write("\n")
+
+        # ====================================================================
+        # QUALITY ANALYSIS SECTION
+        # ====================================================================
+
+        # RAGAS Metrics (if available)
+        if "ragas_metrics" in analysis:
+            ragas = analysis["ragas_metrics"]
+
+            f.write("\n\n" + "=" * 80 + "\n")
+            f.write("# RAGAS METRICS ANALYSIS\n")
+            f.write("=" * 80 + "\n\n")
+
+            # Overall metrics
+            f.write("## Overall RAGAS Metrics\n\n")
+            f.write("| Metric | Score | Interpretation |\n")
+            f.write("|--------|-------|----------------|\n")
+
+            overall = ragas.get("overall", {})
+            for metric_key, metric_value in overall.items():
+                if metric_value is not None:
+                    metric_name = metric_key.replace("avg_", "").replace("_", " ").title()
+
+                    # Interpretation
+                    if metric_value >= 0.9:
+                        interp = "✅ EXCELLENT"
+                    elif metric_value >= 0.7:
+                        interp = "⚠️  GOOD"
+                    elif metric_value >= 0.5:
+                        interp = "⚠️  WARNING"
+                    else:
+                        interp = "❌ CRITICAL"
+
+                    # Mark Answer Correctness as BEST OVERALL
+                    if "correctness" in metric_key:
+                        metric_name += " ⭐ BEST"
+
+                    f.write(f"| {metric_name} | {metric_value:.3f} | {interp} |\n")
+            f.write("\n")
+
+            # By category
+            if ragas.get("by_category"):
+                f.write("## RAGAS Metrics by Category\n\n")
+                f.write("| Category | Count | Faithfulness | Answer Correctness | Context Precision | Context Recall |\n")
+                f.write("|----------|-------|--------------|-------------------|-------------------|----------------|\n")
+
+                for cat, cat_metrics in ragas["by_category"].items():
+                    count = cat_metrics.get("count", 0)
+                    faith = cat_metrics.get("avg_faithfulness")
+                    correct = cat_metrics.get("avg_answer_correctness")
+                    prec = cat_metrics.get("avg_context_precision")
+                    recall = cat_metrics.get("avg_context_recall")
+
+                    faith_str = f"{faith:.3f}" if faith is not None else "N/A"
+                    correct_str = f"{correct:.3f}" if correct is not None else "N/A"
+                    prec_str = f"{prec:.3f}" if prec is not None else "N/A"
+                    recall_str = f"{recall:.3f}" if recall is not None else "N/A"
+
+                    f.write(f"| {cat} | {count} | {faith_str} | {correct_str} | {prec_str} | {recall_str} |\n")
+                f.write("\n")
+
+            # Low scoring queries
+            if ragas.get("low_scoring_queries"):
+                low_queries = ragas["low_scoring_queries"][:10]  # Top 10 worst
+                f.write(f"## Low Scoring Queries (< 0.7) - Top {len(low_queries)}\n\n")
+
+                for i, query in enumerate(low_queries, 1):
+                    f.write(f"### {i}. {query.get('category', 'unknown').upper()}\n\n")
+                    f.write(f"**Question:** {query.get('question', '')[:100]}...\n\n")
+                    f.write(f"**Scores:**\n")
+                    f.write(f"- Min Score: {query.get('min_score', 0):.3f}\n")
+                    f.write(f"- Faithfulness: {query.get('faithfulness', 'N/A')}\n")
+                    f.write(f"- Answer Correctness: {query.get('answer_correctness', 'N/A')}\n")
+                    f.write(f"- Answer Relevancy: {query.get('answer_relevancy', 'N/A')}\n")
+
+                    if query.get('context_precision') is not None:
+                        f.write(f"- Context Precision: {query.get('context_precision', 'N/A')}\n")
+                        f.write(f"- Context Recall: {query.get('context_recall', 'N/A')}\n")
+
+                    f.write("\n")
+
+            # Nuclear explanations
+            f.write("\n" + "=" * 80 + "\n")
+            f.write("# RAGAS METRICS - NUCLEAR EXPLANATIONS\n")
+            f.write("=" * 80 + "\n\n")
+
+            explanations = ragas.get("metric_explanations", {})
+            for metric_name in ["faithfulness", "answer_relevancy", "answer_semantic_similarity",
+                               "answer_correctness", "context_precision", "context_recall", "context_relevancy"]:
+                if metric_name in explanations:
+                    f.write(f"## {metric_name.replace('_', ' ').title()}\n\n")
+                    f.write("```\n")
+                    f.write(explanations[metric_name].strip())
+                    f.write("\n```\n\n")
+
+        # SQL-specific analysis
+        if "error_taxonomy" in analysis:
+            f.write("\n" + "=" * 80 + "\n")
+            f.write("# SQL ANALYSIS\n")
+            f.write("=" * 80 + "\n\n")
+
+            taxonomy = analysis["error_taxonomy"]
+            f.write(f"## Error Taxonomy\n\n")
+            f.write(f"- Total Errors: {taxonomy.get('total_errors', 0)}\n")
+            f.write(f"- LLM Declined: {len(taxonomy.get('llm_declined', []))}\n")
+            f.write(f"- Syntax Errors: {len(taxonomy.get('syntax_error', []))}\n")
+            f.write(f"- Empty Responses: {len(taxonomy.get('empty_response', []))}\n\n")
+
+        if "query_structure" in analysis:
+            structure = analysis["query_structure"]
+            f.write(f"## Query Structure Analysis\n\n")
+            f.write(f"- Total Queries: {structure.get('total_queries', 0)}\n")
+            f.write(f"- Queries with JOIN: {structure.get('queries_with_join', 0)}\n")
+            f.write(f"- Queries with Aggregation: {structure.get('queries_with_aggregation', 0)}\n")
+            f.write(f"- Queries with Filter: {structure.get('queries_with_filter', 0)}\n\n")
+
+        # Vector-specific analysis
+        if "source_quality" in analysis:
+            f.write("\n" + "=" * 80 + "\n")
+            f.write("# VECTOR SEARCH ANALYSIS\n")
+            f.write("=" * 80 + "\n\n")
+
+            source_qual = analysis["source_quality"]
+            retrieval_stats = source_qual.get("retrieval_stats", {})
+            f.write(f"## Retrieval Statistics\n\n")
+            f.write(f"- Avg Sources per Query: {retrieval_stats.get('avg_sources_per_query', 0):.2f}\n")
+            f.write(f"- Total Unique Sources: {retrieval_stats.get('total_unique_sources', 0)}\n")
+            f.write(f"- Avg Similarity Score: {retrieval_stats.get('avg_similarity_score', 0):.2f}\n")
+            f.write(f"- Empty Retrievals: {source_qual.get('empty_retrievals', 0)}\n\n")
 
         f.write("---\n\n")
         f.write(f"**Report Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
