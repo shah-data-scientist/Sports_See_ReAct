@@ -1,0 +1,53 @@
+repos:
+  - repo: local
+    hooks:
+      # BLOCKING: Clean working directory check (MUST BE FIRST)
+      - id: check-clean-working-directory
+        name: Check Clean Working Directory
+        entry: poetry run python scripts/global_policy/check_clean_working_directory.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+        always_run: true
+
+      # BLOCKING: Documentation headers + comment hygiene
+      - id: validate-changed-files
+        name: Validate Changed Files (Headers + Comments)
+        entry: poetry run python scripts/global_policy/validate_changed_files.py --staged-only
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      # BLOCKING: File location rules
+      - id: validate-file-locations
+        name: Validate File Locations
+        entry: poetry run python scripts/global_policy/validate_file_locations.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      # BLOCKING: Mirror & Modify (src/ changes require test/ changes)
+      - id: mirror-modify-check
+        name: Mirror & Modify Check (src → tests)
+        entry: poetry run python scripts/global_policy/mirror_modify_check.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      # BLOCKING: Coverage thresholds per module tier
+      - id: check-coverage-thresholds
+        name: Check Coverage Thresholds (Tier Hierarchy)
+        entry: poetry run python scripts/global_policy/check_coverage_thresholds.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+        always_run: true
+
+      # WARNING ONLY: Orphaned files
+      - id: check-orphaned-files
+        name: Check Orphaned Files (Warning)
+        entry: poetry run python scripts/global_policy/check_orphaned_files.py --verbose
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+        verbose: true

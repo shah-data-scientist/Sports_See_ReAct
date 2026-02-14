@@ -1,0 +1,60 @@
+    def _rewrite_biographical_for_sql(query: str) -> str:
+        """Rewrite biographical queries to fetch comprehensive player stats.
+
+        "Who is LeBron?" → "Show name, team, age, points, rebounds, assists,
+        steals, blocks, field goal percentage, games played for LeBron"
+
+        This ensures the SQL tool generates a query that fetches full stats
+        instead of just SELECT name.
+        """
+        import re
+
+        # Extract player/team name from query
+        q = query.strip()
+        name = None
+
+        # Pattern: "Who is [Name]?" or "Tell me about [Name]"
+        for pattern in [
+            r"(?:who is|who's|tell me about|info on|about)\s+(.+?)[\?\.]?$",
+        ]:
+            match = re.search(pattern, q, re.IGNORECASE)
+            if match:
+                name = match.group(1).strip().rstrip("?.")
+                break
+
+        if not name:
+            # Fallback: use the whole query
+            name = q
+
+        return (
+            f"Show name, team, age, games played, points, rebounds, assists, "
+            f"steals, blocks, field goal percentage, three point percentage, "
+            f"free throw percentage for {name}"
+        )
+
+    @staticmethod
+    def _is_followup_query(query: str) -> bool:
+        """Detect if a query is a conversational follow-up requiring context.
+
+        Checks for pronouns, short fragments, corrections, and other
+        indicators that the query depends on previous conversation turns.
+
+        Args:
+            query: User query string
+
+        Returns:
+            True if query appears to be a follow-up
+        """
+        q = query.strip().lower()
+        words = q.split()
+
+        # Very short queries (< 5 words) are likely follow-ups
+        if len(words) <= 4 and not any(
+            kw in q for kw in ["top", "best", "worst", "who scored", "list", "show all"]
+        ):
+            return True
+
+        # Pronouns referencing previous context (word-boundary aware)
+        pronoun_patterns = [
+            "his ", "her ", "their ", "its ", "he ", "she ", "they ",
+            "him ", "them ", "that player", "that team", "the same",

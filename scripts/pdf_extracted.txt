@@ -1,0 +1,1133 @@
+Reading PDF: C:\Users\shahu\Documents\OneDrive\OPEN CLASSROOMS\PROJET 10\Sports_See\docs\Évaluez+les+performances+d'un+LLM_+FAE+-+editable.pdf
+File size: 202106 bytes
+
+Total pages: 4
+
+Extracting page 1/4...
+Extracting page 2/4...
+Extracting page 3/4...
+Extracting page 4/4...
+
+
+Total extracted text length: 7602 characters
+
+
+================================================================================
+PAGE 1
+================================================================================
+
+ 
+A u t o - é v a l u a t i o n
+ 
+ 
+M i s s i o n
+ 
+:
+ 
+É v a l u e z
+ 
+l e s
+ 
+p e r f o r m a n c e s
+ 
+d ʼ u n
+ 
+L L M
+ 
+ 
+ 
+ 
+U n
+ 
+d e r n i e r
+ 
+d o u t e
+ 
+a v a n t
+ 
+l ʼ e n v o i
+ 
+d e
+ 
+v o s
+ 
+l i v r a b l e s
+ 
+?
+ 
+ 
+ 
+P o u r
+ 
+v é r i f i e r
+ 
+l a
+ 
+q u a l i t é
+ 
+d e
+ 
+v o t r e
+ 
+t r a v a i l
+ 
+:
+ 
+ 
+●
+ 
+c o c h e z
+ 
+l e s
+ 
+c a s e s
+ 
+c i - d e s s o u s
+ 
+:
+ 
+e l l e s
+ 
+i n d i q u e n t
+ 
+q u e
+ 
+v o u s
+ 
+a v e z
+ 
+b i e n
+ 
+p r i s
+ 
+e n
+ 
+c o m p t e
+ 
+c h a q u e
+ 
+i n d i c a t e u r
+ 
+d e
+ 
+r é u s s i t e
+ 
+;
+ 
+●
+ 
+r e n s e i g n e z ,
+ 
+s i
+ 
+b e s o i n ,
+ 
+l a
+ 
+c o l o n n e
+ 
+“ N o t e s ˮ
+ 
+a v e c
+ 
+d e s
+ 
+c o m m e n t a i r e s
+ 
+s u r
+ 
+v o s
+ 
+l i v r a b l e s
+ 
+/
+ 
+v o s
+ 
+é t a p e s .
+ 
+I l s
+ 
+s e r o n t
+ 
+d e s
+ 
+p o i n t s
+ 
+d e
+ 
+d i s c u s s i o n
+ 
+a v e c
+ 
+v o t r e
+ 
+m e n t o r
+ 
+p e n d a n t
+ 
+v o t r e
+ 
+s e s s i o n
+ 
+d e
+ 
+b i l a n
+ 
+/
+ 
+s o u t e n a n c e .
+ 
+ 
+ 
+Q u a n d
+ 
+t o u t e s
+ 
+l e s
+ 
+c a s e s
+ 
+d e
+ 
+c e
+ 
+d o c u m e n t
+ 
+s e r o n t
+ 
+c o c h é e s ,
+ 
+v o u s
+ 
+p o u r r e z
+ 
+d é p o s e r
+ 
+v o s
+ 
+l i v r a b l e s
+ 
+s u r
+ 
+l a
+ 
+p l a t e f o r m e .
+ 
+ 
+B o n n e
+ 
+r é u s s i t e
+ 
+!
+ 
+ 
+ 
+
+
+================================================================================
+PAGE 2
+================================================================================
+
+ 
+C o m p é t e n c e s
+ 
+L i v r a b l e s
+ 
+I n d i c a t e u r s
+ 
+d e
+ 
+r é u s s i t e
+ 
+d e
+ 
+l ʼ a c t i v i t é
+ 
+N o t e s
+ 
+É v a l u e r
+ 
+l e s
+ 
+p e r f o r m a n c e s
+ 
+d e
+ 
+l ʼ i n f r a s t r u c t u r e
+ 
+s o u s - j a c e n t e
+ 
+a u
+ 
+m o d è l e
+ 
+d ' a p p r e n t i s s a g e
+ 
+ 
+ 
+●
+ 
+F i c h i e r
+ 
+p e r m e t t a n t
+ 
+d e
+ 
+r e p r o d u i r e
+ 
+l ʼ e n v i r o n n e m e n t
+ 
+d e
+ 
+t r a v a i l
+ 
+●
+ 
+S c r i p t
+ 
+d e
+ 
+m i s e
+ 
+e n
+ 
+p l a c e
+ 
+d u
+ 
+s y s t è m e
+ 
+R A G
+ 
+ 
+J ʼ a i
+ 
+b i e n
+ 
+v é r i f i é
+ 
+q u e
+ 
+l e
+ 
+f i c h i e r
+ 
+n e
+ 
+c o n t i e n t
+ 
+q u e
+ 
+l e s
+ 
+d é p e n d a n c e s
+ 
+r é e l l e m e n t
+ 
+u t i l i s é e s
+ 
+d a n s
+ 
+l e
+ 
+p r o j e t
+ 
+( p a s
+ 
+d e
+ 
+p a c k a g e s
+ 
+i n u t i l e s ) .
+ 
+ 
+J ʼ a i
+ 
+v é r i f i é
+ 
+q u e
+ 
+m o n
+ 
+s c r i p t
+ 
+c o n t i e n t
+ 
+t o u t e s
+ 
+l e s
+ 
+é t a p e s
+ 
+n é c e s s a i r e s ,
+ 
+b i e n
+ 
+s é p a r é e s ,
+ 
+m o d u l a i r e s
+ 
+e t
+ 
+i m p l é m e n t é e s
+ 
+s o u s
+ 
+f o r m e
+ 
+d e
+ 
+f o n c t i o n s
+ 
+o u
+ 
+d e
+ 
+c l a s s e s .
+ 
+ 
+L e
+ 
+s c r i p t
+ 
+i n t è g r e
+ 
+u n
+ 
+s y s t è m e
+ 
+d e
+ 
+l o g g i n g
+ 
+s t r u c t u r é
+ 
+p e r m e t t a n t
+ 
+d e
+ 
+t r a c e r
+ 
+l e s
+ 
+p r i n c i p a l e s
+ 
+é t a p e s ,
+ 
+l e s
+ 
+e r r e u r s ,
+ 
+l e s
+ 
+p e r f o r m a n c e s .
+ 
+ 
+ 
+L ' e x é c u t i o n
+ 
+d e
+ 
+m o n
+ 
+s c r i p t
+ 
+p e r m e t
+ 
+d ʼ o b t e n i r
+ 
+u n
+ 
+s y s t è m e
+ 
+o p é r a t i o n n e l
+ 
+e n
+ 
+u n
+ 
+s e u l
+ 
+r u n
+ 
+o u
+ 
+a v e c
+ 
+d e s
+ 
+f o n c t i o n s
+ 
+c l a i r e s
+ 
+à
+ 
+a p p e l e r .
+ 
+ 
+S c r i p t s
+ 
+:
+ 
+ 
+-
+ 
+d ʼ é v a l u a t i o n
+ 
+ 
+-
+ 
+d e
+ 
+p r é p a r a t i o n
+ 
+d e
+ 
+l a
+ 
+d o n n é e
+ 
+ 
+ 
+J ʼ a i
+ 
+s t r u c t u r é
+ 
+l e
+ 
+s c r i p t
+ 
+d e
+ 
+f a ç o n
+ 
+l i s i b l e
+ 
+e t
+ 
+l ʼ a i
+ 
+c o m m e n t é .
+ 
+ 
+J ʼ a i
+ 
+v a r i é
+ 
+l e s
+ 
+j e u x
+ 
+d e
+ 
+r e q u ê t e s .
+ 
+ 
+J ʼ a i
+ 
+v é r i f i é
+ 
+q u e
+ 
+l e s
+ 
+j e u x
+ 
+d e
+ 
+r e q u ê t e s
+ 
+s o n t
+ 
+r é a l i s t e s
+ 
+e t
+ 
+c o u v r e n t
+ 
+d i f f é r e n t s
+ 
+c a s
+ 
+( s i m p l e s ,
+ 
+c o m p l e x e s ,
+ 
+b r u i t é s ) .
+ 
+ 
+M o n
+ 
+s c r i p t
+ 
+u t i l i s e
+ 
+b i e n
+ 
+R A G A S
+ 
+e t
+ 
+P y d a n t i c
+ 
+p o u r
+ 
+a u t o m a t i s e r
+ 
+l ʼ é v a l u a t i o n
+ 
+e t
+ 
+s é c u r i s e r
+ 
+l e s
+ 
+f l u x
+ 
+d e
+ 
+d o n n é e s .
+ 
+ 
+Jʼ ai
+ 
+structur é
+ 
+ma
+ 
+v alidation
+ 
+a v ec
+ 
+Py dantic
+ 
+pour
+ 
+contr ôler:
+ 
+ 
+●
+ 
+L e
+ 
+s c h é m a
+ 
+d e s
+ 
+e n t r é e s / s o r t i e s
+ 
+d u
+ 
+s y s t è m e
+ 
+R A G
+ 
+●
+ 
+L a
+ 
+c o h é r e n c e
+ 
+d e s
+ 
+r é p o n s e s
+ 
+ 
+J e
+ 
+s u i s
+ 
+c a p a b l e
+ 
+d e
+ 
+j u s t i f i e r
+ 
+l e s
+ 
+m é t r i q u e s
+ 
+R A G A S .
+ 
+ 
+ 
+L e s
+ 
+r é s u l t a t s
+ 
+d e
+ 
+m e s
+ 
+t e s t s
+ 
+s o n t
+ 
+p r é s e n t é s
+ 
+d a n s
+ 
+u n
+ 
+t a b l e a u
+ 
+s y n t h é t i q u e
+ 
+e t
+ 
+s o n t
+ 
+i n t e r p r é t é s
+ 
+:
+ 
+j ʼ a i
+ 
+c o m p a r é
+ 
+l e s
+ 
+s c o r e s
+ 
+ 
+
+================================================================================
+PAGE 3
+================================================================================
+
+ 
+o b t e n u s
+ 
+a u x
+ 
+s e u i l s
+ 
+a t t e n d u s
+ 
+o u
+ 
+à
+ 
+d e s
+ 
+a t t e n t e s
+ 
+d e
+ 
+p e r f o r m a n c e
+ 
+c i b l e s
+ 
+p o u r
+ 
+i d e n t i f i e r
+ 
+l e s
+ 
+p e r f o r m a n c e s
+ 
+f a i b l e s
+ 
+o u
+ 
+f o r t e s .
+ 
+ 
+J ʼ a i
+ 
+d o c u m e n t é
+ 
+l e s
+ 
+t e s t s
+ 
+d e
+ 
+r o b u s t e s s e .
+ 
+ 
+M e s
+ 
+t e s t s
+ 
+d e
+ 
+r o b u s t e s s e
+ 
+s o n t
+ 
+j u s t i f i é s
+ 
+e t
+ 
+d o c u m e n t é s
+ 
+p a r
+ 
+r a p p o r t
+ 
+a u x
+ 
+c a s
+ 
+d ʼ u s a g e
+ 
+m é t i e r .
+ 
+ 
+J ʼ a i
+ 
+m i s
+ 
+e n
+ 
+p l a c e
+ 
+u n
+ 
+s y s t è m e
+ 
+d e
+ 
+l o g g i n g
+ 
+s t r u c t u r é
+ 
+p o u r
+ 
+t r a c e r
+ 
+l e s
+ 
+é t a p e s
+ 
+c l é s
+ 
+e t
+ 
+l e s
+ 
+e r r e u r s
+ 
+d u
+ 
+p i p e l i n e
+ 
+R A G / L L M .
+ 
+ 
+R a p p o r t
+ 
+d e
+ 
+m i s e
+ 
+e n
+ 
+p l a c e
+ 
+e t
+ 
+d ʼ é v a l u a t i o n
+ 
+ 
+ 
+J ʼ a i
+ 
+e x p l i q u é
+ 
+m a
+ 
+m é t h o d o l o g i e
+ 
+d a n s
+ 
+l e
+ 
+r a p p o r t .
+ 
+ 
+J e
+ 
+s u i s
+ 
+c a p a b l e
+ 
+d ʼ a r g u m e n t e r
+ 
+s u r
+ 
+m e s
+ 
+c h o i x
+ 
+m é t h o d o l o g i q u e s .
+ 
+ 
+ 
+J ʼ a i
+ 
+i d e n t i f i é
+ 
+e t
+ 
+a n a l y s é
+ 
+l e s
+ 
+l i m i t e s
+ 
+e t
+ 
+b i a i s
+ 
+p o t e n t i e l s
+ 
+d e
+ 
+l ʼ é v a l u a t i o n .
+ 
+ 
+J ʼ a i
+ 
+i n t e r p r é t é
+ 
+l e s
+ 
+r é s u l t a t s
+ 
+e n
+ 
+l i e n
+ 
+a v e c
+ 
+l e s
+ 
+p r o b l é m a t i q u e s
+ 
+m é t i e r .
+ 
+ 
+J ʼ a i
+ 
+p r o p o s é
+ 
+d e s
+ 
+r e c o m m a n d a t i o n s
+ 
+c o n c r è t e s
+ 
+e t
+ 
+a c t i o n n a b l e s
+ 
+p o u r
+ 
+a m é l i o r e r
+ 
+l ʼ i n f r a s t r u c t u r e .
+ 
+ 
+J ʼ a i
+ 
+s t r u c t u r é
+ 
+l e
+ 
+r a p p o r t
+ 
+d e
+ 
+f a ç o n
+ 
+l i s i b l e
+ 
+e t
+ 
+p r o f e s s i o n n e l l e .
+ 
+ 
+ 
+D o c u m e n t a t i o n
+ 
+R E A D M E
+ 
+ 
+J ʼ a i
+ 
+d é c r i t
+ 
+d e
+ 
+f a ç o n
+ 
+c l a i r e
+ 
+e t
+ 
+i l l u s t r é e
+ 
+a v e c
+ 
+s c h é m a
+ 
+l ʼ a r c h i t e c t u r e
+ 
+c i b l e
+ 
+d a n s
+ 
+l e
+ 
+R E A D M E .
+ 
+ 
+J ʼ a i
+ 
+d o c u m e n t é
+ 
+l ʼ A P I
+ 
+R E S T
+ 
+e x p o s a n t
+ 
+l e
+ 
+s y s t è m e ,
+ 
+a v e c
+ 
+l e s
+ 
+e n d p o i n t s ,
+ 
+f o r m a t s
+ 
+d e
+ 
+r e q u ê t e s / r é p o n s e s
+ 
+e t
+ 
+e x e m p l e s
+ 
+d ʼ a p p e l
+ 
+( e x .
+ 
+:
+ 
+v i a
+ 
+c u r l
+ 
+o u
+ 
+P o s t m a n )
+ 
+ 
+
+================================================================================
+PAGE 4
+================================================================================
+
+ 
+ 
+J ʼ a i
+ 
+o r g a n i s é
+ 
+e t
+ 
+e x p l i q u é
+ 
+l e s
+ 
+s c r i p t s ,
+ 
+f i c h i e r s
+ 
+e t
+ 
+d o s s i e r s
+ 
+p o u r
+ 
+f a c i l i t e r
+ 
+l a
+ 
+p r i s e
+ 
+e n
+ 
+m a i n .
+ 
+ 
+J ʼ a i
+ 
+d é t a i l l é
+ 
+l a
+ 
+p r o c é d u r e
+ 
+d e
+ 
+d é p l o i e m e n t ,
+ 
+d ʼ e x é c u t i o n
+ 
+e t
+ 
+d ʼ é v a l u a t i o n .
+ 
+ 
+M a
+ 
+p r o c é d u r e
+ 
+e s t
+ 
+r e p r o d u c t i b l e .
+ 
+ 
+J ʼ a i
+ 
+f a i t
+ 
+a t t e n t i o n
+ 
+à
+ 
+l a
+ 
+d i m e n s i o n
+ 
+d e
+ 
+l ʼ a c c e s s i b i l i t é
+ 
+d e
+ 
+m a
+ 
+d o c u m e n t a t i o n
+ 
+p o u r
+ 
+d e s
+ 
+é q u i p e s
+ 
+t e c h n i q u e s
+ 
+n o n
+ 
+s p é c i a l i s t e s .
+ 
+ 

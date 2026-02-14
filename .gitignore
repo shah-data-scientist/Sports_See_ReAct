@@ -1,0 +1,205 @@
+# Environment / Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+.poetry/
+
+# Environment variables (sensitive)
+.env
+.env.local
+.env.*.local
+
+# Python generated files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+pytestdebug.log
+
+# Logs
+*.log
+logs/
+
+# IDE / Editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Data directory (consolidated: inputs, sql, vector, reference)
+data/inputs/
+data/sql/
+data/vector/
+data/reference/
+!data/.gitkeep
+!data/*/.gitkeep
+
+# Legacy folders (removed after migration to data/)
+inputs/
+vector_db/
+database/
+
+# Model files (large) — root-level only
+/models/
+*.pth
+*.pt
+*.h5
+*.hdf5
+*.pkl
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+notebooks/*.html
+
+# Database files (legacy path + extensions)
+database/
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+
+# Documentation build
+docs/_build/
+docs/.doctrees/
+site/
+
+# Test/Debug/Analysis files (all locations)
+# Root level (temporary files only - patterns with leading / are root-anchored)
+/test_*.py
+/_test_*.py
+/check_*.py
+/debug_*.py
+/_[a-z]*.py
+/_[a-z]*.txt
+/_[a-z]*.md
+# In scripts/ subdirectory (underscore prefix = temporary/internal)
+scripts/_*.py
+scripts/test_*.py
+scripts/check_*.py
+scripts/debug_*.py
+scripts/retry_*.py
+scripts/fix_*.py
+scripts/merge_*.py
+scripts/run_*_sample_*.py
+scripts/global_policy/
+# In tests/ subdirectory (only match files with single underscore prefix, not __init__.py)
+tests/_[a-z]*.py
+tests/debug_*.py
+
+# Archived directories
+_archived/
+_archived_*/
+*_archived/
+scripts/_working/
+tests/_archived/
+
+# Evaluation artifacts (timestamped results, checkpoints, subsets)
+evaluation_results/*_20*.json
+evaluation_results/*_phase*.json
+evaluation_checkpoint*.json
+*_checkpoint.json
+*_subset_results.json
+*_test_subset.json
+phase*.json
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Windows device files and temp
+nul
+_ul
+_ul-NOUVEAU-MAITRE
+check_changes.ps1
+
+# UI test screenshots
+ui_test_screenshots/
+
+# Evaluation results (auto-generated reports and data)
+evaluation_results/classification_check*
+evaluation_results/chunk_*
+
+# Temporary root-level batch files
+/RUN_*.bat
+/START.bat
+/*.txt
+/*.json
+/GREETING_*.md
+/CHANGES_*.md
+/INDEX_*.md
+/QUICK_*.md
+/SESSION_*.md
+/VISUAL_*.md
+
+# Scripts - temp/debug patterns
+scripts/trace_*.py
+scripts/find_*.py
+scripts/show_*.py
+scripts/verify_*.py
+scripts/visible_*.py
+scripts/silent_*.py
+scripts/launch_*.py
+scripts/automated_*.py
+scripts/parse_*.py
+scripts/run_performance_*.py
+scripts/*.json
+scripts/*.bat
+scripts/*.md
+
+# Temporary docs
+docs/*_VERIFICATION*.md
+
+# Claude IDE
+.claude/

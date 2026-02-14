@@ -1,0 +1,334 @@
+    def chat(self, request: ChatRequest) -> ChatResponse:
+        """Process a chat request through hybrid RAG pipeline (SQL + Vector Search).
+
+        Args:
+            request: Chat request with query and parameters
+
+        Returns:
+            Chat response with answer and sources
+
+        Raises:
+            ValidationError: If request is invalid
+            IndexNotFoundError: If index not loaded
+            SearchError: If search fails
+            LLMError: If LLM call fails
+        """
+        start_time = time.time()
+
+        # Sanitize query
+        query = sanitize_query(request.query)
+
+        # ──── PHASE 15: Detect simple greetings (don't need RAG search) ────
+        # Examples: "hi", "hello", "thanks", etc. should get simple responses
+        if self.query_classifier._is_greeting(query):
+            processing_time = (time.time() - start_time) * 1000
+            greeting_responses = {
+                "hi": "Hi there! Ask me anything about basketball stats, teams, or players.",
+                "hello": "Hello! What would you like to know about basketball?",
+                "hey": "Hey! Feel free to ask me basketball questions.",
+                "thanks": "You're welcome! Feel free to ask more questions.",
+                "thank you": "Happy to help! What else can I answer for you?",
+                "goodbye": "Goodbye! See you next time!",
+                "bye": "See you later!",
+            }
+            # Find best matching greeting response
+            query_lower = query.strip().lower()
+            response_text = next(
+                (v for k, v in greeting_responses.items() if k in query_lower),
+                "Hi! Ask me about basketball!"
+            )
+            logger.info(f"Detected greeting: '{query}' - returning simple response")
+            return ChatResponse(
+                answer=response_text,
+                query=query,
+                sources=[],
+                processing_time_ms=int(processing_time),
+                model=self.model,
+                conversation_id=None,
+                turn_number=1,
+                query_type="greeting",
+            )
+
+        # Build conversation context if conversation_id provided
+        conversation_history = ""
+        if request.conversation_id:
+            conversation_history = self._build_conversation_context(
+                request.conversation_id,
+                request.turn_number
+            )
+            if conversation_history:
+                logger.info(f"Including conversation history ({request.turn_number - 1} previous turns)")
+
+        # Rewrite follow-up queries to resolve pronouns/references BEFORE classification
+        # This ensures the classifier and SQL tool receive a self-contained query
+        effective_query = query
+        if conversation_history and self._is_followup_query(query):
+            effective_query = self._rewrite_followup_query(query, conversation_history)
+
+        # ── Single classify() call returns all query metadata ─────────────────
+        # ClassificationResult bundles: query_type, is_biographical, is_greeting, complexity_k
+        # This eliminates duplicate _is_biographical() and _estimate_question_complexity() calls.
+        if self._enable_sql:
+            classification = self.query_classifier.classify(effective_query)
+        else:
+            classification = ClassificationResult(QueryType.CONTEXTUAL)
+
+        query_type = classification.query_type
+        is_biographical = classification.is_biographical
+        logger.warning(f"[DEBUG-CLASSIFY] query_type={query_type} ({type(query_type)}), is_biographical={is_biographical}, enable_sql={self._enable_sql}")
+
+        # Adaptive k: use request.k if explicitly set, otherwise use classifier's complexity estimate
+        adaptive_k = request.k if request.k and request.k > 0 else classification.complexity_k
+        logger.info(f"Using k={adaptive_k} (complexity-based: simple=3, moderate=5, complex=7-9)")
+
+        # Route to appropriate data source(s)
+        search_results = []
+        sql_failed = False  # Track SQL failure for fallback
+        sql_success = False  # Track SQL success
+        sql_context = ""
+        vector_context = ""
+        generated_sql = None  # Track generated SQL for Phase 2 analysis
+        sql_result_data = None  # Track SQL results for visualization
+
+        # Statistical query → SQL tool (use effective_query for resolved pronouns)
+        if query_type in (QueryType.STATISTICAL, QueryType.HYBRID):
+            if self.sql_tool:
+                try:
+                    # For biographical queries, rewrite to fetch comprehensive stats
+                    sql_query_text = effective_query
+                    if is_biographical:
+                        sql_query_text = self._rewrite_biographical_for_sql(effective_query)
+                        logger.info(f"Biographical SQL rewrite: '{effective_query}' → '{sql_query_text}'")
+
+                    logger.info(f"Routing to SQL tool (query_type: {query_type.value})")
+                    sql_result = self.sql_tool.query(sql_query_text)
+
+                    # Capture generated SQL for evaluation/analysis
+                    if sql_result["sql"]:
+                        generated_sql = sql_result["sql"]
+                        logger.debug(f"Generated SQL: {generated_sql}")
+
+                    if sql_result["error"]:
+                        logger.warning(f"SQL query failed: {sql_result['error']} - falling back to vector search")
+                        sql_failed = True
+                    elif not sql_result["results"]:
+                        logger.warning("SQL query returned no results - falling back to vector search")
+                        sql_failed = True
+                    else:
+                        # Use new _format_sql_results() method with scalar handling
+                        sql_context = self._format_sql_results(sql_result["results"])
+                        logger.info(f"SQL query returned {len(sql_result['results'])} rows")
+                        sql_success = True
+                        # Store SQL results for visualization
+                        sql_result_data = sql_result["results"]
+
+                except Exception as e:
+                    logger.error(f"SQL tool error: {e} - falling back to vector search")
+                    sql_failed = True
+
+        # Contextual/Hybrid query → Vector search
+        # Also fallback to vector if SQL failed for STATISTICAL queries (when fallback enabled)
+        # OR always add vector search for HYBRID queries
+        should_use_vector = (
+            query_type == QueryType.CONTEXTUAL or
+            query_type == QueryType.HYBRID or
+            (query_type == QueryType.STATISTICAL and sql_failed and self._enable_vector_fallback)
+        )
+
+        if should_use_vector:
+            if sql_failed and query_type == QueryType.STATISTICAL:
+                logger.info("SQL fallback activated - using vector search for statistical query")
+            else:
+                logger.info(f"Routing to vector search (query_type: {query_type.value})")
+
+            search_results = self.search(
+                query=effective_query,
+                k=adaptive_k,
+                min_score=request.min_score,
+                max_expansions=classification.max_expansions,  # Pass pre-computed expansion limit
+            )
+
+            # Format vector search context with quality assessment (Phase 18)
+            if search_results:
+                # Assess source quality
+                quality_assessment = self._assess_source_quality(search_results, min_acceptable_score=50.0)
+
+                # Build quality warning prefix based on level
+                quality_prefix = ""
+                if quality_assessment["quality_level"] == "low":
+                    quality_prefix = (
+                        f"⚠️ SOURCE QUALITY WARNING: Retrieved sources have low similarity (avg: {quality_assessment['avg_score']:.1f}%).\n"
+                        f"Instructions: If sources contain ANY relevant information, provide a PARTIAL answer starting with: "
+                        f"'I have limited information about this topic. Based on the available sources:' "
+                        f"Otherwise, respond: 'I do not have sufficient information to answer this question reliably.'\n\n"
+                    )
+                elif quality_assessment["quality_level"] == "medium":
+                    quality_prefix = (
+                        f"ℹ️ SOURCE QUALITY: Retrieved sources have moderate similarity (avg: {quality_assessment['avg_score']:.1f}%).\n"
+                        f"Instructions: Answer using available information. If aspects are missing, acknowledge: "
+                        f"'The sources provide information about X but not about Y.'\n\n"
+                    )
+                else:  # high quality
+                    quality_prefix = (
+                        f"✅ SOURCE QUALITY: Retrieved sources have high similarity (avg: {quality_assessment['avg_score']:.1f}%).\n"
+                        f"Instructions: Answer confidently using the high-quality sources.\n\n"
+                    )
+
+                logger.info(f"Source quality: {quality_assessment['quality_level']} (avg: {quality_assessment['avg_score']:.1f}%)")
+
+                # Prepend quality context to vector_context
+                vector_context = quality_prefix + "\n\n---\n\n".join(
+                    [f"Source: {r.source} (Score: {r.score:.1f}%)\n{r.text}" for r in search_results]
+                )
+
+        # Select prompt template and format context based on query type
+        if query_type == QueryType.STATISTICAL and sql_success:
+            # SQL-only: Use SQL_ONLY_PROMPT
+            prompt_template = SQL_ONLY_PROMPT
+            context = sql_context
+        elif query_type == QueryType.HYBRID and sql_success and vector_context:
+            # Hybrid: Use HYBRID_PROMPT with separate SQL and vector sections
+            prompt_template = HYBRID_PROMPT
+            # HYBRID_PROMPT expects separate sql_context and vector_context parameters
+            # We'll handle this in generate_response call
+            context = None  # Signal to use sql_context + vector_context
+        elif query_type == QueryType.CONTEXTUAL and vector_context:
+            # Contextual: Use CONTEXTUAL_PROMPT
+            prompt_template = CONTEXTUAL_PROMPT
+            context = vector_context
+        else:
+            # Fallback: Use default SYSTEM_PROMPT_TEMPLATE
+            prompt_template = SYSTEM_PROMPT_TEMPLATE
+            # Combine contexts for fallback
+            context_parts = []
+            if sql_context:
+                context_parts.append(f"STATISTICAL DATA (FROM SQL DATABASE):\n{sql_context}")
+            if vector_context:
+                context_parts.append(f"DOCUMENTS AND ANALYSIS:\n{vector_context}")
+            context = "\n\n=== === ===\n\n".join(context_parts) if context_parts else "No relevant information found."
+
+        # Generate response with appropriate prompt
+        if context is None:
+            # HYBRID case: pass sql_context and vector_context separately
+            answer = self.generate_response_hybrid(
+                query=query,
+                sql_context=sql_context,
+                vector_context=vector_context,
+                conversation_history=conversation_history,
+            )
+        else:
+            # All other cases: use standard generate_response
+            answer = self.generate_response(
+                query=query,
+                context=context,
+                conversation_history=conversation_history,
+                prompt_template=prompt_template,
+            )
+
+        # SMART FALLBACK: If SQL succeeded but LLM couldn't USE the data, retry with vector search
+        # Only trigger if LLM explicitly says it can't PARSE/USE provided data, NOT when data doesn't exist
+        decline_phrases = [
+            "cannot parse",
+            "unable to interpret the data",
+            "the provided data is unclear",
+            "no statistical data provided",  # LLM didn't see SQL context
+            "the data format is unclear",
+        ]
+        should_fallback = sql_success and not sql_failed and any(phrase in answer.lower() for phrase in decline_phrases)
+
+        if should_fallback:
+            logger.warning("SQL succeeded but LLM couldn't parse results - retrying with vector search")
+
+            # Get vector search results (if not already retrieved)
+            if not search_results:
+                search_results = self.search(
+                    query=effective_query,
+                    k=adaptive_k,
+                    min_score=request.min_score,
+                    max_expansions=classification.max_expansions,  # Pass pre-computed expansion limit
+                )
+
+            if search_results:
+                # Retry with vector context using CONTEXTUAL_PROMPT
+                fallback_vector_context = "\n\n---\n\n".join(
+                    [f"Source: {r.source} (Score: {r.score:.1f}%)\n{r.text}" for r in search_results]
+                )
+
+                # Regenerate response with vector context
+                answer = self.generate_response(
+                    query=query,
+                    context=fallback_vector_context,
+                    conversation_history=conversation_history,
+                    prompt_template=CONTEXTUAL_PROMPT,
+                )
+                logger.info("Vector search fallback succeeded")
+
+        # Apply post-processing to answer
+        # Issue #6: Remove excessive hedging language from statistical responses
+        if query_type in (QueryType.STATISTICAL, QueryType.HYBRID):
+            answer = self._remove_excessive_hedging(answer)
+
+        # Apply superscript formatting to citations (Phase 18)
+        answer = self._format_superscript_citations(answer)
+
+        # Calculate processing time
+        processing_time_ms = (time.time() - start_time) * 1000
+
+        # Generate visualization for statistical queries with SQL results
+        visualization = None
+        if query_type in (QueryType.STATISTICAL, QueryType.HYBRID):
+            if sql_success and sql_result_data:
+                try:
+                    logger.info("Generating visualization for SQL results")
+                    viz_data = self.visualization_service.generate_visualization(
+                        query=query,
+                        sql_result=sql_result_data
+                    )
+                    visualization = Visualization(
+                        pattern=viz_data["pattern"],
+                        viz_type=viz_data["viz_type"],
+                        plot_json=viz_data["plot_json"],
+                        plot_html=viz_data["plot_html"],
+                    )
+                    logger.info(f"Visualization generated: {viz_data['viz_type']} ({viz_data['pattern']})")
+                except Exception as e:
+                    # Don't fail the whole request if visualization fails
+                    logger.warning(f"Visualization generation failed: {e}")
+            else:
+                # Log why visualization was skipped
+                if not sql_success:
+                    logger.info(
+                        "Visualization skipped: SQL query failed, used vector fallback. "
+                        "Visualizations require structured data from SQL results."
+                    )
+                elif not sql_result_data:
+                    logger.info("Visualization skipped: SQL query returned no results")
+
+        # Auto-save interaction for conversation history (enables follow-up resolution)
+        if request.conversation_id:
+            response_sources = search_results if request.include_sources else []
+            self._save_interaction(
+                query=query,
+                response=answer,
+                sources=response_sources,
+                processing_time_ms=processing_time_ms,
+                conversation_id=request.conversation_id,
+                turn_number=request.turn_number,
+            )
+
+        # Map query_type enum to string for API response (Phase 18)
+        query_type_str = query_type.value if query_type else None
+        logger.warning(f"[DEBUG-RETURN] BEFORE ChatResponse: query_type={query_type}, query_type_str={query_type_str}, type={type(query_type)}")
+
+        return ChatResponse(
+            answer=answer,
+            sources=search_results if request.include_sources else [],
+            query=query,
+            processing_time_ms=processing_time_ms,
+            model=self._model,
+            conversation_id=request.conversation_id,
+            turn_number=request.turn_number,
+            generated_sql=generated_sql,
+            visualization=visualization,
+            query_type=query_type_str,
+        )

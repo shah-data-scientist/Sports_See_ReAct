@@ -1,0 +1,1012 @@
+================================================================================
+MISSING FIELDS REPORT - UNIFIED TEST CASES
+================================================================================
+
+SUMMARY:
+Total test cases: 206
+
+Test cases missing SQL expectations: 9
+Test cases missing Vector expectations: 51
+Test cases missing ground truth answer: 75
+
+================================================================================
+DETAILED BREAKDOWN BY TEST TYPE
+================================================================================
+
+SQL TEST CASES (80 total):
+--------------------------------------------------------------------------------
+
+[1] Who scored the most points this season?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[2] Who are the top 3 rebounders in the league?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[3] Who are the top 5 players in steals?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[4] Who has the best free throw percentage?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[5] Who has the highest true shooting percentage?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[6] What is LeBron James' average points per game?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[7] What is Stephen Curry's 3-point percentage?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[8] What is Nikola Jokić's total rebounds?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[9] How many assists did Chris Paul record?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[10] How many players on the Lakers roster?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[11] List all players on the Golden State Warriors.
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[12] Which player has the most wins this season?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[13] What is the average player age in the NBA?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[14] Compare Jokić and Embiid's stats
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[15] Who shoots better from 3, Curry or Lillard?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[16] Who is more efficient goal maker, Jokić or Embiid?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[17] Compare Jayson Tatum and Kevin Durant scoring efficiency
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[18] Who has more assists, James Harden or Chris Paul?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[19] Compare the top 2 steals leaders
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[20] Compare blocks between the top 2 leaders
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[21] What is the average 3-point percentage for all players?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[22] What is the average field goal percentage in the league?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[23] What is the average PIE in the league?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[24] What is the average rebounds per game league-wide?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[25] How many players scored over 1000 points?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[26] How many players have a true shooting percentage over 60%?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[27] How many players have more than 500 assists?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[28] How many players played more than 50 games?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[29] What is the highest PIE in the league?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[30] What is the maximum number of blocks recorded by any player?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[31] What is the average field goal percentage for the Lakers?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[32] Which players score more points per game than the league average?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[33] Find players with both high scoring (1500+ points) and high assists (300+ assist
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[34] Which players have better than 50% field goal percentage AND 35%+ from three?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[35] Find players averaging double-digits in points, rebounds, and assists
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[36] Find the top 5 players by total defensive actions (steals + blocks)
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[37] Which players have the best assist-to-turnover ratio among those with 300+ assis
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[38] What percentage of players have a true shooting percentage above 60%?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[39] Who are the most efficient scorers among players with 50+ games played?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[40] Who are the top 3 players in points per game among those who played at least 70 
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[41] Find the most versatile players with at least 1000 points, 400 rebounds, and 200
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[42] Which team has the highest average points per player?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[43] Compare the average points per player between the Celtics and Lakers
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[44] Which teams have at least 3 players with more than 1000 points?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[45] Find players between 25 and 30 years old with more than 1500 points
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[46] Show me the top scorer
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[47] Who's the best rebounder?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[48] Tell me about LeBron's stats
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[49] gimme the assist leaders plz
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[50] What about his assists?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[51] How many games did he play?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[52] Compare him to Curry
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[53] Which of them plays for the Hawks?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[54] Show me the pts leaders this season
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[55] Who is the MVP this season?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[56] Show me players with good three-point shooting
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[57] Only from the Lakers
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[58] Sort them by attempts
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[59] Show me stats for the Warriors
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[60] Actually, I meant the Celtics
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[61] Who is their top scorer?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[62] Who leads in steals?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[63] And blocks?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[64] What about turnovers?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[65] Tell me about Jayson Tatum's scoring
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[66] How does LeBron James compare?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[67] Between the two, who has more rebounds?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[68] Which team has the highest total points?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[69] Who are their top scorers?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[70] What is the average age of their players?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[71] whos got da most pts this szn
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[72] show me currys 3 pt pct
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[73] how many playas got more than 1k points??
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[74] jokic rebounds total plzz
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[75] compare lebron n harden assists
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[76] whats the avg fg% in da league lol
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[77] top 3 reb guys??
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[78] '; DROP TABLE players; -- Who scored the most points?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[79] SELECT * FROM players; Who has the most assists?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[80] ../../etc/passwd What is Curry's three point percentage?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+
+VECTOR TEST CASES (75 total):
+--------------------------------------------------------------------------------
+
+[1] What do Reddit users think about teams that have impressed in the playoffs?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[2] What are the most popular opinions about the two best playoff teams?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[3] What do fans debate about Reggie Miller's efficiency?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[4] Which NBA teams didn't have home court advantage in finals according to discussi
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[5] What do fans think about home court advantage in the playoffs?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[6] According to basketball discussions, what makes a player efficient in playoffs?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[7] Do fans debate about historical playoff performances?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[8] Which playoff topics generate the most discussion on Reddit?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[9] What do NBA fans consider surprising about playoff results?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[10] What do fans think about NBA trades?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[11] What did u/MannerSuperb post about?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[12] Tell me about the most discussed playoff efficiency topic.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[13] What's the most popular Reddit discussion about playoffs?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[14] Show me highly upvoted comments about basketball.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[15] What do authoritative voices say about playoff basketball?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[16] Compare opinions on efficiency from high-engagement vs low-engagement posts.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[17] What are the consensus views on playoff performance?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[18] Find the most engaged discussion about NBA history.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[19] What do the top comments say about playoff success?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[20] Show me verified or official perspectives on basketball.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[21] What is a pick and roll?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[22] Explain what PER means in basketball.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[23] What does zone defense mean?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[24] Define true shooting percentage.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[25] What is a triple-double?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[26] Explain the difference between man-to-man and zone defense.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[27] What basketball terms are important for understanding efficiency?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[28] What does 'first option' mean in basketball?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[29] What is the weather forecast for Los Angeles tomorrow?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[30] How do I bake a chocolate cake?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[31] Tell me about the latest political election results.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[32] What is the stock price of Apple Inc.?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[33] Best strategy for winning in NBA 2K24 video game?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[34] How to fix my computer's blue screen error?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[35] What are the best restaurants in New York City?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[36] ?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[37] asdfghjkl qwerty12345
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[38] Give me a 10000 word essay on the history of the universe.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[39] Translate 'hello' to 50 different languages.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[40] <script>alert('XSS')</script> Who won the MVP?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[41] '; DROP TABLE players; --
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[42] ../../../etc/passwd
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[43] {{7*7}} ${7*7} <%= 7*7 %>
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[44] AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[45] What do fans say about the Lakers?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[46] What are their biggest strengths?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[47] And their weaknesses?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[48] Tell me about playoff teams that surprised people.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[49] Why were they surprising?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[50] Compare them to the top-seeded teams.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[51] What makes a player efficient in the playoffs?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[52] Who is the most efficient according to fans?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[53] What do people debate about his efficiency?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[54] Tell me about home court advantage in playoffs.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[55] Going back to efficiency, who else is considered efficient?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[56] Returning to home court, which teams historically lacked it?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[57] whos da best playa in playoffs acording 2 reddit
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[58] reggie milr effishency debat
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[59] lmao bro playoff teams are wild this year fr fr
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[60] imho home court dont matter much tbh
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[61] playoff playoff playoff teams teams impressive impressive
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[62] reddit nba thoughts???
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[63] yo what ppl saying bout top teams
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[64] nba
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[65] hello
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[66] Analyze the evolution of playoff strategies based on fan discussions.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[67] What patterns emerge from Reddit debates about playoff performance?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[68] How do fan perceptions of efficiency differ from statistical measures?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[69] What controversies exist in evaluating playoff success?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[70] Synthesize fan wisdom about what makes teams succeed in playoffs.
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[71] What basketball strategies do fans discuss for playoff success?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[72] How has the NBA changed over the years according to fan discussions?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[73] How many points did LeBron score and why do fans love him?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[74] What is the overall sentiment about NBA playoffs on Reddit?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+[75] Can you give me a direct quote from the Reddit discussions about efficiency?
+  Missing sql_fields: expected_sql, ground_truth_data, query_type
+  Missing vector_fields: min_vector_sources, expected_source_types
+  Missing answer_fields: ground_truth_answer
+  Missing optional_fields: description
+
+
+HYBRID TEST CASES (51 total):
+--------------------------------------------------------------------------------
+
+[1] Who scored the most points this season and what makes them an effective scorer?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[2] Compare LeBron James and Kevin Durant's scoring this season and explain their sc
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[3] What is Nikola Jokić's scoring average and why is he considered an elite offensi
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[4] Who are the top 3 rebounders and what impact do they have on their teams?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[5] Compare Jokić and Embiid's stats and explain which one is more valuable based on
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[6] Who are the most efficient scorers by true shooting percentage and what makes th
+  Missing sql_fields: ground_truth_data
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[7] Compare Giannis and Anthony Davis's rebounds and explain how their rebounding st
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[8] Who has the best assist-to-turnover ratio among high-volume passers and why is t
+  Missing sql_fields: ground_truth_data
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[9] Find players averaging triple-double stats and explain what makes this achieveme
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[10] Which players have high scoring but low efficiency, and why might teams still re
+  Missing sql_fields: ground_truth_data
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[11] Compare the top defensive players by blocks and steals and explain different def
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[12] Analyze players with 1500+ points and 400+ assists - what does this dual threat 
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[13] What's the relationship between three-point shooting volume and efficiency, and 
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[14] Compare advanced efficiency metrics (PIE, TS%) for MVP candidates and explain wh
+  Missing sql_fields: ground_truth_data
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[15] How do young players (high stats) compare to established stars, and what does th
+  Missing sql_fields: ground_truth_data
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[16] Analyze the correlation between assists and team success - which high-assist pla
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[17] What is the average scoring for the Warriors and how is their team culture descr
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[18] Actually, compare Giannis to Jokić instead and explain who fans think is better
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[19] Who is LeBron?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[20] Tell me about Anthony Edwards' season stats and what makes him such an exciting 
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[21] What are Victor Wembanyama's stats and why are fans so excited about his potenti
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[22] Show me Trae Young's stats — is he underrated or overrated according to fans?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[23] What are Cade Cunningham's numbers this season and what do fans think about his 
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[24] Compare the Celtics and Lakers stats and how fans view each team's championship 
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[25] How do the Thunder and Nuggets compare statistically, and what do fans say about
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[26] Which team plays the best defense by stats, and how do fans describe their defen
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[27] Show me the Pacers' team stats — why have fans found them impressive this season
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[28] Which young players under 25 are putting up the best numbers, and what do fans e
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[29] Tell me about the youngest stars under 22 and how fans rate their potential
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[30] How do veteran players over 35 compare to young talent, and what do fans debate 
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[31] How do this season's 2000+ point scorers compare to the playoff efficiency legen
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[32] Fans debate about Reggie Miller's playoff efficiency — how do current top shoote
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[33] Which current players match the historical playoff dominance that fans discuss o
+  Missing sql_fields: ground_truth_data
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[34] Which high-volume scorers have poor shooting efficiency, and are they still cons
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[35] Who leads in assists but also in turnovers — do fans think high usage is worth t
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[36] Are there players with modest scoring but exceptional all-around impact, and wha
+  Missing sql_fields: ground_truth_data
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[37] What are Shai Gilgeous-Alexander's full stats this season?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[38] Why do fans on Reddit consider him an MVP favorite?
+  Missing sql_fields: ground_truth_data
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[39] How does his efficiency compare to the historical playoff scorers that fans deba
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[40] Show me the Celtics' team statistics this season
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[41] What do fans think about their chances of repeating as champions?
+  Missing sql_fields: ground_truth_data
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[42] Compare their stats to the Nuggets — which team is statistically better?
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[43] yo whos got da best stats AND what do ppl think about them on reddit
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[44] lebron stats + fan opinions plzzz
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[45] compare curry n jokic stats nd tell me who fans like more
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[46] Who leads the league in blocks and what makes them elite defenders according to 
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[47] Which players have the highest PIE and what does this metric reveal about their 
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[48] Compare the top 3 assist leaders and explain what fans think about playmaking in
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[49] What are the Thunder's stats this season and how do fans describe their team ide
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[50] Show me the Timberwolves' numbers and what fans call their 'young and hungry' id
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+[51] Who are the top 3-point shooters by volume and how has the three-point revolutio
+  Missing vector_fields: ground_truth, min_vector_sources, expected_source_types
+  Missing optional_fields: description
+
+================================================================================
+END OF REPORT
+================================================================================
