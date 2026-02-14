@@ -12,9 +12,9 @@ STRUCTURE:
   - 51 Hybrid test cases
 
 CHANGES (2026-02-15):
-- Removed redundant fields: query_type, min_similarity_score, tags, difficulty, description
-- Updated validation: ground_truth_answer now REQUIRED for all types
-- Unified validation logic (no type-specific validation)
+- Renamed: ground_truth → ground_truth_vector
+- Removed: ground_truth_answer (will be generated dynamically by judge LLM)
+- Judge LLM generates expected answer from ground_truth_data and ground_truth_vector
 """
 
 from src.evaluation.unified_model import UnifiedTestCase, TestType
@@ -34,12 +34,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Shai Gilgeous-Alexander', 'pts': 2485},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Shai Gilgeous-Alexander scored the most points with 2485 PTS.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -54,12 +51,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Ivica Zubac', 'reb': 1008}, {'name': 'Domantas Sabonis', 'reb': 973}, {'name': 'Karl-Anthony Towns', 'reb': 922}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 3 rebounders: Ivica Zubac (1008), Domantas Sabonis (973), Karl-Anthony Towns (922).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -74,12 +68,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Dyson Daniels', 'stl': 228}, {'name': 'Shai Gilgeous-Alexander', 'stl': 129}, {'name': 'Nikola Jokić', 'stl': 126}, {'name': 'Kris Dunn', 'stl': 126}, {'name': 'Cason Wallace', 'stl': 122}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 5 steals: Dyson Daniels (228), Shai Gilgeous-Alexander (129), Nikola Jokić (126), Kris Dunn (126), Cason Wallace (122).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -94,12 +85,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Sam Hauser', 'ft_pct': 100.0},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Sam Hauser has the best free throw percentage at 100%.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -114,12 +102,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Kai Jones', 'ts_pct': 80.4},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Kai Jones has the highest true shooting percentage at 80.4%.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -134,12 +119,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'LeBron James', 'ppg': 24.4},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='LeBron James averages 24.4 points per game.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -154,12 +136,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Stephen Curry', 'three_pct': 39.7},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Stephen Curry's 3-point percentage is 39.7%.",
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -174,12 +153,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Nikola Jokić', 'reb': 889},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Nikola Jokić has 889 rebounds.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -194,12 +170,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Chris Paul', 'ast': 607},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Chris Paul recorded 607 assists.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -214,12 +187,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'player_count': 20},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='There are 20 players on the Lakers roster.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -235,12 +205,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Brandin Podziemski'}, {'name': 'Braxton Key'}, {'name': 'Buddy Hield'}, {'name': 'Draymond Green'}, {'name': 'Gary Payton II'}, {'name': 'Gui Santos'}, {'name': 'Jackson Rowe'}, {'name': 'Jimmy Butler III'}, {'name': 'Jonathan Kuminga'}, {'name': 'Kevin Knox II'}, {'name': 'Kevon Looney'}, {'name': 'Moses Moody'}, {'name': 'Pat Spencer'}, {'name': 'Quinten Post'}, {'name': 'Stephen Curry'}, {'name': 'Trayce Jackson-Davis'}, {'name': 'Yuri Collins'}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Warriors roster: Brandin Podziemski, Braxton Key, Buddy Hield, Draymond Green, Gary Payton II, Gui Santos, Jackson Rowe, Jimmy Butler III, Jonathan Kuminga, Kevon Looney, Kevin Knox II, Moses Moody, Pat Spencer, Quinten Post, Stephen Curry, Trayce Jackson-Davis, Yuri Collins (17 players).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -255,12 +222,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Jarrett Allen', 'w': 64},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Jarrett Allen has the most wins with 64.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -275,12 +239,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'avg_age': 26.15},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='The average player age in the NBA is 26.15 years.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -295,12 +256,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Nikola Jokić', 'pts': 2072, 'reb': 889, 'ast': 714}, {'name': 'Joel Embiid', 'pts': 452, 'reb': 156, 'ast': 86}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Nikola Jokić: 2072 PTS, 889 REB, 714 AST. Joel Embiid: 452 PTS, 156 REB, 86 AST.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -315,12 +273,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Stephen Curry', 'three_pct': 39.7}, {'name': 'Damian Lillard', 'three_pct': 37.6}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Stephen Curry shoots better (39.7%) than Damian Lillard (37.6%).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -335,12 +290,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Nikola Jokić', 'fg_pct': 57.6, 'efg_pct': 62.7}, {'name': 'Joel Embiid', 'fg_pct': 44.4, 'efg_pct': 48.1}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Nikola Jokić is more efficient: FG% 57.6, EFG% 62.7 vs Joel Embiid FG% 44.4, EFG% 48.1.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -355,12 +307,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Jayson Tatum', 'pts': 1930, 'fg_pct': 45.2, 'efg_pct': 53.7, 'ts_pct': 58.2}, {'name': 'Kevin Durant', 'pts': 1649, 'fg_pct': 52.7, 'efg_pct': 59.8, 'ts_pct': 64.2}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Jayson Tatum: 1930 PTS, 45.2% FG, 53.7% EFG, 58.2% TS. Kevin Durant: 1649 PTS, 52.7% FG, 59.8% EFG, 64.2% TS.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -375,12 +324,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'James Harden', 'ast': 687}, {'name': 'Chris Paul', 'ast': 607}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='James Harden has more assists (687) than Chris Paul (607).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -395,12 +341,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Dyson Daniels', 'stl': 228}, {'name': 'Shai Gilgeous-Alexander', 'stl': 129}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 2 steals: Dyson Daniels (228), Shai Gilgeous-Alexander (129).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -415,12 +358,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Victor Wembanyama', 'blk': 175}, {'name': 'Brook Lopez', 'blk': 152}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Victor Wembanyama (175 BLK) leads, followed by Brook Lopez (152 BLK).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -436,12 +376,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'avg_3p_pct': 29.9},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='The average 3-point percentage across all players is 29.9%.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -456,12 +393,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'avg_fg_pct': 44.6},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='The average field goal percentage is 44.6%.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -476,12 +410,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'avg_pie': 8.9},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='The average PIE is 8.9.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -496,12 +427,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'avg_rpg': 3.6},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='The average rebounds per game is 3.60 RPG.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -516,12 +444,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'player_count': 84},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='84 players scored over 1000 points this season.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -536,12 +461,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'player_count': 118},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='118 players (with 20+ games played) have a true shooting percentage over 60%.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -556,12 +478,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'count': 10},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='10 players have more than 500 assists.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -576,12 +495,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'count': 282},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='282 players played more than 50 games.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -596,12 +512,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'max_pie': 40.0},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='The highest PIE is 40.0.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -616,12 +529,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'max_blocks': 175},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Victor Wembanyama has the maximum blocks with 175.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -637,12 +547,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'avg_fg_pct': 44.6},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='The average field goal percentage for the Lakers is 44.6%.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -657,12 +564,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Shai Gilgeous-Alexander', 'ppg': 32.7}, {'name': 'Giannis Antetokounmpo', 'ppg': 30.4}, {'name': 'Nikola Jokić', 'ppg': 29.6}, {'name': 'Luka Dončić', 'ppg': 28.2}, {'name': 'Anthony Edwards', 'ppg': 27.6}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 5 above-avg PPG: Shai Gilgeous-Alexander (32.7), Giannis Antetokounmpo (30.4), Nikola Jokić (29.6), Luka Dončić (28.2), Anthony Edwards (27.6).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -677,12 +581,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Shai Gilgeous-Alexander', 'pts': 2485, 'ast': 486}, {'name': 'Anthony Edwards', 'pts': 2180, 'ast': 356}, {'name': 'Nikola Jokić', 'pts': 2072, 'ast': 714}, {'name': 'Giannis Antetokounmpo', 'pts': 2037, 'ast': 436}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 4 dual-threat players: Shai Gilgeous-Alexander (2485 PTS, 486 AST), Anthony Edwards (2180 PTS, 356 AST), Nikola Jokić (2072 PTS, 714 AST), Giannis Antetokounmpo (2037 PTS, 436 AST).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -697,12 +598,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Dwight Powell', 'fg_pct': 68.9, 'three_pct': 40.0}, {'name': 'Drew Eubanks', 'fg_pct': 59.3, 'three_pct': 50.0}, {'name': 'Domantas Sabonis', 'fg_pct': 59.0, 'three_pct': 41.7}, {'name': 'Christian Braun', 'fg_pct': 58.0, 'three_pct': 39.7}, {'name': 'Nikola Jokić', 'fg_pct': 57.6, 'three_pct': 41.7}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 5 with FG>50% AND 3P>35% (50+ games): Dwight Powell (68.9 FG%, 40.0 3P%), Drew Eubanks (59.3 FG%, 50.0 3P%), Domantas Sabonis (59.0 FG%, 41.7 3P%), Christian Braun (58.0 FG%, 39.7 3P%), Nikola Jokić (57.6 FG%, 41.7 3P%).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -717,12 +615,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Nikola Jokić', 'ppg': 29.6, 'rpg': 12.7, 'apg': 10.2}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Rare players averaging 10+ PPG, RPG, and APG (triple-double averages).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -737,12 +632,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Dyson Daniels', 'stl': 228, 'blk': 53, 'defensive_actions': 281}, {'name': 'Victor Wembanyama', 'stl': 51, 'blk': 175, 'defensive_actions': 226}, {'name': 'Shai Gilgeous-Alexander', 'stl': 129, 'blk': 76, 'defensive_actions': 205}, {'name': 'Myles Turner', 'stl': 58, 'blk': 144, 'defensive_actions': 202}, {'name': 'Jaren Jackson Jr,', 'stl': 89, 'blk': 111, 'defensive_actions': 200}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 5 defenders: Dyson Daniels (281), Victor Wembanyama (226), Shai Gilgeous-Alexander (205), Myles Turner (202), Jaren Jackson Jr. (200).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -757,12 +649,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Tyrese Haliburton', 'ast': 672, 'tov': 117, 'ast_to_ratio': 5.74}, {'name': 'Tyus Jones', 'ast': 429, 'tov': 89, 'ast_to_ratio': 4.82}, {'name': 'Chris Paul', 'ast': 607, 'tov': 131, 'ast_to_ratio': 4.63}, {'name': 'Mike Conley', 'ast': 320, 'tov': 78, 'ast_to_ratio': 4.1}, {'name': 'Fred VanVleet', 'ast': 336, 'tov': 90, 'ast_to_ratio': 3.73}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Best AST/TO (300+ AST): Tyrese Haliburton (5.74), Tyus Jones (4.82), Chris Paul (4.63), Mike Conley (4.10), Fred VanVleet (3.73).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -777,12 +666,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'pct_above_60': 25.9},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='25.9% of players (118 out of 456 with 20+ games) have a true shooting percentage above 60%.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -797,12 +683,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Jaxson Hayes', 'efg_pct': 72.2}, {'name': 'Jarrett Allen', 'efg_pct': 70.6}, {'name': 'Dwight Powell', 'efg_pct': 70.5}, {'name': 'Adem Bona', 'efg_pct': 70.3}, {'name': 'Daniel Gafford', 'efg_pct': 70.2}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 5 most efficient (EFG%, 50+ GP): Jaxson Hayes (72.2), Jarrett Allen (70.6), Dwight Powell (70.5), Adem Bona (70.3), Daniel Gafford (70.2).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -817,12 +700,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Shai Gilgeous-Alexander', 'pts': 2485, 'gp': 76, 'ppg': 32.7}, {'name': 'Nikola Jokić', 'pts': 2072, 'gp': 70, 'ppg': 29.6}, {'name': 'Anthony Edwards', 'pts': 2180, 'gp': 79, 'ppg': 27.6}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 3 PPG (70+ GP): Shai Gilgeous-Alexander (32.7), Nikola Jokić (29.6), Anthony Edwards (27.6).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -838,12 +718,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Nikola Jokić', 'pts': 2072, 'reb': 889, 'ast': 714}, {'name': 'Giannis Antetokounmpo', 'pts': 2037, 'reb': 797, 'ast': 436}, {'name': 'Jayson Tatum', 'pts': 1930, 'reb': 626, 'ast': 432}, {'name': 'Anthony Edwards', 'pts': 2180, 'reb': 450, 'ast': 356}, {'name': 'James Harden', 'pts': 1801, 'reb': 458, 'ast': 687}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 5 versatile (1000+ PTS, 400+ REB, 200+ AST): Nikola Jokić (2072/889/714), Giannis Antetokounmpo (2037/797/436), Jayson Tatum (1930/626/432), Anthony Edwards (2180/450/356), James Harden (1801/458/687).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -858,12 +735,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'team_abbr': 'DEN', 'avg_pts': 582.3}, {'team_abbr': 'SAS', 'avg_pts': 566.6}, {'team_abbr': 'CLE', 'avg_pts': 565.6}, {'team_abbr': 'BOS', 'avg_pts': 561.8}, {'team_abbr': 'OKC', 'avg_pts': 548.9}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 5 teams by avg points per player: DEN (582.3), SAS (566.6), CLE (565.6), BOS (561.8), OKC (548.9).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -878,12 +752,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'team_abbr': 'BOS', 'avg_pts': 561.8, 'player_count': 17}, {'team_abbr': 'LAL', 'avg_pts': 434.6, 'player_count': 20}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Celtics average 561.8 points per player (17 players) vs Lakers 434.6 (20 players).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -898,12 +769,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'team_abbr': 'SAS', 'high_scorers': 5}, {'team_abbr': 'NYK', 'high_scorers': 5}, {'team_abbr': 'CLE', 'high_scorers': 5}, {'team_abbr': 'SAC', 'high_scorers': 4}, {'team_abbr': 'IND', 'high_scorers': 4}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Teams with 3+ high scorers (1000+ pts): SAS (5), NYK (5), CLE (5), SAC (4), IND (4).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -918,12 +786,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Shai Gilgeous-Alexander', 'age': 26, 'pts': 2485}, {'name': 'Nikola Jokić', 'age': 30, 'pts': 2072}, {'name': 'Giannis Antetokounmpo', 'age': 30, 'pts': 2037}, {'name': 'Jayson Tatum', 'age': 27, 'pts': 1930}, {'name': 'Devin Booker', 'age': 28, 'pts': 1920}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 5 scorers aged 25-30: Shai Gilgeous-Alexander (26, 2485), Nikola Jokić (30, 2072), Giannis Antetokounmpo (30, 2037), Jayson Tatum (27, 1930), Devin Booker (28, 1920).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -938,12 +803,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Shai Gilgeous-Alexander', 'pts': 2485},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Shai Gilgeous-Alexander is the top scorer with 2485 points.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -958,12 +820,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Ivica Zubac', 'reb': 1008},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Ivica Zubac is the top rebounder with 1008 rebounds.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -978,12 +837,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'LeBron James', 'pts': 1708, 'reb': 546, 'ast': 574},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='LeBron James: 1708 PTS, 546 REB, 574 AST.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -998,12 +854,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Trae Young', 'ast': 882}, {'name': 'Nikola Jokić', 'ast': 714}, {'name': 'James Harden', 'ast': 687}, {'name': 'Tyrese Haliburton', 'ast': 672}, {'name': 'Cade Cunningham', 'ast': 637}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 5 assist leaders: Trae Young (882), Nikola Jokić (714), James Harden (687), Tyrese Haliburton (672), Cade Cunningham (637).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1018,12 +871,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Shai Gilgeous-Alexander', 'ast': 486},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Shai Gilgeous-Alexander has 486 assists (follow-up).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1039,12 +889,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Ivica Zubac', 'gp': 80},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Ivica Zubac played 80 games (contextual follow-up).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1059,12 +906,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'LeBron James', 'pts': 1708, 'reb': 546, 'ast': 574}, {'name': 'Stephen Curry', 'pts': 1715, 'reb': 308, 'ast': 420}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='LeBron James: 1708 PTS, 546 REB, 574 AST. Stephen Curry: 1715 PTS, 308 REB, 420 AST.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1079,12 +923,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Trae Young', 'ast': 882},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Trae Young plays for the Hawks with 882 assists.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1099,12 +940,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Shai Gilgeous-Alexander', 'pts': 2485}, {'name': 'Anthony Edwards', 'pts': 2180}, {'name': 'Nikola Jokić', 'pts': 2072}, {'name': 'Giannis Antetokounmpo', 'pts': 2037}, {'name': 'Jayson Tatum', 'pts': 1930}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top pts leaders: Shai Gilgeous-Alexander (2485), Anthony Edwards (2180), Nikola Jokić (2072), Giannis Antetokounmpo (2037), Jayson Tatum (1930).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1119,12 +957,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Giannis Antetokounmpo', 'pie': 21.0, 'pts': 2037},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Giannis Antetokounmpo leads in PIE (21.0) with 2037 points, making him a top MVP candidate.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1139,12 +974,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Drew Eubanks', 'three_pct': 50.0}, {'name': 'Seth Curry', 'three_pct': 45.6}, {'name': 'Zach LaVine', 'three_pct': 44.6}, {'name': 'Ty Jerome', 'three_pct': 43.9}, {'name': 'Taurean Prince', 'three_pct': 43.9}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 3P shooters (>38%, 50+ GP): Drew Eubanks (50.0%), Seth Curry (45.6%), Zach LaVine (44.6%), Ty Jerome (43.9%), Taurean Prince (43.9%).',
 
         # Optional: Conversation context
         conversation_thread='progressive_filtering_1',
@@ -1159,12 +991,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Rui Hachimura', 'three_pct': 41.3}, {'name': 'Dorian Finney-Smith', 'three_pct': 41.1}, {'name': 'Jordan Goodwin', 'three_pct': 38.2}, {'name': 'Austin Reaves', 'three_pct': 37.7}, {'name': 'LeBron James', 'three_pct': 37.6}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Lakers 3P shooters: Rui Hachimura (41.3%), Dorian Finney-Smith (41.1%), Jordan Goodwin (38.2%), Austin Reaves (37.7%), LeBron James (37.6%).',
 
         # Optional: Conversation context
         conversation_thread='progressive_filtering_1',
@@ -1179,12 +1008,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Austin Reaves', 'three_pct': 37.7, 'three_pa': 533}, {'name': 'Luka Dončić', 'three_pct': 36.8, 'three_pa': 480}, {'name': 'LeBron James', 'three_pct': 37.6, 'three_pa': 399}, {'name': 'Dalton Knecht', 'three_pct': 37.6, 'three_pa': 343}, {'name': 'Dorian Finney-Smith', 'three_pct': 41.1, 'three_pa': 315}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Lakers 3P by attempts: Austin Reaves (37.7%, 533 3PA), Luka Dončić (36.8%, 480 3PA), LeBron James (37.6%, 399 3PA), Dalton Knecht (37.6%, 343 3PA), Dorian Finney-Smith (41.1%, 315 3PA).',
 
         # Optional: Conversation context
         conversation_thread='progressive_filtering_1',
@@ -1199,12 +1025,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Stephen Curry', 'pts': 1715, 'reb': 308, 'ast': 420}, {'name': 'Jimmy Butler III', 'pts': 963, 'reb': 297, 'ast': 297}, {'name': 'Buddy Hield', 'pts': 910, 'reb': 262, 'ast': 131}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Warriors top 3: Stephen Curry (1715 PTS, 308 REB, 420 AST), Jimmy Butler III (963 PTS, 297 REB, 297 AST), Buddy Hield (910 PTS, 262 REB, 131 AST).',
 
         # Optional: Conversation context
         conversation_thread='correction_celtics',
@@ -1219,12 +1042,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Jayson Tatum', 'pts': 1930, 'reb': 626, 'ast': 432}, {'name': 'Jaylen Brown', 'pts': 1399, 'reb': 365, 'ast': 284}, {'name': 'Derrick White', 'pts': 1246, 'reb': 342, 'ast': 365}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Celtics top 3: Jayson Tatum (1930 PTS, 626 REB, 432 AST), Jaylen Brown (1399 PTS, 365 REB, 284 AST), Derrick White (1246 PTS, 342 REB, 365 AST).',
 
         # Optional: Conversation context
         conversation_thread='correction_celtics',
@@ -1240,12 +1060,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Jayson Tatum', 'pts': 1930},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Jayson Tatum is the Celtics' top scorer with 1930 points.",
 
         # Optional: Conversation context
         conversation_thread='correction_celtics',
@@ -1260,12 +1077,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Dyson Daniels', 'stl': 228},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Dyson Daniels leads in steals with 228.',
 
         # Optional: Conversation context
         conversation_thread='stats_continuation',
@@ -1280,12 +1094,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Victor Wembanyama', 'blk': 175},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Victor Wembanyama leads in blocks with 175.',
 
         # Optional: Conversation context
         conversation_thread='stats_continuation',
@@ -1300,12 +1111,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Trae Young', 'tov': 357},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Trae Young leads in turnovers with 357.',
 
         # Optional: Conversation context
         conversation_thread='stats_continuation',
@@ -1320,12 +1128,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Jayson Tatum', 'pts': 1930, 'gp': 72, 'ppg': 26.8},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Jayson Tatum: 1930 PTS in 72 GP (26.8 PPG).',
 
         # Optional: Conversation context
         conversation_thread='multi_entity_tatum_lebron',
@@ -1340,12 +1145,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Jayson Tatum', 'pts': 1930, 'gp': 72, 'ppg': 26.8}, {'name': 'LeBron James', 'pts': 1708, 'gp': 70, 'ppg': 24.4}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Jayson Tatum: 1930 PTS (26.8 PPG). LeBron James: 1708 PTS (24.4 PPG).',
 
         # Optional: Conversation context
         conversation_thread='multi_entity_tatum_lebron',
@@ -1360,12 +1162,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Jayson Tatum', 'reb': 626}, {'name': 'LeBron James', 'reb': 546}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Jayson Tatum has more rebounds (626) than LeBron James (546).',
 
         # Optional: Conversation context
         conversation_thread='multi_entity_tatum_lebron',
@@ -1380,12 +1179,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'team_abbr': 'DET', 'total_pts': 10292},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='The Detroit Pistons (DET) have the highest total points with 10292.',
 
         # Optional: Conversation context
         conversation_thread='team_pronoun_pistons',
@@ -1400,12 +1196,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Cade Cunningham', 'pts': 1827}, {'name': 'Malik Beasley', 'pts': 1337}, {'name': 'Tobias Harris', 'pts': 1000}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Pistons top scorers: Cade Cunningham (1827), Malik Beasley (1337), Tobias Harris (1000).',
 
         # Optional: Conversation context
         conversation_thread='team_pronoun_pistons',
@@ -1420,12 +1213,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'avg_age': 25.3},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='The average age of the Pistons players is 25.3 years.',
 
         # Optional: Conversation context
         conversation_thread='team_pronoun_pistons',
@@ -1441,12 +1231,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Shai Gilgeous-Alexander', 'pts': 2485},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Shai Gilgeous-Alexander has the most points with 2485.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1461,12 +1248,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Stephen Curry', 'three_pct': 39.7},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Stephen Curry's 3-point percentage is 39.7%.",
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1481,12 +1265,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'player_count': 84},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='84 players scored over 1000 points.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1501,12 +1282,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Nikola Jokić', 'reb': 889},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Nikola Jokić has 889 total rebounds.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1521,12 +1299,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'James Harden', 'ast': 687}, {'name': 'LeBron James', 'ast': 574}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='James Harden has 687 assists vs LeBron James with 574.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1541,12 +1316,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'avg_fg_pct': 44.6},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='The average field goal percentage in the league is 44.6%.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1561,12 +1333,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Ivica Zubac', 'reb': 1008}, {'name': 'Domantas Sabonis', 'reb': 973}, {'name': 'Karl-Anthony Towns', 'reb': 922}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 3 rebounders: Ivica Zubac (1008), Domantas Sabonis (973), Karl-Anthony Towns (922).',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1581,12 +1350,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Shai Gilgeous-Alexander', 'pts': 2485},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Shai Gilgeous-Alexander scored the most with 2485 points.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1601,12 +1367,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Trae Young', 'ast': 882},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Trae Young leads in assists with 882.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1621,12 +1384,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Stephen Curry', 'three_pct': 39.7},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Stephen Curry's 3-point percentage is 39.7%.",
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1642,12 +1402,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Should retrieve Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?' by u/MannerSuperb (31 upvotes, 236 comments). Expected teams mentioned: Magic (Paolo Banchero, Franz Wagner), ...",
+        ground_truth_vector="Should retrieve Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?' by u/MannerSuperb (31 upvotes, 236 comments). Expected teams mentioned: Magic (Paolo Banchero, Franz Wagner), ...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1662,12 +1419,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Should retrieve Reddit 2.pdf: 'How is it that the two best teams in the playoffs based on stats, having a chance of playing against each other in the Finals, is considered to be a snoozefest?' by u...",
+        ground_truth_vector="Should retrieve Reddit 2.pdf: 'How is it that the two best teams in the playoffs based on stats, having a chance of playing against each other in the Finals, is considered to be a snoozefest?' by u...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1682,12 +1436,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Should retrieve Reddit 3.pdf: 'Reggie Miller is the most efficient first option in NBA playoffs' by u/hqppp (1300 post upvotes, up to 11515 comment upvotes - HIGHEST engagement). Expected discussio...",
+        ground_truth_vector="Should retrieve Reddit 3.pdf: 'Reggie Miller is the most efficient first option in NBA playoffs' by u/hqppp (1300 post upvotes, up to 11515 comment upvotes - HIGHEST engagement). Expected discussio...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1702,12 +1453,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Should retrieve Reddit 4.pdf: 'Which NBA team did not have home court advantage until the NBA Finals?' by u/DonT012 (272 upvotes, 51 comments). Top answer (240 upvotes): 'Six teams have made the Fi...",
+        ground_truth_vector="Should retrieve Reddit 4.pdf: 'Which NBA team did not have home court advantage until the NBA Finals?' by u/DonT012 (272 upvotes, 51 comments). Top answer (240 upvotes): 'Six teams have made the Fi...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1722,12 +1470,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve Reddit 4.pdf about home court advantage. Comments discuss: play-in tournament implications, how lower-seeded teams (below 4 seed) never had home court in Finals, importance of seedi...',
+        ground_truth_vector='Should retrieve Reddit 4.pdf about home court advantage. Comments discuss: play-in tournament implications, how lower-seeded teams (below 4 seed) never had home court in Finals, importance of seedi...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1742,12 +1487,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Should retrieve Reddit 3.pdf discussion about playoff efficiency. Content includes TS% metric (True Shooting %), comparison table of 20 players' playoff efficiency, discussion of what qualifies as ...",
+        ground_truth_vector="Should retrieve Reddit 3.pdf discussion about playoff efficiency. Content includes TS% metric (True Shooting %), comparison table of 20 players' playoff efficiency, discussion of what qualifies as ...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1762,12 +1504,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve Reddit 3.pdf (historical efficiency comparison of 20 players across playoff history) and Reddit 4.pdf (historical home court examples: 2020 Lakers, 1995 Rockets). Both posts contain...',
+        ground_truth_vector='Should retrieve Reddit 3.pdf (historical efficiency comparison of 20 players across playoff history) and Reddit 4.pdf (historical home court examples: 2020 Lakers, 1995 Rockets). Both posts contain...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1782,12 +1521,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve chunks prioritized by post engagement boosting (0-1%): (1) Reddit 3 (1300 upvotes) - efficiency, (2) Reddit 2 (457 upvotes) - two best teams debate, (3) Reddit 4 (272 upvotes) - hom...',
+        ground_truth_vector='Should retrieve chunks prioritized by post engagement boosting (0-1%): (1) Reddit 3 (1300 upvotes) - efficiency, (2) Reddit 2 (457 upvotes) - two best teams debate, (3) Reddit 4 (272 upvotes) - hom...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1802,12 +1538,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Should retrieve Reddit 1.pdf (teams that impressed: Magic, Wolves, Pacers exceeding expectations) and potentially Reddit 2.pdf (debate about whether 'two best teams' being a 'snoozefest' is surpris...",
+        ground_truth_vector="Should retrieve Reddit 1.pdf (teams that impressed: Magic, Wolves, Pacers exceeding expectations) and potentially Reddit 2.pdf (debate about whether 'two best teams' being a 'snoozefest' is surpris...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1822,12 +1555,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve Reddit discussions that mention trades or player movement. Reddit 1.pdf may contain comments about team roster changes and trades. Reddit 2.pdf discusses team composition. If no dir...',
+        ground_truth_vector='Should retrieve Reddit discussions that mention trades or player movement. Reddit 1.pdf may contain comments about team roster changes and trades. Reddit 2.pdf discusses team composition. If no dir...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1843,12 +1573,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Should retrieve Reddit 1.pdf: post by u/MannerSuperb titled 'Who are teams in the playoffs that have impressed you?' (31 upvotes, 236 comments). This tests user-specific retrieval — the username 'M...",
+        ground_truth_vector="Should retrieve Reddit 1.pdf: post by u/MannerSuperb titled 'Who are teams in the playoffs that have impressed you?' (31 upvotes, 236 comments). This tests user-specific retrieval — the username 'M...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1863,12 +1590,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Should retrieve Reddit 3.pdf: 'Reggie Miller is the most efficient first option in NBA playoffs' which has HIGHEST engagement (1300 post upvotes, 11515 max comment upvotes). Post engagement boostin...",
+        ground_truth_vector="Should retrieve Reddit 3.pdf: 'Reggie Miller is the most efficient first option in NBA playoffs' which has HIGHEST engagement (1300 post upvotes, 11515 max comment upvotes). Post engagement boostin...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1883,12 +1607,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Post engagement boosting (0-1% based on upvotes) should create ranking: (1) Reddit 3 (1300 upvotes) >> (2) Reddit 2 (457) > (3) Reddit 4 (272) > (4) Reddit 1 (31). Tests post-level boosting. Expect...',
+        ground_truth_vector='Post engagement boosting (0-1% based on upvotes) should create ranking: (1) Reddit 3 (1300 upvotes) >> (2) Reddit 2 (457) > (3) Reddit 4 (272) > (4) Reddit 1 (31). Tests post-level boosting. Expect...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1903,12 +1624,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Comment upvote boosting (0-2% relative within each post) should prioritize: (1) Reddit 2 comment (756 upvotes), (2) Reddit 4 comment (240 upvotes), (3) Reddit 1 comment (186 upvotes). Within-post r...',
+        ground_truth_vector='Comment upvote boosting (0-2% relative within each post) should prioritize: (1) Reddit 2 comment (756 upvotes), (2) Reddit 4 comment (240 upvotes), (3) Reddit 1 comment (186 upvotes). Within-post r...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1923,12 +1641,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should prioritize: (1) NBA official accounts (if present, 2% boost), (2) highly-upvoted comments (756, 240, 186 upvotes from Reddit 2, 4, 1 respectively), (3) high-engagement posts (Reddit 3 with 1...',
+        ground_truth_vector='Should prioritize: (1) NBA official accounts (if present, 2% boost), (2) highly-upvoted comments (756, 240, 186 upvotes from Reddit 2, 4, 1 respectively), (3) high-engagement posts (Reddit 3 with 1...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1943,12 +1658,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Query about 'efficiency' should retrieve: (1) Reddit 3 (1300 upvotes, explicitly about efficiency) ranked MUCH HIGHER than (2) Reddit 1 (31 upvotes, mentions efficiency indirectly). Post engagement...",
+        ground_truth_vector="Query about 'efficiency' should retrieve: (1) Reddit 3 (1300 upvotes, explicitly about efficiency) ranked MUCH HIGHER than (2) Reddit 1 (31 upvotes, mentions efficiency indirectly). Post engagement...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1963,12 +1675,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Highly-upvoted comments represent community consensus: (1) Reddit 2 top comment (756 upvotes) about popularity contest, (2) Reddit 4 top comment (240 upvotes) about six teams without home court, (3...',
+        ground_truth_vector='Highly-upvoted comments represent community consensus: (1) Reddit 2 top comment (756 upvotes) about popularity contest, (2) Reddit 4 top comment (240 upvotes) about six teams without home court, (3...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1983,12 +1692,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve Reddit 3.pdf (historical playoff efficiency comparison across 20 players) with 1300 upvotes - highest engagement. Contains historical data: Reggie Miller (115 TS%), Kawhi (112%), Cu...',
+        ground_truth_vector='Should retrieve Reddit 3.pdf (historical playoff efficiency comparison across 20 players) with 1300 upvotes - highest engagement. Contains historical data: Reggie Miller (115 TS%), Kawhi (112%), Cu...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2003,12 +1709,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve chunks containing highest-upvoted comments: (1) Reddit 2 (756 upvotes) - fans prefer popularity over basketball quality, (2) Reddit 4 (240 upvotes) - six teams below 4 seed never ha...',
+        ground_truth_vector='Should retrieve chunks containing highest-upvoted comments: (1) Reddit 2 (756 upvotes) - fans prefer popularity over basketball quality, (2) Reddit 4 (240 upvotes) - six teams below 4 seed never ha...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2023,12 +1726,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='NBA official accounts (is_nba_official=1) receive 2% boost. Expected: If NBA official chunks exist in vector store, they rank in top 3 results regardless of lower semantic similarity. If NO NBA off...',
+        ground_truth_vector='NBA official accounts (is_nba_official=1) receive 2% boost. Expected: If NBA official chunks exist in vector store, they rank in top 3 results regardless of lower semantic similarity. If NO NBA off...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2044,12 +1744,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve regular NBA.xlsx (glossary/reference document), NOT Reddit discussions. Expected definition: Pick and roll is an offensive play where a player sets a screen (pick) and then moves to...',
+        ground_truth_vector='Should retrieve regular NBA.xlsx (glossary/reference document), NOT Reddit discussions. Expected definition: Pick and roll is an offensive play where a player sets a screen (pick) and then moves to...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2064,12 +1761,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve regular NBA.xlsx glossary defining PER (Player Efficiency Rating) as an advanced statistic measuring per-minute performance. Glossary should rank HIGHEST (85-95% similarity). If Red...',
+        ground_truth_vector='Should retrieve regular NBA.xlsx glossary defining PER (Player Efficiency Rating) as an advanced statistic measuring per-minute performance. Glossary should rank HIGHEST (85-95% similarity). If Red...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2084,12 +1778,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve regular NBA.xlsx glossary. Expected definition: Zone defense is a defensive strategy where players guard court areas/zones rather than specific opponents. Glossary should rank HIGHE...',
+        ground_truth_vector='Should retrieve regular NBA.xlsx glossary. Expected definition: Zone defense is a defensive strategy where players guard court areas/zones rather than specific opponents. Glossary should rank HIGHE...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2104,12 +1795,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve regular NBA.xlsx glossary. Expected definition: True Shooting Percentage (TS%) accounts for 2-pointers, 3-pointers, and free throws in efficiency calculation. May include formula: T...',
+        ground_truth_vector='Should retrieve regular NBA.xlsx glossary. Expected definition: True Shooting Percentage (TS%) accounts for 2-pointers, 3-pointers, and free throws in efficiency calculation. May include formula: T...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2124,12 +1812,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve regular NBA.xlsx glossary. Expected definition: Triple-double means achieving double-digit totals (10+) in three statistical categories in a single game (e.g., points, rebounds, ass...',
+        ground_truth_vector='Should retrieve regular NBA.xlsx glossary. Expected definition: Triple-double means achieving double-digit totals (10+) in three statistical categories in a single game (e.g., points, rebounds, ass...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2144,12 +1829,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve regular NBA.xlsx glossary, NOT Reddit discussions. Expected definition: Man-to-man = each defender guards specific opponent; Zone defense = defenders guard court areas/zones. Glossa...',
+        ground_truth_vector='Should retrieve regular NBA.xlsx glossary, NOT Reddit discussions. Expected definition: Man-to-man = each defender guards specific opponent; Zone defense = defenders guard court areas/zones. Glossa...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2164,12 +1846,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve regular NBA.xlsx glossary chunks defining multiple efficiency metrics: TS% (True Shooting %), eFG% (Effective Field Goal %), PER (Player Efficiency Rating), usage rate. May retrieve...',
+        ground_truth_vector='Should retrieve regular NBA.xlsx glossary chunks defining multiple efficiency metrics: TS% (True Shooting %), eFG% (Effective Field Goal %), PER (Player Efficiency Rating), usage rate. May retrieve...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2184,12 +1863,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="May retrieve: (1) regular NBA.xlsx glossary definition if available ('first option = team's primary scorer/go-to offensive player'), or (2) Reddit 3.pdf contextual usage ('Reggie Miller is the most...",
+        ground_truth_vector="May retrieve: (1) regular NBA.xlsx glossary definition if available ('first option = team's primary scorer/go-to offensive player'), or (2) Reddit 3.pdf contextual usage ('Reggie Miller is the most...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2204,12 +1880,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Out-of-scope query. Vector search WILL retrieve irrelevant chunks (likely Reddit PDFs with ~65-70% similarity due to semantic overlap with 'Los Angeles'). However, LLM should recognize retrieved co...",
+        ground_truth_vector="Out-of-scope query. Vector search WILL retrieve irrelevant chunks (likely Reddit PDFs with ~65-70% similarity due to semantic overlap with 'Los Angeles'). However, LLM should recognize retrieved co...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2224,12 +1897,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Out-of-scope query. Vector search WILL retrieve irrelevant Reddit chunks with ~62-68% similarity (weakest match due to no semantic overlap). LLM should recognize content is basketball-related, NOT ...',
+        ground_truth_vector='Out-of-scope query. Vector search WILL retrieve irrelevant Reddit chunks with ~62-68% similarity (weakest match due to no semantic overlap). LLM should recognize content is basketball-related, NOT ...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2245,12 +1915,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Out-of-scope query. Vector search WILL retrieve irrelevant Reddit chunks (likely Reddit 1-4 with ~68-72% similarity due to semantic overlap with 'results', 'latest'). However, LLM should recognize ...",
+        ground_truth_vector="Out-of-scope query. Vector search WILL retrieve irrelevant Reddit chunks (likely Reddit 1-4 with ~68-72% similarity due to semantic overlap with 'results', 'latest'). However, LLM should recognize ...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2265,12 +1932,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Out-of-scope query. Vector search WILL retrieve irrelevant chunks (~63-68% similarity). LLM should recognize content is basketball-related, NOT financial data, and respond with 'I don't have inform...",
+        ground_truth_vector="Out-of-scope query. Vector search WILL retrieve irrelevant chunks (~63-68% similarity). LLM should recognize content is basketball-related, NOT financial data, and respond with 'I don't have inform...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2285,12 +1949,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Out-of-scope query. Vector search WILL retrieve basketball-related chunks (~72-78% similarity due to 'NBA' keyword match), possibly Reddit discussions about strategies. However, LLM should recogniz...",
+        ground_truth_vector="Out-of-scope query. Vector search WILL retrieve basketball-related chunks (~72-78% similarity due to 'NBA' keyword match), possibly Reddit discussions about strategies. However, LLM should recogniz...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2305,12 +1966,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Out-of-scope query. Vector search WILL retrieve irrelevant chunks (~60-67% similarity - very weak). LLM should recognize content is basketball-related, NOT tech support, and respond with 'I don't h...",
+        ground_truth_vector="Out-of-scope query. Vector search WILL retrieve irrelevant chunks (~60-67% similarity - very weak). LLM should recognize content is basketball-related, NOT tech support, and respond with 'I don't h...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2325,12 +1983,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Out-of-scope query. Vector search WILL retrieve irrelevant chunks (~64-69% similarity, possibly New York Knicks mentions). LLM should recognize content is basketball-related, NOT restaurant recomme...',
+        ground_truth_vector='Out-of-scope query. Vector search WILL retrieve irrelevant chunks (~64-69% similarity, possibly New York Knicks mentions). LLM should recognize content is basketball-related, NOT restaurant recomme...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2345,12 +2000,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Single punctuation mark is not meaningful query. Vector search WILL retrieve random chunks (~55-65% similarity - very weak, essentially random). LLM should recognize lack of coherent question and r...',
+        ground_truth_vector='Single punctuation mark is not meaningful query. Vector search WILL retrieve random chunks (~55-65% similarity - very weak, essentially random). LLM should recognize lack of coherent question and r...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2365,12 +2017,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Random keyboard mashing. Vector search WILL retrieve random chunks (~50-60% similarity - essentially random match). LLM should recognize lack of coherent query intent and respond with 'I don't unde...",
+        ground_truth_vector="Random keyboard mashing. Vector search WILL retrieve random chunks (~50-60% similarity - essentially random match). LLM should recognize lack of coherent query intent and respond with 'I don't unde...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2385,12 +2034,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Out-of-scope (cosmology) + unreasonable request (10000 words). Vector search WILL retrieve irrelevant chunks (~65-70% similarity due to 'history'). LLM should: (1) recognize topic is out of scope (...",
+        ground_truth_vector="Out-of-scope (cosmology) + unreasonable request (10000 words). Vector search WILL retrieve irrelevant chunks (~65-70% similarity due to 'history'). LLM should: (1) recognize topic is out of scope (...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2405,12 +2051,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Out-of-scope query (translation service). Vector search WILL retrieve irrelevant chunks (~60-68% similarity - weak match). LLM should recognize content is basketball-related, NOT translation servic...',
+        ground_truth_vector='Out-of-scope query (translation service). Vector search WILL retrieve irrelevant chunks (~60-68% similarity - weak match). LLM should recognize content is basketball-related, NOT translation servic...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2425,12 +2068,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="XSS injection attempt + legitimate query. System should: (1) sanitize/escape HTML tags (no script execution), (2) extract legitimate query portion ('Who won the MVP?'), (3) respond about MVP if dat...",
+        ground_truth_vector="XSS injection attempt + legitimate query. System should: (1) sanitize/escape HTML tags (no script execution), (2) extract legitimate query portion ('Who won the MVP?'), (3) respond about MVP if dat...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2446,12 +2086,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='SQL injection attempt. System should: (1) treat as literal text string, NOT SQL command, (2) not execute any database operations, (3) vector search processes it as gibberish text (~55-65% similarit...',
+        ground_truth_vector='SQL injection attempt. System should: (1) treat as literal text string, NOT SQL command, (2) not execute any database operations, (3) vector search processes it as gibberish text (~55-65% similarit...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2466,12 +2103,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Path traversal attempt. System should: (1) treat as literal text, NOT file path, (2) not access file system, (3) vector search processes as text string (~50-60% similarity - essentially random). LL...',
+        ground_truth_vector='Path traversal attempt. System should: (1) treat as literal text, NOT file path, (2) not access file system, (3) vector search processes as text string (~50-60% similarity - essentially random). LL...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2486,12 +2120,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Template injection attempts (Jinja, JavaScript, ERB). System should: (1) treat as literal text, NOT execute templates, (2) no evaluation of expressions (result should NOT be '49'), (3) vector searc...",
+        ground_truth_vector="Template injection attempts (Jinja, JavaScript, ERB). System should: (1) treat as literal text, NOT execute templates, (2) no evaluation of expressions (result should NOT be '49'), (3) vector searc...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2506,12 +2137,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Excessively long input (10,000 'A' characters). System should: (1) handle gracefully without crashing, (2) possibly truncate input to reasonable length (e.g., first 500-1000 chars), or (3) reject w...",
+        ground_truth_vector="Excessively long input (10,000 'A' characters). System should: (1) handle gracefully without crashing, (2) possibly truncate input to reasonable length (e.g., first 500-1000 chars), or (3) reject w...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2526,12 +2154,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Should retrieve Reddit discussions mentioning Lakers. Most likely source: Reddit 4.pdf mentions '2020 Lakers' as example of team without home court advantage in Finals. May also appear in Reddit 1 ...",
+        ground_truth_vector="Should retrieve Reddit discussions mentioning Lakers. Most likely source: Reddit 4.pdf mentions '2020 Lakers' as example of team without home court advantage in Finals. May also appear in Reddit 1 ...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread='lakers_discussion',
@@ -2546,12 +2171,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Follow-up question referencing 'their' = Lakers from Turn 1. System should: (1) maintain conversation context (Lakers = subject), (2) retrieve Lakers-specific content about strengths. Expected sour...",
+        ground_truth_vector="Follow-up question referencing 'their' = Lakers from Turn 1. System should: (1) maintain conversation context (Lakers = subject), (2) retrieve Lakers-specific content about strengths. Expected sour...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread='lakers_discussion',
@@ -2566,12 +2188,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Second follow-up still referencing Lakers from Turn 1 and 2. System should: (1) maintain conversation context across THREE turns, (2) retrieve Lakers content about weaknesses/limitations. Expected ...',
+        ground_truth_vector='Second follow-up still referencing Lakers from Turn 1 and 2. System should: (1) maintain conversation context across THREE turns, (2) retrieve Lakers content about weaknesses/limitations. Expected ...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread='lakers_discussion',
@@ -2586,12 +2205,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Should retrieve Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?' discussing Magic (Paolo/Franz), Wolves (Ant), Pacers, Pistons. Top comment (186 upvotes) about Ant being a mac...",
+        ground_truth_vector="Should retrieve Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?' discussing Magic (Paolo/Franz), Wolves (Ant), Pacers, Pistons. Top comment (186 upvotes) about Ant being a mac...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread='playoff_surprises',
@@ -2606,12 +2222,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Follow-up referencing 'they' = surprising teams from Turn 1 (Magic, Wolves, Pacers, Pistons). System should: (1) maintain context of which teams were mentioned, (2) retrieve Reddit 1.pdf chunks exp...",
+        ground_truth_vector="Follow-up referencing 'they' = surprising teams from Turn 1 (Magic, Wolves, Pacers, Pistons). System should: (1) maintain context of which teams were mentioned, (2) retrieve Reddit 1.pdf chunks exp...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread='playoff_surprises',
@@ -2626,12 +2239,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Third-level follow-up referencing 'them' = surprising teams from Turn 1-2. System should: (1) maintain conversation context across THREE turns, (2) retrieve content comparing underdogs (Magic, Wolv...",
+        ground_truth_vector="Third-level follow-up referencing 'them' = surprising teams from Turn 1-2. System should: (1) maintain conversation context across THREE turns, (2) retrieve content comparing underdogs (Magic, Wolv...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread='playoff_surprises',
@@ -2647,12 +2257,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve Reddit 3.pdf discussing playoff efficiency metrics: TS% (True Shooting %), scoring volume, comparison of 20 players. Expected definition: efficiency = high TS% (115% for Miller, 112...',
+        ground_truth_vector='Should retrieve Reddit 3.pdf discussing playoff efficiency metrics: TS% (True Shooting %), scoring volume, comparison of 20 players. Expected definition: efficiency = high TS% (115% for Miller, 112...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread='efficiency_metrics',
@@ -2667,12 +2274,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Follow-up asking for specific player. Should retrieve Reddit 3.pdf: 'Reggie Miller is the most efficient first option in NBA playoff history' (1300 upvotes). Post engagement boosting should rank Re...",
+        ground_truth_vector="Follow-up asking for specific player. Should retrieve Reddit 3.pdf: 'Reggie Miller is the most efficient first option in NBA playoff history' (1300 upvotes). Post engagement boosting should rank Re...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread='efficiency_metrics',
@@ -2687,12 +2291,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Second follow-up referencing 'his' = Reggie Miller from Turn 2. System should: (1) maintain context across THREE turns (efficiency → Reggie Miller → debate about him), (2) retrieve Reddit 3.pdf com...",
+        ground_truth_vector="Second follow-up referencing 'his' = Reggie Miller from Turn 2. System should: (1) maintain context across THREE turns (efficiency → Reggie Miller → debate about him), (2) retrieve Reddit 3.pdf com...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread='efficiency_metrics',
@@ -2707,12 +2308,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Should retrieve Reddit 4.pdf: 'Which NBA team did not have home court advantage until the NBA Finals?' (272 upvotes, 51 comments). Top answer (240 upvotes): Six teams below 4 seed never had home co...",
+        ground_truth_vector="Should retrieve Reddit 4.pdf: 'Which NBA team did not have home court advantage until the NBA Finals?' (272 upvotes, 51 comments). Top answer (240 upvotes): Six teams below 4 seed never had home co...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread='topic_switching',
@@ -2727,12 +2325,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="TOPIC SWITCH from home court (Turn 1) back to efficiency. Phrase 'Going back to' indicates explicit topic change. System should: (1) recognize topic switch, (2) retrieve Reddit 3.pdf efficiency dis...",
+        ground_truth_vector="TOPIC SWITCH from home court (Turn 1) back to efficiency. Phrase 'Going back to' indicates explicit topic change. System should: (1) recognize topic switch, (2) retrieve Reddit 3.pdf efficiency dis...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread='topic_switching',
@@ -2747,12 +2342,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="SECOND topic switch, back to home court from Turn 1. Phrase 'Returning to' indicates explicit topic change. System should: (1) recognize topic switch back to home court, (2) retrieve Reddit 4.pdf w...",
+        ground_truth_vector="SECOND topic switch, back to home court from Turn 1. Phrase 'Returning to' indicates explicit topic change. System should: (1) recognize topic switch back to home court, (2) retrieve Reddit 4.pdf w...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread='topic_switching',
@@ -2767,12 +2359,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Noisy query with typos and text-speak. Should map to: 'Who is the best player in playoffs according to Reddit?'. Should retrieve Reddit discussions mentioning top players: Ant (Anthony Edwards) fro...",
+        ground_truth_vector="Noisy query with typos and text-speak. Should map to: 'Who is the best player in playoffs according to Reddit?'. Should retrieve Reddit discussions mentioning top players: Ant (Anthony Edwards) fro...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2787,12 +2376,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Heavy typos but clear intent: 'Reggie Miller efficiency debate'. Should retrieve Reddit 3.pdf: 'Reggie Miller is the most efficient first option in NBA playoffs' (1300 upvotes). Vector search shoul...",
+        ground_truth_vector="Heavy typos but clear intent: 'Reggie Miller efficiency debate'. Should retrieve Reddit 3.pdf: 'Reggie Miller is the most efficient first option in NBA playoffs' (1300 upvotes). Vector search shoul...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2807,12 +2393,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Informal slang expressing opinion about surprising playoff teams. Should map to Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?' discussing Magic, Wolves, Pacers, Pistons. Vec...",
+        ground_truth_vector="Informal slang expressing opinion about surprising playoff teams. Should map to Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?' discussing Magic, Wolves, Pacers, Pistons. Vec...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2827,12 +2410,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Abbreviations + informal grammar expressing opinion on home court advantage. Should map to Reddit 4.pdf discussing home court importance. Vector search should: (1) expand abbreviations (imho='in my...",
+        ground_truth_vector="Abbreviations + informal grammar expressing opinion on home court advantage. Should map to Reddit 4.pdf discussing home court importance. Vector search should: (1) expand abbreviations (imho='in my...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2848,12 +2428,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Keyword stuffing/repetition but clear intent: 'playoff teams impressive'. Should map to Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?'. Vector search should handle repetitio...",
+        ground_truth_vector="Keyword stuffing/repetition but clear intent: 'playoff teams impressive'. Should map to Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?'. Vector search should handle repetitio...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2868,12 +2445,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Extremely vague query with excessive punctuation. Vector search WILL retrieve random Reddit chunks (~68-75% similarity). LLM should: (1) recognize query is too vague, AND (2) either ask 'What speci...",
+        ground_truth_vector="Extremely vague query with excessive punctuation. Vector search WILL retrieve random Reddit chunks (~68-75% similarity). LLM should: (1) recognize query is too vague, AND (2) either ask 'What speci...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2888,12 +2462,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Casual slang asking about top teams. Should map to Reddit 2.pdf: 'How is it that the two best teams in the playoffs...' (457 upvotes). Vector search should understand: 'yo what'='what are', 'ppl'='...",
+        ground_truth_vector="Casual slang asking about top teams. Should map to Reddit 2.pdf: 'How is it that the two best teams in the playoffs...' (457 upvotes). Vector search should understand: 'yo what'='what are', 'ppl'='...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2908,12 +2479,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Single word, extremely vague. Vector search WILL retrieve random Reddit chunks (~65-75% similarity - all have 'nba' keyword). LLM should recognize query lacks specificity and respond with: 'What wo...",
+        ground_truth_vector="Single word, extremely vague. Vector search WILL retrieve random Reddit chunks (~65-75% similarity - all have 'nba' keyword). LLM should recognize query lacks specificity and respond with: 'What wo...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2928,12 +2496,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Non-question greeting input. Vector search WILL retrieve random chunks (~60-70% similarity - weak semantic match). LLM should recognize this is a greeting, not a question, and respond with somethin...',
+        ground_truth_vector='Non-question greeting input. Vector search WILL retrieve random chunks (~60-70% similarity - weak semantic match). LLM should recognize this is a greeting, not a question, and respond with somethin...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2948,12 +2513,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Complex multi-document synthesis query. Should retrieve chunks from: (1) Reddit 1 (young talent strategies: Magic with Paolo/Franz, Wolves with Ant), (2) Reddit 2 (discussion of stats-based vs popu...',
+        ground_truth_vector='Complex multi-document synthesis query. Should retrieve chunks from: (1) Reddit 1 (young talent strategies: Magic with Paolo/Franz, Wolves with Ant), (2) Reddit 2 (discussion of stats-based vs popu...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2968,12 +2530,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Meta-analysis requiring identification of recurring themes across ALL 4 Reddit posts. Patterns: (1) Efficiency metrics emphasis (Reddit 3: TS%, comparison tables), (2) Surprising/impressive teams (...',
+        ground_truth_vector='Meta-analysis requiring identification of recurring themes across ALL 4 Reddit posts. Patterns: (1) Efficiency metrics emphasis (Reddit 3: TS%, comparison tables), (2) Surprising/impressive teams (...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2988,12 +2547,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Requires contrasting qualitative opinions vs quantitative stats. Should retrieve: (1) Reddit 3.pdf quantitative table (Miller 115 TS%, Kawhi 112%, etc.) showing STATISTICAL measures, AND (2) Reddit...',
+        ground_truth_vector='Requires contrasting qualitative opinions vs quantitative stats. Should retrieve: (1) Reddit 3.pdf quantitative table (Miller 115 TS%, Kawhi 112%, etc.) showing STATISTICAL measures, AND (2) Reddit...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3008,12 +2564,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should identify debated topics across multiple Reddit posts: (1) Reddit 3: Is TS% the right efficiency metric? Era-adjusted vs raw stats, (2) Reddit 4: Does home court advantage really matter? Six ...',
+        ground_truth_vector='Should identify debated topics across multiple Reddit posts: (1) Reddit 3: Is TS% the right efficiency metric? Era-adjusted vs raw stats, (2) Reddit 4: Does home court advantage really matter? Six ...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3028,12 +2581,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='High-level synthesis requiring integration from ALL 4 Reddit posts. Success factors: (1) Reddit 1: Young talent development (Paolo, Franz, Ant), exceeding expectations, (2) Reddit 2: Statistical ex...',
+        ground_truth_vector='High-level synthesis requiring integration from ALL 4 Reddit posts. Success factors: (1) Reddit 1: Young talent development (Paolo, Franz, Ant), exceeding expectations, (2) Reddit 2: Statistical ex...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3049,12 +2599,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve Reddit discussions about playoff strategies and team approaches. Reddit 1.pdf discusses what makes teams impressive (young talent, team composition). Reddit 3.pdf discusses offensiv...',
+        ground_truth_vector='Should retrieve Reddit discussions about playoff strategies and team approaches. Reddit 1.pdf discusses what makes teams impressive (young talent, team composition). Reddit 3.pdf discusses offensiv...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3069,12 +2616,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Should retrieve Reddit discussions referencing NBA history and evolution. Reddit 3.pdf contains historical playoff efficiency comparison across 20 players spanning different eras (Reggie Miller, Jo...',
+        ground_truth_vector='Should retrieve Reddit discussions referencing NBA history and evolution. Reddit 3.pdf contains historical playoff efficiency comparison across 20 players spanning different eras (Reggie Miller, Jo...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3089,12 +2633,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Mixed query combining statistical ask ('how many points') with opinion ask ('why do fans love him'). For vector evaluation, the system should retrieve Reddit discussions mentioning LeBron. Reddit 1...",
+        ground_truth_vector="Mixed query combining statistical ask ('how many points') with opinion ask ('why do fans love him'). For vector evaluation, the system should retrieve Reddit discussions mentioning LeBron. Reddit 1...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3109,12 +2650,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth='Sentiment analysis across all 4 Reddit posts: (1) Reddit 1 (31 upvotes): Positive sentiment — excitement about impressive teams (Magic, Wolves), admiration for young talent. (2) Reddit 2 (457 upvot...',
+        ground_truth_vector='Sentiment analysis across all 4 Reddit posts: (1) Reddit 1 (31 upvotes): Positive sentiment — excitement about impressive teams (Magic, Wolves), admiration for young talent. (2) Reddit 2 (457 upvot...',
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3129,12 +2667,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth="Should retrieve Reddit 3.pdf containing direct quotes about efficiency. Key quotes: (1) Post title: 'Reggie Miller is the most efficient first option in NBA playoff history' by u/hqppp. (2) Top com...",
+        ground_truth_vector="Should retrieve Reddit 3.pdf containing direct quotes about efficiency. Key quotes: (1) Post title: 'Reggie Miller is the most efficient first option in NBA playoff history' by u/hqppp. (2) Top com...",
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3149,12 +2684,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Shai Gilgeous-Alexander', 'pts': 2485},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Shai Gilgeous-Alexander scored 2485 points. His effectiveness comes from his ability to get to the rim and draw fouls.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3169,12 +2701,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'LeBron James', 'pts': 1708}, {'name': 'Kevin Durant', 'pts': 1649}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='LeBron James: 1708 PTS. Kevin Durant: 1649 PTS. LeBron uses strength and playmaking while Durant relies on elite shooting.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3189,12 +2718,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Nikola Jokić', 'pts': 2072, 'gp': 70},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Jokić averages 29.6 PPG (2072 PTS in 70 GP). He's elite because of his versatile scoring, exceptional passing, and high basketball IQ.",
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3209,12 +2735,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Ivica Zubac', 'reb': 1008}, {'name': 'Domantas Sabonis', 'reb': 973}, {'name': 'Karl-Anthony Towns', 'reb': 922}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 3: Ivica Zubac (1008), Domantas Sabonis (973), Karl-Anthony Towns (922). They create second-chance opportunities and control the boards.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3229,12 +2752,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Nikola Jokić', 'pts': 2072, 'reb': 889, 'ast': 714, 'pie': 20.6}, {'name': 'Joel Embiid', 'pts': 452, 'reb': 156, 'ast': 86, 'pie': 16.9}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Jokić: 2072 PTS, 889 REB, 714 AST (PIE: 20.6). Embiid: 452 PTS, 156 REB, 86 AST (PIE: 16.9). Jokić excels in playmaking while Embiid dominates with scoring and defense.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3250,12 +2770,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top efficient scorers have high TS% because of good shot selection, high free throw rates, and effective three-point shooting.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3270,12 +2787,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Giannis Antetokounmpo', 'reb': 797}, {'name': 'Anthony Davis', 'reb': 592}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Giannis: 797 REB. Davis: 592 REB. Giannis uses length and athleticism for rebounds, while Davis combines timing and positioning.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3290,12 +2804,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='High AST/TO ratio indicates excellent decision-making and ball security, crucial for winning basketball by maximizing possessions.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3310,12 +2821,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Nikola Jokić', 'ppg': 29.6, 'rpg': 12.7, 'apg': 10.2}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Nikola Jokić averages 29.6/12.7/10.2. Triple-doubles require elite versatility in scoring, rebounding, and playmaking - a rare combination.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3330,12 +2838,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='High-volume low-efficiency scorers may still be valuable due to clutch performance, defensive attention they draw, or lack of other offensive options.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3350,12 +2855,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Dyson Daniels', 'stl': 228, 'blk': 53, 'def_actions': 281}, {'name': 'Victor Wembanyama', 'stl': 51, 'blk': 175, 'def_actions': 226}, {'name': 'Shai Gilgeous-Alexander', 'stl': 129, 'blk': 76, 'def_actions': 205}, {'name': 'Myles Turner', 'stl': 58, 'blk': 144, 'def_actions': 202}, {'name': 'Jaren Jackson Jr,', 'stl': 89, 'blk': 111, 'def_actions': 200}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 5 defenders: Dyson Daniels (228 STL, 53 BLK), Victor Wembanyama (51 STL, 175 BLK), Shai Gilgeous-Alexander (129 STL, 76 BLK), Myles Turner (58 STL, 144 BLK), Jaren Jackson Jr. (89 STL, 111 BLK). Daniels excels at perimeter defense while Wembanyama is an elite rim protector.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3370,12 +2872,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Shai Gilgeous-Alexander', 'pts': 2485, 'ast': 486}, {'name': 'Anthony Edwards', 'pts': 2180, 'ast': 356}, {'name': 'Nikola Jokić', 'pts': 2072, 'ast': 714}, {'name': 'Giannis Antetokounmpo', 'pts': 2037, 'ast': 436}, {'name': 'Jayson Tatum', 'pts': 1930, 'ast': 432}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top dual-threat players: Shai Gilgeous-Alexander (2485 PTS, 486 AST), Anthony Edwards (2180 PTS, 356 AST), Nikola Jokić (2072 PTS, 714 AST), Giannis Antetokounmpo (2037 PTS, 436 AST), Jayson Tatum (1930 PTS, 432 AST). These scorers and playmakers force defenses to make difficult choices, creating advantages for teammates while maintaining personal scoring threat.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3390,12 +2889,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'avg_3p': 29.9},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Modern NBA emphasizes three-point shooting due to analytics showing its efficiency. The 'three-point revolution' has changed offensive strategies and floor spacing.",
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3410,12 +2906,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='PIE measures overall player impact while TS% captures scoring efficiency. Together they reveal both productivity and effectiveness in generating value.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3430,12 +2923,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Young stars with elite stats suggest a generational talent shift, with younger players developing skills faster through modern training and analytics.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3451,12 +2941,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Trae Young', 'ast': 882, 'pie': 12.9}, {'name': 'Nikola Jokić', 'ast': 714, 'pie': 20.6}, {'name': 'James Harden', 'ast': 687, 'pie': 14.5}, {'name': 'Tyrese Haliburton', 'ast': 672, 'pie': 14.3}, {'name': 'Cade Cunningham', 'ast': 637, 'pie': 15.2}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 5 high-assist players: Trae Young (882 AST, PIE 12.9), Nikola Jokić (714 AST, PIE 20.6), James Harden (687 AST, PIE 14.5), Tyrese Haliburton (672 AST, PIE 14.3), Cade Cunningham (637 AST, PIE 15.2). High-assist players facilitate team offense by creating efficient shot opportunities for teammates.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3471,12 +2958,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'avg_pts': 487.5, 'player_count': 17},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Warriors average 487.5 points per player across 17 players. Fan discussions describe their culture as built on ball movement and championship pedigree.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3491,12 +2975,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Giannis Antetokounmpo', 'pts': 2037, 'reb': 797, 'ast': 436, 'pie': 21.0}, {'name': 'Nikola Jokić', 'pts': 2072, 'reb': 889, 'ast': 714, 'pie': 20.6}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Giannis Antetokounmpo: 2037 PTS, 797 REB, 436 AST (PIE 21.0). Nikola Jokić: 2072 PTS, 889 REB, 714 AST (PIE 20.6). Fan opinions are split between Giannis's dominance and Jokić's versatility.",
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3511,12 +2992,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'LeBron James', 'team': 'Los Angeles Lakers', 'age': 40, 'gp': 70, 'pts': 1708, 'reb': 546, 'ast': 574, 'stl': 70, 'blk': 42, 'fg_pct': 51.3, 'three_pct': 37.6, 'ft_pct': 78.2},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="LeBron James (age 40, Los Angeles Lakers): 1708 PTS, 546 REB, 574 AST, 70 STL, 42 BLK in 70 GP (24.4 PPG). FG%: 51.3%, 3P%: 37.6%, FT%: 78.2%. Reddit fans describe LeBron as the NBA's biggest superstar brand who drives media narratives. He ranks among the all-time playoff greats (8289 career playoff PTS, 107 TS). Fans note his dangerous ISO game, elite playmaking, and shots near the rim make him a hybrid threat. Some debate whether AD was more impactful during their title run despite LeBron's popularity.",
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3531,12 +3009,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Anthony Edwards', 'age': 23, 'pts': 2180, 'reb': 450, 'ast': 356, 'gp': 79, 'ppg': 27.6},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Anthony Edwards (age 23, Timberwolves): 2180 PTS, 450 REB, 356 AST in 79 GP (27.6 PPG). His explosiveness and scoring versatility make him one of the league's most exciting players.",
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3551,12 +3026,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Victor Wembanyama', 'age': 21, 'pts': 1118, 'reb': 506, 'blk': 175, 'gp': 46},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Victor Wembanyama (age 21): 1118 PTS, 506 REB, 175 BLK in 46 GP. His combination of size, shot-blocking, and offensive skill at such a young age has fans calling him a generational talent.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3571,12 +3043,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Trae Young', 'pts': 1839, 'ast': 882, 'fg_pct': 41.1, 'tov': 357},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Trae Young: 1839 PTS, 882 AST, 41.1% FG, 357 TOV. Fan debate centers on whether his elite playmaking outweighs his low efficiency and turnovers.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3591,12 +3060,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Cade Cunningham', 'age': 23, 'pts': 1827, 'reb': 427, 'ast': 637, 'gp': 70},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Cade Cunningham (age 23, Pistons): 1827 PTS, 427 REB, 637 AST in 70 GP. Fans view him as a franchise cornerstone whose all-around game is improving each season.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3611,12 +3077,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'team_abbr': 'BOS', 'total_pts': 9551, 'total_reb': 3723, 'total_ast': 2147}, {'team_abbr': 'LAL', 'total_pts': 8691, 'total_reb': 3321, 'total_ast': 2135}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Celtics: 9551 PTS, 3723 REB, 2147 AST. Lakers: 8691 PTS, 3321 REB, 2135 AST. The Celtics are statistically dominant while the Lakers rely more on star power.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3631,12 +3094,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'team_abbr': 'DEN', 'total_pts': 9899, 'avg_pts': 582.3, 'total_ast': 2538}, {'team_abbr': 'OKC', 'total_pts': 9880, 'avg_pts': 548.9, 'total_ast': 2195}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Nuggets: 9899 PTS (582.3 avg), 2538 AST. Thunder: 9880 PTS (548.9 avg), 2195 AST. Both are elite, with fans debating whether Denver's experience or OKC's youth gives the edge.",
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3652,12 +3112,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'team_abbr': 'OKC', 'def_actions': 1298, 'total_stl': 840, 'total_blk': 458},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='OKC leads with 1298 defensive actions (840 STL, 458 BLK). Fan discussions praise their aggressive perimeter defense and switchability.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3672,12 +3129,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'team_abbr': 'IND', 'total_pts': 9630, 'avg_pts': 481.5, 'total_ast': 2395},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Pacers: 9630 total PTS (481.5 avg), 2395 AST. Fans admire their fast-paced, team-oriented offense and balanced scoring.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3692,12 +3146,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Anthony Edwards', 'age': 23, 'pts': 2180}, {'name': 'Cade Cunningham', 'age': 23, 'pts': 1827}, {'name': 'Jalen Green', 'age': 23, 'pts': 1722}, {'name': 'Jalen Williams', 'age': 24, 'pts': 1490}, {'name': 'Alperen Sengun', 'age': 22, 'pts': 1452}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top young stars under 25: Anthony Edwards (23, 2180 PTS), Cade Cunningham (23, 1827), Jalen Green (23, 1722), Jalen Williams (24, 1490), Alperen Sengun (22, 1452). Fans see this generation as ready to take over the league.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3712,12 +3163,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Alperen Sengun', 'age': 22, 'pts': 1452}, {'name': 'Shaedon Sharpe', 'age': 22, 'pts': 1332}, {'name': 'Paolo Banchero', 'age': 22, 'pts': 1191}, {'name': 'Stephon Castle', 'age': 20, 'pts': 1191}, {'name': 'Bennedict Mathurin', 'age': 22, 'pts': 1159}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top under-22 players: Alperen Sengun (22, 1452), Shaedon Sharpe (22, 1332), Paolo Banchero (22, 1191), Stephon Castle (20, 1191), Bennedict Mathurin (22, 1159). Fans are excited about their development trajectories.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3732,12 +3180,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'James Harden', 'age': 35, 'pts': 1801, 'gp': 79}, {'name': 'Stephen Curry', 'age': 37, 'pts': 1715, 'gp': 70}, {'name': 'DeMar DeRozan', 'age': 35, 'pts': 1709, 'gp': 77}, {'name': 'LeBron James', 'age': 40, 'pts': 1708, 'gp': 70}, {'name': 'Kevin Durant', 'age': 36, 'pts': 1649, 'gp': 62}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top veterans (35+): Harden (35, 1801), Curry (37, 1715), DeRozan (35, 1709), LeBron (40, 1708), Durant (36, 1649). Fans debate whether these legends can still compete with the young wave.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3752,12 +3197,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Shai Gilgeous-Alexander', 'pts': 2485, 'gp': 76, 'ppg': 32.7}, {'name': 'Anthony Edwards', 'pts': 2180, 'gp': 79, 'ppg': 27.6}, {'name': 'Nikola Jokić', 'pts': 2072, 'gp': 70, 'ppg': 29.6}, {'name': 'Giannis Antetokounmpo', 'pts': 2037, 'gp': 67, 'ppg': 30.4}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='2000+ point scorers: SGA (2485, 32.7 PPG), Edwards (2180, 27.6), Jokić (2072, 29.6), Giannis (2037, 30.4). Reddit discusses playoff efficiency legends like Reggie Miller (115 TS%), providing historical context.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3772,12 +3214,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Jarrett Allen', 'ts_pct': 72.4}, {'name': 'Christian Braun', 'ts_pct': 66.5}, {'name': 'Nikola Jokić', 'ts_pct': 66.3}, {'name': 'Harrison Barnes', 'ts_pct': 65.6}, {'name': 'Domantas Sabonis', 'ts_pct': 65.5}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Top current TS%: Jarrett Allen (72.4%), Christian Braun (66.5%), Jokić (66.3%), Harrison Barnes (65.6%), Domantas Sabonis (65.5%). Reddit discusses Reggie Miller's 115 TS% in playoffs, putting modern efficiency in perspective.",
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3792,12 +3231,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Current dominant players (Giannis, Jokić, SGA) produce historically elite numbers. Reddit's discussions about playoff efficiency legends provide context for evaluating today's stars.",
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3812,12 +3248,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Anthony Edwards', 'pts': 2180, 'fg_pct': 44.7}, {'name': 'Trae Young', 'pts': 1839, 'fg_pct': 41.1}, {'name': 'James Harden', 'pts': 1801, 'fg_pct': 41.0}, {'name': 'Jalen Green', 'pts': 1722, 'fg_pct': 42.3}, {'name': 'Stephen Curry', 'pts': 1715, 'fg_pct': 44.8}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='High-volume low-efficiency: Edwards (2180 PTS, 44.7% FG), Young (1839, 41.1%), Harden (1801, 41.0%), Green (1722, 42.3%), Curry (1715, 44.8%). Fans debate whether volume scoring with lower efficiency is acceptable given their shot creation.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3832,12 +3265,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Trae Young', 'ast': 882, 'tov': 357},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Trae Young leads in assists (882) but also turnovers (357). Fan discussions debate whether his elite playmaking compensates for turnovers.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3853,12 +3283,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='High PIE players include some beyond just top scorers. PIE captures overall impact — scoring, rebounding, assists, defensive actions — revealing value beyond the box score.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3873,12 +3300,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Shai Gilgeous-Alexander', 'pts': 2485, 'reb': 380, 'ast': 486, 'fg_pct': 51.9, 'gp': 76},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Shai Gilgeous-Alexander: 2485 PTS, 380 REB, 486 AST, 51.9% FG in 76 GP.',
 
         # Optional: Conversation context
         conversation_thread='mvp_sga_discussion',
@@ -3893,12 +3317,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="SGA's combination of elite scoring (2485 PTS), efficiency (51.9% FG), and team success makes him a top MVP candidate. Fan discussions highlight his complete game and leadership.",
 
         # Optional: Conversation context
         conversation_thread='mvp_sga_discussion',
@@ -3913,12 +3334,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Shai Gilgeous-Alexander', 'ts_pct': 63.7, 'efg_pct': 56.9, 'pie': 19.9},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="SGA: 63.7% TS, 56.9% EFG, 19.9 PIE. Reddit debates about historical playoff efficiency (Reggie Miller 115 TS%, Kawhi 112%) provide context — SGA's efficiency is elite by any era's standards.",
 
         # Optional: Conversation context
         conversation_thread='mvp_sga_discussion',
@@ -3933,12 +3351,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'team_abbr': 'BOS', 'total_pts': 9551, 'avg_pts': 561.8, 'total_reb': 3723, 'total_ast': 2147},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Celtics: 9551 total PTS (561.8 avg), 3723 REB, 2147 AST across 17 players.',
 
         # Optional: Conversation context
         conversation_thread='team_celtics_deepdive',
@@ -3953,12 +3368,9 @@ ALL_TEST_CASES = [
         ground_truth_data=None,
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Fan discussions weigh the Celtics' depth and balanced scoring. With Tatum, Brown, and White leading, fans debate whether their roster continuity gives them an edge in repeating.",
 
         # Optional: Conversation context
         conversation_thread='team_celtics_deepdive',
@@ -3973,12 +3385,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'team_abbr': 'DEN', 'total_pts': 9899, 'avg_pts': 582.3}, {'team_abbr': 'BOS', 'total_pts': 9551, 'avg_pts': 561.8}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Nuggets: 9899 PTS (582.3 avg) vs Celtics: 9551 PTS (561.8 avg). Denver edges Boston in scoring, but fans note the Celtics' defensive advantages.",
 
         # Optional: Conversation context
         conversation_thread='team_celtics_deepdive',
@@ -3993,12 +3402,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Shai Gilgeous-Alexander', 'pts': 2485},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Shai Gilgeous-Alexander leads with 2485 PTS. Reddit fans praise his complete game and consider him the top player this season.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -4013,12 +3419,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'LeBron James', 'pts': 1708, 'reb': 546, 'ast': 574},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='LeBron James: 1708 PTS, 546 REB, 574 AST. At age 40, fans marvel at his longevity and debate his legacy as one of the greatest ever.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -4033,12 +3436,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Nikola Jokić', 'pts': 2072, 'ast': 714}, {'name': 'Stephen Curry', 'pts': 1715, 'ast': 420}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer="Jokić: 2072 PTS, 714 AST. Curry: 1715 PTS, 420 AST. Fan opinions split between Curry's revolutionary shooting and Jokić's all-around dominance.",
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -4054,12 +3454,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'name': 'Victor Wembanyama', 'blk': 175, 'pts': 1118, 'reb': 506},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Victor Wembanyama leads with 175 BLK (plus 1118 PTS, 506 REB). Fans consider his shot-blocking a generational skill combining elite length with instinctive timing.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -4074,12 +3471,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Giannis Antetokounmpo', 'pie': 21.0}, {'name': 'Nikola Jokić', 'pie': 20.6}, {'name': 'Shai Gilgeous-Alexander', 'pie': 19.9}, {'name': 'Anthony Davis', 'pie': 17.9}, {'name': 'LeBron James', 'pie': 16.9}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top PIE: Giannis (21.0), Jokić (20.6), SGA (19.9), Davis (17.9), LeBron (16.9). PIE captures total impact — fans increasingly value this over raw scoring.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -4094,12 +3488,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Trae Young', 'ast': 882, 'gp': 76, 'apg': 11.6}, {'name': 'Nikola Jokić', 'ast': 714, 'gp': 70, 'apg': 10.2}, {'name': 'James Harden', 'ast': 687, 'gp': 79, 'apg': 8.7}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top 3 assists: Trae Young (882, 11.6 APG), Nikola Jokić (714, 10.2 APG), James Harden (687, 8.7 APG). Fans discuss how playmaking has evolved from traditional PG skills to big-man facilitating.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -4114,12 +3505,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'team_abbr': 'OKC', 'total_pts': 9880, 'avg_pts': 548.9, 'total_reb': 3660, 'total_ast': 2195},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Thunder: 9880 PTS (548.9 avg), 3660 REB, 2195 AST across 18 players. Fans describe OKC as young, athletic, and defensively relentless.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -4134,12 +3522,9 @@ ALL_TEST_CASES = [
         ground_truth_data={'team_abbr': 'MIN', 'total_pts': 9523, 'avg_pts': 476.1, 'total_reb': 3656, 'total_ast': 2175},
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Timberwolves: 9523 PTS (476.1 avg), 3656 REB, 2175 AST across 20 players. Led by Anthony Edwards, fans see them as a legitimate contender.',
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -4154,12 +3539,9 @@ ALL_TEST_CASES = [
         ground_truth_data=[{'name': 'Anthony Edwards', 'three_pa': 814, 'three_pct': 39.5}, {'name': 'Stephen Curry', 'three_pa': 784, 'three_pct': 39.7}, {'name': 'Malik Beasley', 'three_pa': 763, 'three_pct': 41.6}],
 
         # Vector Expectations
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
-
-        # Answer Expectations
-        ground_truth_answer='Top by 3PA: Edwards (814, 39.5%), Curry (784, 39.7%), Beasley (763, 41.6%). Fan discussions highlight how three-point shooting has fundamentally changed offensive strategy.',
 
         # Optional: Conversation context
         conversation_thread=None,

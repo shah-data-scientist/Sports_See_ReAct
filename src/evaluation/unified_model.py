@@ -50,6 +50,10 @@ class UnifiedTestCase:
     - HybridEvaluationTestCase
 
     Fields that don't apply to a specific test type can be left as None.
+
+    BACKWARD COMPATIBILITY NOTE:
+    - Accepts 'ground_truth' parameter (old name) and maps it to 'ground_truth_vector'
+    - Accepts 'ground_truth_answer' parameter (ignored - will be generated dynamically)
     """
 
     # ========================================================================
@@ -80,7 +84,7 @@ class UnifiedTestCase:
     # ========================================================================
     # VECTOR EXPECTATIONS (Required for VECTOR and HYBRID, None for SQL)
     # ========================================================================
-    ground_truth: str | None = None
+    ground_truth_vector: str | None = None
     """Expected contextual information from vector search.
     Describes what sources should be retrieved and what context should be found.
     Example: 'Should retrieve Reddit discussions about efficiency, specifically
@@ -92,14 +96,6 @@ class UnifiedTestCase:
 
     expected_source_types: list[str] | None = None
     """Expected source types (e.g., ['Reddit 1.pdf', 'Reddit 3.pdf', 'glossary'])."""
-
-    # ========================================================================
-    # ANSWER EXPECTATIONS (Required for all types)
-    # ========================================================================
-    ground_truth_answer: str | None = None
-    """Expected final answer to the question.
-    This is the gold standard for evaluating the final LLM response.
-    """
 
     # ========================================================================
     # CONVERSATION CONTEXT (Optional)
@@ -128,6 +124,9 @@ class UnifiedTestCase:
         All test types have the same validation requirements.
         Fields that don't apply to a specific type should be None.
 
+        NOTE: ground_truth_answer is NO LONGER required in test cases.
+        It will be generated dynamically during evaluation by judge LLM.
+
         Returns:
             (is_valid, list of missing/invalid fields)
         """
@@ -138,8 +137,6 @@ class UnifiedTestCase:
             issues.append("question is required")
         if not self.test_type:
             issues.append("test_type is required")
-        if not self.ground_truth_answer:
-            issues.append("ground_truth_answer is required for all test types")
 
         return len(issues) == 0, issues
 
@@ -149,7 +146,7 @@ class UnifiedTestCase:
 
     def has_vector_expectations(self) -> bool:
         """Check if test case has Vector expectations."""
-        return self.ground_truth is not None
+        return self.ground_truth_vector is not None
 
     def get_missing_fields(self) -> dict[str, list[str]]:
         """Get report of missing/empty fields by category.
@@ -171,16 +168,12 @@ class UnifiedTestCase:
             missing["sql_fields"].append("ground_truth_data")
 
         # Check Vector fields
-        if not self.ground_truth:
-            missing["vector_fields"].append("ground_truth")
+        if not self.ground_truth_vector:
+            missing["vector_fields"].append("ground_truth_vector")
         if self.min_vector_sources == 0:
             missing["vector_fields"].append("min_vector_sources")
         if not self.expected_source_types:
             missing["vector_fields"].append("expected_source_types")
-
-        # Check Answer fields
-        if not self.ground_truth_answer:
-            missing["answer_fields"].append("ground_truth_answer")
 
         # Check Optional fields
         if not self.category:
@@ -205,10 +198,9 @@ def migrate_from_sql_test_case(old_case) -> UnifiedTestCase:
         category=getattr(old_case, 'category', None),
         expected_sql=old_case.expected_sql,
         ground_truth_data=old_case.ground_truth_data,
-        ground_truth_answer=old_case.ground_truth_answer,
         conversation_thread=getattr(old_case, 'conversation_thread', None),
         # Vector fields will be None (SQL-only test)
-        ground_truth=None,
+        ground_truth_vector=None,
         min_vector_sources=0,
         expected_source_types=None,
     )
@@ -227,8 +219,7 @@ def migrate_from_vector_test_case(old_case) -> UnifiedTestCase:
         question=old_case.question,
         test_type=TestType.VECTOR,
         category=old_case.category.value if hasattr(old_case.category, 'value') else str(old_case.category),
-        ground_truth=old_case.ground_truth,
-        ground_truth_answer=None,  # Vector tests use ground_truth instead
+        ground_truth_vector=old_case.ground_truth,
         conversation_thread=getattr(old_case, 'conversation_thread', None),
         # SQL fields will be None (Vector-only test)
         expected_sql=None,
@@ -251,11 +242,10 @@ def migrate_from_hybrid_test_case(old_case) -> UnifiedTestCase:
         category=getattr(old_case, 'category', None),
         expected_sql=old_case.expected_sql,
         ground_truth_data=old_case.ground_truth_data,
-        ground_truth_answer=old_case.ground_truth_answer,
         conversation_thread=getattr(old_case, 'conversation_thread', None),
         # Hybrid has both SQL and Vector expectations
-        # Note: ground_truth might not be populated in all hybrid cases
-        ground_truth=None,  # TODO: Add contextual expectations for hybrid cases
+        # Note: ground_truth_vector might not be populated in all hybrid cases
+        ground_truth_vector=None,  # TODO: Add contextual expectations for hybrid cases
         min_vector_sources=0,
         expected_source_types=None,
     )
@@ -430,11 +420,11 @@ class UnifiedEvaluationResult:
     # ========================================================================
     # GROUND TRUTH FIELDS (For validation)
     # ========================================================================
-    ground_truth: str | None = None
+    ground_truth_vector: str | None = None
     """Expected contextual information (Vector/Hybrid)."""
 
     ground_truth_answer: str | None = None
-    """Expected final answer."""
+    """Expected final answer (dynamically generated by judge LLM during evaluation)."""
 
     ground_truth_data: dict | list | None = None
     """Expected SQL results data."""
@@ -482,7 +472,7 @@ class UnifiedEvaluationResult:
             "sources": self.sources,
             "sources_count": self.sources_count,
             "ragas_metrics": self.ragas_metrics,
-            "ground_truth": self.ground_truth,
+            "ground_truth_vector": self.ground_truth_vector,
             "ground_truth_answer": self.ground_truth_answer,
             "ground_truth_data": self.ground_truth_data,
             "conversation_id": self.conversation_id,
@@ -511,7 +501,7 @@ class UnifiedEvaluationResult:
             sources=data.get("sources", []),
             sources_count=data.get("sources_count", 0),
             ragas_metrics=data.get("ragas_metrics"),
-            ground_truth=data.get("ground_truth"),
+            ground_truth_vector=data.get("ground_truth_vector"),
             ground_truth_answer=data.get("ground_truth_answer"),
             ground_truth_data=data.get("ground_truth_data"),
             conversation_id=data.get("conversation_id"),
