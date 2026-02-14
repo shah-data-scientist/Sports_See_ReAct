@@ -91,12 +91,6 @@ class UnifiedTestCase:
     mentioning Reggie Miller with 115 TS%...'
     """
 
-    min_vector_sources: int = 0
-    """Minimum number of vector sources expected to be retrieved."""
-
-    expected_source_types: list[str] | None = None
-    """Expected source types (e.g., ['Reddit 1.pdf', 'Reddit 3.pdf', 'glossary'])."""
-
     # ========================================================================
     # CONVERSATION CONTEXT (Optional)
     # ========================================================================
@@ -170,10 +164,6 @@ class UnifiedTestCase:
         # Check Vector fields
         if not self.ground_truth_vector:
             missing["vector_fields"].append("ground_truth_vector")
-        if self.min_vector_sources == 0:
-            missing["vector_fields"].append("min_vector_sources")
-        if not self.expected_source_types:
-            missing["vector_fields"].append("expected_source_types")
 
         # Check Optional fields
         if not self.category:
@@ -201,8 +191,6 @@ def migrate_from_sql_test_case(old_case) -> UnifiedTestCase:
         conversation_thread=getattr(old_case, 'conversation_thread', None),
         # Vector fields will be None (SQL-only test)
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
     )
 
 
@@ -246,8 +234,6 @@ def migrate_from_hybrid_test_case(old_case) -> UnifiedTestCase:
         # Hybrid has both SQL and Vector expectations
         # Note: ground_truth_vector might not be populated in all hybrid cases
         ground_truth_vector=None,  # TODO: Add contextual expectations for hybrid cases
-        min_vector_sources=0,
-        expected_source_types=None,
     )
 
 

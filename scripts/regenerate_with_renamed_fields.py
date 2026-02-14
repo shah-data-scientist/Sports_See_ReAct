@@ -34,6 +34,8 @@ def regenerate_test_cases():
         f.write('CHANGES (2026-02-15):\n')
         f.write('- Renamed: ground_truth → ground_truth_vector\n')
         f.write('- Removed: ground_truth_answer (will be generated dynamically by judge LLM)\n')
+        f.write('- Removed: min_vector_sources (unused - info in ground_truth_vector)\n')
+        f.write('- Removed: expected_source_types (unused - info in ground_truth_vector)\n')
         f.write('- Judge LLM generates expected answer from ground_truth_data and ground_truth_vector\n')
         f.write('"""\n\n')
 
@@ -76,9 +78,6 @@ def regenerate_test_cases():
                 f.write(f'        ground_truth_vector={repr(gt)},\n')
             else:
                 f.write(f'        ground_truth_vector=None,\n')
-
-            f.write(f'        min_vector_sources={tc.min_vector_sources},\n')
-            f.write(f'        expected_source_types={repr(tc.expected_source_types)},\n')
             f.write('\n')
 
             # Optional fields
@@ -126,6 +125,8 @@ def regenerate_test_cases():
     print(f"   Changes:")
     print(f"   - Renamed: ground_truth → ground_truth_vector")
     print(f"   - Removed: ground_truth_answer field")
+    print(f"   - Removed: min_vector_sources field")
+    print(f"   - Removed: expected_source_types field")
     print(f"   Total test cases: {len(ALL_TEST_CASES)}")
     print(f"   - SQL: {sql_count}")
     print(f"   - Vector: {vector_count}")

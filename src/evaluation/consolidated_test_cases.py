@@ -14,6 +14,8 @@ STRUCTURE:
 CHANGES (2026-02-15):
 - Renamed: ground_truth → ground_truth_vector
 - Removed: ground_truth_answer (will be generated dynamically by judge LLM)
+- Removed: min_vector_sources (unused - info in ground_truth_vector)
+- Removed: expected_source_types (unused - info in ground_truth_vector)
 - Judge LLM generates expected answer from ground_truth_data and ground_truth_vector
 """
 
@@ -35,8 +37,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -52,8 +52,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -69,8 +67,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -86,8 +82,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -103,8 +97,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -120,8 +112,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -137,8 +127,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -154,8 +142,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -171,8 +157,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -188,8 +172,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -206,8 +188,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -223,8 +203,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -240,8 +218,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -257,8 +233,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -274,8 +248,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -291,8 +263,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -308,8 +278,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -325,8 +293,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -342,8 +308,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -359,8 +323,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -377,8 +339,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -394,8 +354,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -411,8 +369,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -428,8 +384,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -445,8 +399,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -462,8 +414,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -479,8 +429,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -496,8 +444,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -513,8 +459,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -530,8 +474,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -548,8 +490,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -565,8 +505,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -582,8 +520,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -599,8 +535,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -616,8 +550,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -633,8 +565,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -650,8 +580,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -667,8 +595,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -684,8 +610,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -701,8 +625,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -719,8 +641,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -736,8 +656,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -753,8 +671,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -770,8 +686,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -787,8 +701,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -804,8 +716,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -821,8 +731,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -838,8 +746,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -855,8 +761,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -872,8 +776,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -890,8 +792,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -907,8 +807,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -924,8 +822,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -941,8 +837,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -958,8 +852,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -975,8 +867,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='progressive_filtering_1',
@@ -992,8 +882,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='progressive_filtering_1',
@@ -1009,8 +897,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='progressive_filtering_1',
@@ -1026,8 +912,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='correction_celtics',
@@ -1043,8 +927,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='correction_celtics',
@@ -1061,8 +943,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='correction_celtics',
@@ -1078,8 +958,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='stats_continuation',
@@ -1095,8 +973,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='stats_continuation',
@@ -1112,8 +988,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='stats_continuation',
@@ -1129,8 +1003,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='multi_entity_tatum_lebron',
@@ -1146,8 +1018,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='multi_entity_tatum_lebron',
@@ -1163,8 +1033,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='multi_entity_tatum_lebron',
@@ -1180,8 +1048,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='team_pronoun_pistons',
@@ -1197,8 +1063,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='team_pronoun_pistons',
@@ -1214,8 +1078,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='team_pronoun_pistons',
@@ -1232,8 +1094,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1249,8 +1109,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1266,8 +1124,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1283,8 +1139,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1300,8 +1154,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1317,8 +1169,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1334,8 +1184,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1351,8 +1199,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1368,8 +1214,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1385,8 +1229,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1403,8 +1245,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Should retrieve Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?' by u/MannerSuperb (31 upvotes, 236 comments). Expected teams mentioned: Magic (Paolo Banchero, Franz Wagner), ...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1420,8 +1260,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Should retrieve Reddit 2.pdf: 'How is it that the two best teams in the playoffs based on stats, having a chance of playing against each other in the Finals, is considered to be a snoozefest?' by u...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1437,8 +1275,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Should retrieve Reddit 3.pdf: 'Reggie Miller is the most efficient first option in NBA playoffs' by u/hqppp (1300 post upvotes, up to 11515 comment upvotes - HIGHEST engagement). Expected discussio...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1454,8 +1290,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Should retrieve Reddit 4.pdf: 'Which NBA team did not have home court advantage until the NBA Finals?' by u/DonT012 (272 upvotes, 51 comments). Top answer (240 upvotes): 'Six teams have made the Fi...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1471,8 +1305,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve Reddit 4.pdf about home court advantage. Comments discuss: play-in tournament implications, how lower-seeded teams (below 4 seed) never had home court in Finals, importance of seedi...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1488,8 +1320,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Should retrieve Reddit 3.pdf discussion about playoff efficiency. Content includes TS% metric (True Shooting %), comparison table of 20 players' playoff efficiency, discussion of what qualifies as ...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1505,8 +1335,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve Reddit 3.pdf (historical efficiency comparison of 20 players across playoff history) and Reddit 4.pdf (historical home court examples: 2020 Lakers, 1995 Rockets). Both posts contain...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1522,8 +1350,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve chunks prioritized by post engagement boosting (0-1%): (1) Reddit 3 (1300 upvotes) - efficiency, (2) Reddit 2 (457 upvotes) - two best teams debate, (3) Reddit 4 (272 upvotes) - hom...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1539,8 +1365,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Should retrieve Reddit 1.pdf (teams that impressed: Magic, Wolves, Pacers exceeding expectations) and potentially Reddit 2.pdf (debate about whether 'two best teams' being a 'snoozefest' is surpris...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1556,8 +1380,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve Reddit discussions that mention trades or player movement. Reddit 1.pdf may contain comments about team roster changes and trades. Reddit 2.pdf discusses team composition. If no dir...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1574,8 +1396,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Should retrieve Reddit 1.pdf: post by u/MannerSuperb titled 'Who are teams in the playoffs that have impressed you?' (31 upvotes, 236 comments). This tests user-specific retrieval — the username 'M...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1591,8 +1411,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Should retrieve Reddit 3.pdf: 'Reggie Miller is the most efficient first option in NBA playoffs' which has HIGHEST engagement (1300 post upvotes, 11515 max comment upvotes). Post engagement boostin...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1608,8 +1426,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Post engagement boosting (0-1% based on upvotes) should create ranking: (1) Reddit 3 (1300 upvotes) >> (2) Reddit 2 (457) > (3) Reddit 4 (272) > (4) Reddit 1 (31). Tests post-level boosting. Expect...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1625,8 +1441,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Comment upvote boosting (0-2% relative within each post) should prioritize: (1) Reddit 2 comment (756 upvotes), (2) Reddit 4 comment (240 upvotes), (3) Reddit 1 comment (186 upvotes). Within-post r...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1642,8 +1456,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should prioritize: (1) NBA official accounts (if present, 2% boost), (2) highly-upvoted comments (756, 240, 186 upvotes from Reddit 2, 4, 1 respectively), (3) high-engagement posts (Reddit 3 with 1...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1659,8 +1471,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Query about 'efficiency' should retrieve: (1) Reddit 3 (1300 upvotes, explicitly about efficiency) ranked MUCH HIGHER than (2) Reddit 1 (31 upvotes, mentions efficiency indirectly). Post engagement...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1676,8 +1486,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Highly-upvoted comments represent community consensus: (1) Reddit 2 top comment (756 upvotes) about popularity contest, (2) Reddit 4 top comment (240 upvotes) about six teams without home court, (3...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1693,8 +1501,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve Reddit 3.pdf (historical playoff efficiency comparison across 20 players) with 1300 upvotes - highest engagement. Contains historical data: Reggie Miller (115 TS%), Kawhi (112%), Cu...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1710,8 +1516,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve chunks containing highest-upvoted comments: (1) Reddit 2 (756 upvotes) - fans prefer popularity over basketball quality, (2) Reddit 4 (240 upvotes) - six teams below 4 seed never ha...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1727,8 +1531,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='NBA official accounts (is_nba_official=1) receive 2% boost. Expected: If NBA official chunks exist in vector store, they rank in top 3 results regardless of lower semantic similarity. If NO NBA off...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1745,8 +1547,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve regular NBA.xlsx (glossary/reference document), NOT Reddit discussions. Expected definition: Pick and roll is an offensive play where a player sets a screen (pick) and then moves to...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1762,8 +1562,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve regular NBA.xlsx glossary defining PER (Player Efficiency Rating) as an advanced statistic measuring per-minute performance. Glossary should rank HIGHEST (85-95% similarity). If Red...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1779,8 +1577,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve regular NBA.xlsx glossary. Expected definition: Zone defense is a defensive strategy where players guard court areas/zones rather than specific opponents. Glossary should rank HIGHE...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1796,8 +1592,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve regular NBA.xlsx glossary. Expected definition: True Shooting Percentage (TS%) accounts for 2-pointers, 3-pointers, and free throws in efficiency calculation. May include formula: T...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1813,8 +1607,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve regular NBA.xlsx glossary. Expected definition: Triple-double means achieving double-digit totals (10+) in three statistical categories in a single game (e.g., points, rebounds, ass...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1830,8 +1622,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve regular NBA.xlsx glossary, NOT Reddit discussions. Expected definition: Man-to-man = each defender guards specific opponent; Zone defense = defenders guard court areas/zones. Glossa...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1847,8 +1637,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve regular NBA.xlsx glossary chunks defining multiple efficiency metrics: TS% (True Shooting %), eFG% (Effective Field Goal %), PER (Player Efficiency Rating), usage rate. May retrieve...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1864,8 +1652,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="May retrieve: (1) regular NBA.xlsx glossary definition if available ('first option = team's primary scorer/go-to offensive player'), or (2) Reddit 3.pdf contextual usage ('Reggie Miller is the most...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1881,8 +1667,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Out-of-scope query. Vector search WILL retrieve irrelevant chunks (likely Reddit PDFs with ~65-70% similarity due to semantic overlap with 'Los Angeles'). However, LLM should recognize retrieved co...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1898,8 +1682,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Out-of-scope query. Vector search WILL retrieve irrelevant Reddit chunks with ~62-68% similarity (weakest match due to no semantic overlap). LLM should recognize content is basketball-related, NOT ...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1916,8 +1698,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Out-of-scope query. Vector search WILL retrieve irrelevant Reddit chunks (likely Reddit 1-4 with ~68-72% similarity due to semantic overlap with 'results', 'latest'). However, LLM should recognize ...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1933,8 +1713,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Out-of-scope query. Vector search WILL retrieve irrelevant chunks (~63-68% similarity). LLM should recognize content is basketball-related, NOT financial data, and respond with 'I don't have inform...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1950,8 +1728,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Out-of-scope query. Vector search WILL retrieve basketball-related chunks (~72-78% similarity due to 'NBA' keyword match), possibly Reddit discussions about strategies. However, LLM should recogniz...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1967,8 +1743,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Out-of-scope query. Vector search WILL retrieve irrelevant chunks (~60-67% similarity - very weak). LLM should recognize content is basketball-related, NOT tech support, and respond with 'I don't h...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -1984,8 +1758,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Out-of-scope query. Vector search WILL retrieve irrelevant chunks (~64-69% similarity, possibly New York Knicks mentions). LLM should recognize content is basketball-related, NOT restaurant recomme...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2001,8 +1773,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Single punctuation mark is not meaningful query. Vector search WILL retrieve random chunks (~55-65% similarity - very weak, essentially random). LLM should recognize lack of coherent question and r...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2018,8 +1788,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Random keyboard mashing. Vector search WILL retrieve random chunks (~50-60% similarity - essentially random match). LLM should recognize lack of coherent query intent and respond with 'I don't unde...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2035,8 +1803,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Out-of-scope (cosmology) + unreasonable request (10000 words). Vector search WILL retrieve irrelevant chunks (~65-70% similarity due to 'history'). LLM should: (1) recognize topic is out of scope (...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2052,8 +1818,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Out-of-scope query (translation service). Vector search WILL retrieve irrelevant chunks (~60-68% similarity - weak match). LLM should recognize content is basketball-related, NOT translation servic...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2069,8 +1833,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="XSS injection attempt + legitimate query. System should: (1) sanitize/escape HTML tags (no script execution), (2) extract legitimate query portion ('Who won the MVP?'), (3) respond about MVP if dat...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2087,8 +1849,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='SQL injection attempt. System should: (1) treat as literal text string, NOT SQL command, (2) not execute any database operations, (3) vector search processes it as gibberish text (~55-65% similarit...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2104,8 +1864,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Path traversal attempt. System should: (1) treat as literal text, NOT file path, (2) not access file system, (3) vector search processes as text string (~50-60% similarity - essentially random). LL...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2121,8 +1879,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Template injection attempts (Jinja, JavaScript, ERB). System should: (1) treat as literal text, NOT execute templates, (2) no evaluation of expressions (result should NOT be '49'), (3) vector searc...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2138,8 +1894,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Excessively long input (10,000 'A' characters). System should: (1) handle gracefully without crashing, (2) possibly truncate input to reasonable length (e.g., first 500-1000 chars), or (3) reject w...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2155,8 +1909,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Should retrieve Reddit discussions mentioning Lakers. Most likely source: Reddit 4.pdf mentions '2020 Lakers' as example of team without home court advantage in Finals. May also appear in Reddit 1 ...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='lakers_discussion',
@@ -2172,8 +1924,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Follow-up question referencing 'their' = Lakers from Turn 1. System should: (1) maintain conversation context (Lakers = subject), (2) retrieve Lakers-specific content about strengths. Expected sour...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='lakers_discussion',
@@ -2189,8 +1939,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Second follow-up still referencing Lakers from Turn 1 and 2. System should: (1) maintain conversation context across THREE turns, (2) retrieve Lakers content about weaknesses/limitations. Expected ...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='lakers_discussion',
@@ -2206,8 +1954,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Should retrieve Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?' discussing Magic (Paolo/Franz), Wolves (Ant), Pacers, Pistons. Top comment (186 upvotes) about Ant being a mac...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='playoff_surprises',
@@ -2223,8 +1969,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Follow-up referencing 'they' = surprising teams from Turn 1 (Magic, Wolves, Pacers, Pistons). System should: (1) maintain context of which teams were mentioned, (2) retrieve Reddit 1.pdf chunks exp...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='playoff_surprises',
@@ -2240,8 +1984,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Third-level follow-up referencing 'them' = surprising teams from Turn 1-2. System should: (1) maintain conversation context across THREE turns, (2) retrieve content comparing underdogs (Magic, Wolv...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='playoff_surprises',
@@ -2258,8 +2000,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve Reddit 3.pdf discussing playoff efficiency metrics: TS% (True Shooting %), scoring volume, comparison of 20 players. Expected definition: efficiency = high TS% (115% for Miller, 112...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='efficiency_metrics',
@@ -2275,8 +2015,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Follow-up asking for specific player. Should retrieve Reddit 3.pdf: 'Reggie Miller is the most efficient first option in NBA playoff history' (1300 upvotes). Post engagement boosting should rank Re...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='efficiency_metrics',
@@ -2292,8 +2030,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Second follow-up referencing 'his' = Reggie Miller from Turn 2. System should: (1) maintain context across THREE turns (efficiency → Reggie Miller → debate about him), (2) retrieve Reddit 3.pdf com...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='efficiency_metrics',
@@ -2309,8 +2045,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Should retrieve Reddit 4.pdf: 'Which NBA team did not have home court advantage until the NBA Finals?' (272 upvotes, 51 comments). Top answer (240 upvotes): Six teams below 4 seed never had home co...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='topic_switching',
@@ -2326,8 +2060,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="TOPIC SWITCH from home court (Turn 1) back to efficiency. Phrase 'Going back to' indicates explicit topic change. System should: (1) recognize topic switch, (2) retrieve Reddit 3.pdf efficiency dis...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='topic_switching',
@@ -2343,8 +2075,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="SECOND topic switch, back to home court from Turn 1. Phrase 'Returning to' indicates explicit topic change. System should: (1) recognize topic switch back to home court, (2) retrieve Reddit 4.pdf w...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='topic_switching',
@@ -2360,8 +2090,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Noisy query with typos and text-speak. Should map to: 'Who is the best player in playoffs according to Reddit?'. Should retrieve Reddit discussions mentioning top players: Ant (Anthony Edwards) fro...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2377,8 +2105,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Heavy typos but clear intent: 'Reggie Miller efficiency debate'. Should retrieve Reddit 3.pdf: 'Reggie Miller is the most efficient first option in NBA playoffs' (1300 upvotes). Vector search shoul...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2394,8 +2120,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Informal slang expressing opinion about surprising playoff teams. Should map to Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?' discussing Magic, Wolves, Pacers, Pistons. Vec...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2411,8 +2135,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Abbreviations + informal grammar expressing opinion on home court advantage. Should map to Reddit 4.pdf discussing home court importance. Vector search should: (1) expand abbreviations (imho='in my...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2429,8 +2151,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Keyword stuffing/repetition but clear intent: 'playoff teams impressive'. Should map to Reddit 1.pdf: 'Who are teams in the playoffs that have impressed you?'. Vector search should handle repetitio...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2446,8 +2166,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Extremely vague query with excessive punctuation. Vector search WILL retrieve random Reddit chunks (~68-75% similarity). LLM should: (1) recognize query is too vague, AND (2) either ask 'What speci...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2463,8 +2181,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Casual slang asking about top teams. Should map to Reddit 2.pdf: 'How is it that the two best teams in the playoffs...' (457 upvotes). Vector search should understand: 'yo what'='what are', 'ppl'='...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2480,8 +2196,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Single word, extremely vague. Vector search WILL retrieve random Reddit chunks (~65-75% similarity - all have 'nba' keyword). LLM should recognize query lacks specificity and respond with: 'What wo...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2497,8 +2211,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Non-question greeting input. Vector search WILL retrieve random chunks (~60-70% similarity - weak semantic match). LLM should recognize this is a greeting, not a question, and respond with somethin...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2514,8 +2226,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Complex multi-document synthesis query. Should retrieve chunks from: (1) Reddit 1 (young talent strategies: Magic with Paolo/Franz, Wolves with Ant), (2) Reddit 2 (discussion of stats-based vs popu...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2531,8 +2241,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Meta-analysis requiring identification of recurring themes across ALL 4 Reddit posts. Patterns: (1) Efficiency metrics emphasis (Reddit 3: TS%, comparison tables), (2) Surprising/impressive teams (...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2548,8 +2256,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Requires contrasting qualitative opinions vs quantitative stats. Should retrieve: (1) Reddit 3.pdf quantitative table (Miller 115 TS%, Kawhi 112%, etc.) showing STATISTICAL measures, AND (2) Reddit...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2565,8 +2271,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should identify debated topics across multiple Reddit posts: (1) Reddit 3: Is TS% the right efficiency metric? Era-adjusted vs raw stats, (2) Reddit 4: Does home court advantage really matter? Six ...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2582,8 +2286,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='High-level synthesis requiring integration from ALL 4 Reddit posts. Success factors: (1) Reddit 1: Young talent development (Paolo, Franz, Ant), exceeding expectations, (2) Reddit 2: Statistical ex...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2600,8 +2302,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve Reddit discussions about playoff strategies and team approaches. Reddit 1.pdf discusses what makes teams impressive (young talent, team composition). Reddit 3.pdf discusses offensiv...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2617,8 +2317,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Should retrieve Reddit discussions referencing NBA history and evolution. Reddit 3.pdf contains historical playoff efficiency comparison across 20 players spanning different eras (Reggie Miller, Jo...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2634,8 +2332,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Mixed query combining statistical ask ('how many points') with opinion ask ('why do fans love him'). For vector evaluation, the system should retrieve Reddit discussions mentioning LeBron. Reddit 1...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2651,8 +2347,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector='Sentiment analysis across all 4 Reddit posts: (1) Reddit 1 (31 upvotes): Positive sentiment — excitement about impressive teams (Magic, Wolves), admiration for young talent. (2) Reddit 2 (457 upvot...',
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2668,8 +2362,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector="Should retrieve Reddit 3.pdf containing direct quotes about efficiency. Key quotes: (1) Post title: 'Reggie Miller is the most efficient first option in NBA playoff history' by u/hqppp. (2) Top com...",
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2685,8 +2377,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2702,8 +2392,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2719,8 +2407,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2736,8 +2422,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2753,8 +2437,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2771,8 +2453,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2788,8 +2468,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2805,8 +2483,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2822,8 +2498,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2839,8 +2513,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2856,8 +2528,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2873,8 +2543,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2890,8 +2558,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2907,8 +2573,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2924,8 +2588,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2942,8 +2604,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2959,8 +2619,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2976,8 +2634,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -2993,8 +2649,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3010,8 +2664,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3027,8 +2679,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3044,8 +2694,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3061,8 +2709,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3078,8 +2724,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3095,8 +2739,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3113,8 +2755,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3130,8 +2770,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3147,8 +2785,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3164,8 +2800,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3181,8 +2815,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3198,8 +2830,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3215,8 +2845,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3232,8 +2860,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3249,8 +2875,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3266,8 +2890,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3284,8 +2906,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3301,8 +2921,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='mvp_sga_discussion',
@@ -3318,8 +2936,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='mvp_sga_discussion',
@@ -3335,8 +2951,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='mvp_sga_discussion',
@@ -3352,8 +2966,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='team_celtics_deepdive',
@@ -3369,8 +2981,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='team_celtics_deepdive',
@@ -3386,8 +2996,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread='team_celtics_deepdive',
@@ -3403,8 +3011,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3420,8 +3026,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3437,8 +3041,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3455,8 +3057,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3472,8 +3072,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3489,8 +3087,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3506,8 +3102,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3523,8 +3117,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
@@ -3540,8 +3132,6 @@ ALL_TEST_CASES = [
 
         # Vector Expectations
         ground_truth_vector=None,
-        min_vector_sources=0,
-        expected_source_types=None,
 
         # Optional: Conversation context
         conversation_thread=None,
