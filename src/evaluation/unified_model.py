@@ -399,8 +399,20 @@ class UnifiedEvaluationResult:
     """Number of sources retrieved."""
 
     ragas_metrics: dict | None = None
-    """RAGAS metrics if calculated.
-    Contains: faithfulness, answer_relevancy, context_precision, context_recall.
+    """ALL 7 RAGAS metrics calculated during evaluation.
+
+    ANSWER QUALITY METRICS (use ground_truth_answer):
+    - faithfulness: Does answer contradict sources? (0.0-1.0)
+    - answer_relevancy: Does answer address question? (0.0-1.0)
+    - answer_semantic_similarity: Semantic similarity to expected answer (0.0-1.0)
+    - answer_correctness: Combined semantic + factual (0.0-1.0) ⭐ BEST OVERALL
+
+    RETRIEVAL QUALITY METRICS (use ground_truth_vector):
+    - context_precision: Relevant chunks ranked higher? (0.0-1.0 or None for SQL-only)
+    - context_recall: All required chunks retrieved? (0.0-1.0 or None for SQL-only)
+    - context_relevancy: Fraction of chunks relevant (0.0-1.0 or None for SQL-only)
+
+    NOTE: Retrieval metrics (context_*) are None for SQL-only queries.
     """
 
     # ========================================================================

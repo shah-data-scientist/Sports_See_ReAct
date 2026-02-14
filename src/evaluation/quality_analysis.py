@@ -7,9 +7,14 @@ MAINTAINER: Shahu
 
 DESCRIPTION:
 Single unified analysis module consolidating:
-- SQL analysis: error taxonomy, query structure/complexity, column selection, fallback patterns
-- Vector analysis: RAGAS metrics, source quality, retrieval performance, response patterns
-- Hybrid analysis: routing quality, SQL/Vector components, hybrid combination
+- SQL analysis: error taxonomy, query structure/complexity, column selection, response quality
+- Vector analysis: ALL 7 RAGAS metrics, source quality, retrieval performance, response patterns
+- Hybrid analysis: SQL/Vector components, hybrid combination
+
+CHANGES (2026-02-15):
+- REMOVED: analyze_fallback_patterns() - Obsolete (ReAct "Always Both" architecture)
+- REMOVED: analyze_routing_quality() - Obsolete (no routing decisions in new architecture)
+- UPDATED: analyze_ragas_metrics() - Now handles all 7 RAGAS metrics with nuclear explanations
 
 USAGE:
     from src.evaluation.quality_analysis import analyze_results
@@ -102,58 +107,6 @@ def analyze_error_taxonomy(results: list[dict[str, Any]]) -> dict[str, Any]:
                 break
 
     return taxonomy
-
-
-def analyze_fallback_patterns(results: list[dict[str, Any]]) -> dict[str, Any]:
-    """Analyze when system falls back from SQL to vector search.
-
-    SQL-only: sources_count == 0
-    SQL → Vector fallback: sources_count > 0
-
-    Args:
-        results: List of evaluation result dictionaries
-
-    Returns:
-        Dictionary with fallback statistics by category
-    """
-    fallback_stats = {
-        "total_queries": len(results),
-        "sql_only": 0,
-        "fallback_to_vector": 0,
-        "fallback_rate": 0.0,
-        "by_category": defaultdict(lambda: {"total": 0, "fallbacks": 0, "rate": 0.0}),
-        "fallback_cases": []
-    }
-
-    for result in results:
-        sources_count = result.get("sources_count", 0)
-        category = result.get("category", "unknown")
-        question = result.get("question", "")
-
-        fallback_stats["by_category"][category]["total"] += 1
-
-        if sources_count == 0:
-            fallback_stats["sql_only"] += 1
-        else:
-            fallback_stats["fallback_to_vector"] += 1
-            fallback_stats["by_category"][category]["fallbacks"] += 1
-            fallback_stats["fallback_cases"].append({
-                "question": question,
-                "category": category,
-                "sources_count": sources_count,
-                "response": result.get("response", "")[:200]
-            })
-
-    if fallback_stats["total_queries"] > 0:
-        fallback_stats["fallback_rate"] = (
-            fallback_stats["fallback_to_vector"] / fallback_stats["total_queries"]
-        ) * 100
-
-    for category, stats in fallback_stats["by_category"].items():
-        if stats["total"] > 0:
-            stats["rate"] = (stats["fallbacks"] / stats["total"]) * 100
-
-    return fallback_stats
 
 
 def analyze_response_quality(results: list[dict[str, Any]]) -> dict[str, Any]:
@@ -516,20 +469,39 @@ def analyze_column_selection(results: list[dict[str, Any]]) -> dict[str, Any]:
 # ============================================================================
 
 def analyze_ragas_metrics(results: list[dict]) -> dict[str, Any]:
-    """Analyze RAGAS metrics (faithfulness, answer relevancy, context precision/recall).
+    """Analyze ALL 7 RAGAS metrics with nuclear explanations.
+
+    RAGAS METRICS (7 total):
+
+    ANSWER QUALITY (use ground_truth_answer):
+    1. Faithfulness - Does answer contradict sources? (0.0-1.0, higher=better)
+    2. Answer Relevancy - Does answer address question? (0.0-1.0, higher=better)
+    3. Answer Semantic Similarity - Similarity to expected answer (0.0-1.0, higher=better)
+    4. Answer Correctness - Semantic + Factual (0.0-1.0, higher=better) ⭐ BEST OVERALL
+
+    RETRIEVAL QUALITY (use ground_truth_vector):
+    5. Context Precision - Relevant chunks ranked higher? (0.0-1.0, higher=better)
+    6. Context Recall - All required chunks retrieved? (0.0-1.0, higher=better)
+    7. Context Relevancy - Fraction of chunks relevant (0.0-1.0, higher=better)
 
     Args:
         results: List of evaluation results with RAGAS metrics
 
     Returns:
-        Dictionary with overall, by_category, distributions, and low_scoring_queries
+        Dictionary with:
+        - overall: Overall averages for all 7 metrics
+        - by_category: Averages by test category
+        - distributions: Score distributions for each metric
+        - low_scoring_queries: Queries with any metric < 0.7
+        - metric_explanations: Nuclear explanations for each metric
     """
     if not results:
         return {
             "overall": {},
             "by_category": {},
             "distributions": {},
-            "low_scoring_queries": []
+            "low_scoring_queries": [],
+            "metric_explanations": _get_ragas_metric_explanations()
         }
 
     ragas_results = [r for r in results if r.get("success") and r.get("ragas_metrics")]
@@ -539,18 +511,33 @@ def analyze_ragas_metrics(results: list[dict]) -> dict[str, Any]:
             "overall": {
                 "avg_faithfulness": None,
                 "avg_answer_relevancy": None,
+                "avg_answer_semantic_similarity": None,
+                "avg_answer_correctness": None,
                 "avg_context_precision": None,
-                "avg_context_recall": None
+                "avg_context_recall": None,
+                "avg_context_relevancy": None,
             },
             "by_category": {},
             "distributions": {},
-            "low_scoring_queries": []
+            "low_scoring_queries": [],
+            "metric_explanations": _get_ragas_metric_explanations()
         }
 
-    metrics = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
+    # All 7 RAGAS metrics
+    metrics = [
+        "faithfulness",
+        "answer_relevancy",
+        "answer_semantic_similarity",
+        "answer_correctness",
+        "context_precision",
+        "context_recall",
+        "context_relevancy"
+    ]
+
     overall = {}
     distributions = {metric: [] for metric in metrics}
 
+    # Calculate overall averages
     for metric in metrics:
         scores = [
             r["ragas_metrics"][metric]
@@ -560,6 +547,7 @@ def analyze_ragas_metrics(results: list[dict]) -> dict[str, Any]:
         overall[f"avg_{metric}"] = sum(scores) / len(scores) if scores else None
         distributions[metric] = scores
 
+    # Calculate by-category averages
     by_category = defaultdict(lambda: {metric: [] for metric in metrics})
 
     for r in ragas_results:
@@ -575,30 +563,42 @@ def analyze_ragas_metrics(results: list[dict]) -> dict[str, Any]:
             f"avg_{metric}": (sum(scores) / len(scores) if scores else None)
             for metric, scores in scores_dict.items()
         }
-        category_averages[category]["count"] = len(scores_dict["faithfulness"])
+        category_averages[category]["count"] = len([s for s in scores_dict.values() if s])
 
+    # Find low-scoring queries (any metric < 0.7)
     low_scoring_queries = []
     for r in ragas_results:
         ragas = r["ragas_metrics"]
-        min_score = min(
+
+        # Get all non-None scores
+        all_scores = [
             score for score in [
                 ragas.get("faithfulness"),
                 ragas.get("answer_relevancy"),
+                ragas.get("answer_semantic_similarity"),
+                ragas.get("answer_correctness"),
                 ragas.get("context_precision"),
-                ragas.get("context_recall")
+                ragas.get("context_recall"),
+                ragas.get("context_relevancy")
             ] if score is not None
-        )
+        ]
 
-        if min_score < 0.7:
-            low_scoring_queries.append({
-                "question": r.get("question", ""),
-                "category": r.get("category", "unknown"),
-                "faithfulness": ragas.get("faithfulness"),
-                "answer_relevancy": ragas.get("answer_relevancy"),
-                "context_precision": ragas.get("context_precision"),
-                "context_recall": ragas.get("context_recall"),
-                "min_score": min_score
-            })
+        if all_scores:
+            min_score = min(all_scores)
+
+            if min_score < 0.7:
+                low_scoring_queries.append({
+                    "question": r.get("question", ""),
+                    "category": r.get("category", "unknown"),
+                    "faithfulness": ragas.get("faithfulness"),
+                    "answer_relevancy": ragas.get("answer_relevancy"),
+                    "answer_semantic_similarity": ragas.get("answer_semantic_similarity"),
+                    "answer_correctness": ragas.get("answer_correctness"),
+                    "context_precision": ragas.get("context_precision"),
+                    "context_recall": ragas.get("context_recall"),
+                    "context_relevancy": ragas.get("context_relevancy"),
+                    "min_score": min_score
+                })
 
     low_scoring_queries.sort(key=lambda x: x["min_score"])
 
@@ -606,7 +606,211 @@ def analyze_ragas_metrics(results: list[dict]) -> dict[str, Any]:
         "overall": overall,
         "by_category": category_averages,
         "distributions": distributions,
-        "low_scoring_queries": low_scoring_queries
+        "low_scoring_queries": low_scoring_queries,
+        "metric_explanations": _get_ragas_metric_explanations()
+    }
+
+
+def _get_ragas_metric_explanations() -> dict[str, str]:
+    """Get nuclear explanations for all 7 RAGAS metrics.
+
+    Returns:
+        Dictionary with metric name → explanation
+    """
+    return {
+        "faithfulness": """
+FAITHFULNESS (Answer Quality - Uses ground_truth_answer)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT: Does the answer contradict the retrieved sources?
+HOW: (Supported claims) / (Total claims)
+RANGE: 0.0 to 1.0 (higher is better)
+
+INTERPRETATION:
+✅ 0.9-1.0: EXCELLENT - No hallucination detected
+⚠️  0.7-0.9: GOOD - Minor hallucination, mostly grounded
+⚠️  0.5-0.7: WARNING - Moderate hallucination detected
+❌ 0.0-0.5: CRITICAL - High hallucination, answer not trustworthy
+
+EXAMPLE:
+Question: "Who scored the most points?"
+Sources: [{"text": "Shai scored 2485 points"}]
+Answer: "Shai scored 2485 points and won MVP"
+
+Claims:
+1. "Shai scored 2485 points" ✅ Supported
+2. "Shai won MVP" ❌ NOT in sources (hallucination)
+
+Faithfulness = 1/2 = 0.5 (50% hallucinated)
+
+USE FOR: Detect hallucination, ensure answer grounded in data
+        """,
+        "answer_relevancy": """
+ANSWER RELEVANCY (Answer Quality - Uses ground_truth_answer)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT: Does the answer actually address the question?
+HOW: Avg similarity of generated questions to original
+RANGE: 0.0 to 1.0 (higher is better)
+
+INTERPRETATION:
+✅ 0.9-1.0: EXCELLENT - Answer is on-topic and focused
+⚠️  0.7-0.9: GOOD - Answer is relevant with minor drift
+⚠️  0.5-0.7: WARNING - Answer is somewhat off-topic
+❌ 0.0-0.5: CRITICAL - Answer doesn't address question
+
+EXAMPLE:
+Question: "Who scored the most points?"
+Answer: "Shai Gilgeous-Alexander scored 2485 points."
+
+Generated questions from answer:
+1. "Who is the leading scorer?" (similarity: 0.95)
+2. "How many points did Shai score?" (similarity: 0.85)
+3. "What are the scoring stats?" (similarity: 0.80)
+
+Answer Relevancy = (0.95 + 0.85 + 0.80) / 3 = 0.87
+
+USE FOR: Detect off-topic answers, ensure LLM understood question
+        """,
+        "answer_semantic_similarity": """
+ANSWER SEMANTIC SIMILARITY (Answer Quality - Uses ground_truth_answer)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT: How semantically similar is answer to expected answer?
+HOW: Cosine similarity between embeddings
+RANGE: 0.0 to 1.0 (higher is better)
+
+INTERPRETATION:
+✅ 0.9-1.0: EXCELLENT - Nearly identical meaning
+⚠️  0.7-0.9: GOOD - Similar meaning, different wording
+⚠️  0.5-0.7: WARNING - Related but different information
+❌ 0.0-0.5: CRITICAL - Completely different meaning
+
+EXAMPLE:
+Ground Truth: "Shai scored the most points with 2485 PTS."
+Actual Answer: "Shai Gilgeous-Alexander is the leading scorer with 2,485 points."
+
+Semantic Similarity = 0.92 (same meaning, slightly different wording)
+
+USE FOR: Check if answer conveys same information (allows paraphrasing)
+        """,
+        "answer_correctness": """
+ANSWER CORRECTNESS (Answer Quality - Uses ground_truth_answer) ⭐ BEST OVERALL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT: Combined semantic similarity + factual correctness
+HOW: 0.5 * Semantic Similarity + 0.5 * Factual F1
+RANGE: 0.0 to 1.0 (higher is better)
+
+INTERPRETATION:
+✅ 0.9-1.0: EXCELLENT - Answer is correct
+⚠️  0.7-0.9: GOOD - Mostly correct with minor issues
+⚠️  0.5-0.7: WARNING - Partially correct, missing key facts
+❌ 0.0-0.5: CRITICAL - Answer is incorrect
+
+EXAMPLE:
+Ground Truth: "Shai scored 2485 points, leading the league."
+Actual Answer: "Shai Gilgeous-Alexander scored 2485 points."
+
+Semantic Similarity: 0.90
+Factual Overlap:
+- TP: "Shai", "2485 points" ✅
+- FN: "leading league" ❌ (missing)
+F1 = 2*2 / (2*2 + 0 + 1) = 0.80
+
+Answer Correctness = 0.5*0.90 + 0.5*0.80 = 0.85
+
+USE FOR: PRIMARY METRIC for overall answer quality (best single metric)
+        """,
+        "context_precision": """
+CONTEXT PRECISION (Retrieval Quality - Uses ground_truth_vector)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT: Are relevant chunks ranked higher than irrelevant chunks?
+HOW: Precision@K averaged across positions
+RANGE: 0.0 to 1.0 (higher is better)
+
+INTERPRETATION:
+✅ 0.9-1.0: EXCELLENT - Relevant chunks ranked first
+⚠️  0.7-0.9: GOOD - Most relevant chunks near top
+⚠️  0.5-0.7: WARNING - Relevant chunks mixed with irrelevant
+❌ 0.0-0.5: CRITICAL - Relevant chunks ranked too low
+
+EXAMPLE:
+Ground Truth Vector: "Should retrieve Reddit 3.pdf about efficiency"
+
+Retrieved chunks (in order):
+1. Reddit 3.pdf, page 2 (efficiency) ✅ Relevant
+2. Reddit 1.pdf, page 1 (GOAT debate) ❌ Irrelevant
+3. Reddit 3.pdf, page 5 (efficiency) ✅ Relevant
+4. News article (unrelated) ❌ Irrelevant
+
+Precision@1 = 1/1 = 1.0
+Precision@2 = 1/2 = 0.5
+Precision@3 = 2/3 = 0.67
+Precision@4 = 2/4 = 0.5
+
+Context Precision = (1.0 + 0.5 + 0.67 + 0.5) / 4 = 0.67
+
+USE FOR: Optimize retrieval ranking
+NOTE: SKIPPED for SQL-only queries (no vector search)
+        """,
+        "context_recall": """
+CONTEXT RECALL (Retrieval Quality - Uses ground_truth_vector)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT: Were all required chunks retrieved?
+HOW: (Retrieved required) / (Total required)
+RANGE: 0.0 to 1.0 (higher is better)
+
+INTERPRETATION:
+✅ 0.9-1.0: EXCELLENT - All required chunks retrieved
+⚠️  0.7-0.9: GOOD - Most required chunks retrieved
+⚠️  0.5-0.7: WARNING - Missing some required chunks
+❌ 0.0-0.5: CRITICAL - Missing most required chunks
+
+EXAMPLE:
+Ground Truth Vector: "Should retrieve Reddit 3.pdf discussing efficiency,
+                      specifically mentioning Reggie Miller with 115 TS%"
+
+Required chunks:
+1. Reddit 3.pdf about efficiency ✅ Retrieved
+2. Mention of Reggie Miller ✅ Retrieved
+3. 115 TS% statistic ❌ NOT retrieved
+
+Context Recall = 2/3 = 0.67 (67% of required info retrieved)
+
+USE FOR: Check if retrieval is missing key information
+NOTE: SKIPPED for SQL-only queries (no vector search)
+        """,
+        "context_relevancy": """
+CONTEXT RELEVANCY (Retrieval Quality - Uses ground_truth_vector)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT: What fraction of retrieved chunks are actually relevant?
+HOW: (Relevant sentences) / (Total sentences)
+RANGE: 0.0 to 1.0 (higher is better)
+
+INTERPRETATION:
+✅ 0.9-1.0: EXCELLENT - No noise, all chunks relevant
+⚠️  0.7-0.9: GOOD - Low noise, mostly relevant
+⚠️  0.5-0.7: WARNING - Moderate noise, half irrelevant
+❌ 0.0-0.5: CRITICAL - High noise, mostly irrelevant
+
+EXAMPLE:
+Question: "What do fans think about efficiency?"
+
+Retrieved chunks:
+1. "Fans believe Reggie Miller is most efficient with 115 TS%" ✅ Relevant
+2. "Miller played for the Pacers" ❌ Irrelevant (not about efficiency)
+3. "Efficiency is measured by TS%" ✅ Relevant
+4. "LeBron is the GOAT" ❌ Irrelevant (off-topic)
+
+Context Relevancy = 2/4 = 0.5 (50% relevant)
+
+USE FOR: Detect noisy retrieval (too much irrelevant content)
+NOTE: SKIPPED for SQL-only queries (no vector search)
+        """
     }
 
 
@@ -1149,45 +1353,6 @@ def analyze_category_performance(results: list[dict]) -> dict[str, Any]:
 
 
 # ============================================================================
-# HYBRID-SPECIFIC ANALYSIS FUNCTIONS
-# ============================================================================
-
-def analyze_routing_quality(results: list[dict]) -> dict[str, Any]:
-    """Analyze routing decisions (SQL vs Vector vs Both).
-
-    Args:
-        results: List of evaluation results
-
-    Returns:
-        Dictionary with routing statistics
-    """
-    routing_counts = defaultdict(int)
-
-    for result in results:
-        if result.get("success"):
-            routing = result.get("routing", "unknown")
-            routing_counts[routing] += 1
-
-    total_routed = sum(routing_counts.values())
-
-    routing_analysis = {
-        "sql_only": routing_counts.get("sql", 0),
-        "vector_only": routing_counts.get("vector", 0),
-        "both_hybrid": routing_counts.get("both", 0),
-        "unknown": routing_counts.get("unknown", 0),
-        "total_routed": total_routed,
-    }
-
-    if total_routed > 0:
-        routing_analysis["sql_only_pct"] = round(routing_counts.get("sql", 0) / total_routed * 100, 1)
-        routing_analysis["vector_only_pct"] = round(routing_counts.get("vector", 0) / total_routed * 100, 1)
-        routing_analysis["both_hybrid_pct"] = round(routing_counts.get("both", 0) / total_routed * 100, 1)
-        routing_analysis["unknown_pct"] = round(routing_counts.get("unknown", 0) / total_routed * 100, 1)
-
-    return routing_analysis
-
-
-# ============================================================================
 # UNIFIED INTERFACE
 # ============================================================================
 
@@ -1227,24 +1392,20 @@ def analyze_results(results: list[dict], test_cases: list = None) -> dict[str, A
     # SQL-specific analyses
     if has_sql:
         analysis["error_taxonomy"] = analyze_error_taxonomy(results)
-        analysis["fallback_patterns"] = analyze_fallback_patterns(results)
         analysis["response_quality"] = analyze_response_quality(results)
         analysis["query_structure"] = analyze_query_structure(results)
         analysis["query_complexity"] = analyze_query_complexity(results)
         analysis["column_selection"] = analyze_column_selection(results)
 
-    # Vector-specific analyses
+    # Vector-specific analyses (run for all results that have RAGAS or sources)
     if has_ragas or any(r.get("sources") for r in results):
         analysis["source_quality"] = analyze_source_quality(results)
         analysis["response_patterns"] = analyze_response_patterns(results)
         analysis["retrieval_performance"] = analyze_retrieval_performance(results)
 
+        # RAGAS metrics analysis (ALL 7 METRICS with nuclear explanations)
         if has_ragas:
             analysis["ragas_metrics"] = analyze_ragas_metrics(results)
             analysis["category_performance"] = analyze_category_performance(results)
-
-    # Hybrid-specific analyses
-    if has_routing:
-        analysis["routing"] = analyze_routing_quality(results)
 
     return analysis
