@@ -124,7 +124,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **.gitignore**: Updated for consolidated data/ directory structure
 
 ### Fixed
-- **Missing File Headers** (2026-02-11): Added 5-field headers to evaluation verification scripts (now unified in [src/evaluation/verify_ground_truth.py](src/evaluation/verify_ground_truth.py))
+- **Missing File Headers** (2026-02-11): Added 5-field headers to evaluation verification scripts (now unified in [src/evaluation/validator.py](src/evaluation/validator.py))
   - **Compliance**: Now follows GLOBAL_POLICY.md file documentation standards
   - **Headers**: FILE, STATUS, RESPONSIBILITY, LAST MAJOR UPDATE, MAINTAINER
 - **French vs English context headers**: Mixed language headers caused LLM to respond "cannot find information" even when data was present

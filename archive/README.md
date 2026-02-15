@@ -1,54 +1,25 @@
-# Archived Legacy Code
+# Archive
 
-This directory contains code from the pre-LangChain migration architecture.
+This directory contains files that are no longer actively used but kept for reference.
 
-## 📦 Archived Files
+## Files
 
-### `query_classifier_legacy.py` (1,068 lines)
-**Archived:** 2026-02-14
-**Reason:** Replaced by LangChain SQL Agent (create_sql_agent) and vector retriever
+### vector_ground_truth_prompt.md
+**Archived**: 2026-02-15
+**Reason**: Evaluation now uses reference-free RAGAS metrics - manual `ground_truth_vector` values are no longer needed
 
-**What it was:**
-- Pattern-based query classification using 1,068 lines of regex patterns
-- Routed queries to: SQL-only, Vector-only, or Hybrid
-- Required manual maintenance for each new query type
+**Background**:
+- Original approach: Manually write `ground_truth_vector` descriptions for each test case
+- Problem: Time-consuming, doesn't scale, subjective
+- New approach: Reference-free RAGAS metrics automatically judge chunk relevance using LLM
+- All `ground_truth_vector` fields in test_data.py are now set to `None`
 
-**Why it was replaced:**
-- **Brittle**: Regex patterns couldn't adapt to new query variations
-- **Unmaintainable**: Adding new patterns required extensive testing
-- **No self-correction**: Failed queries had no recovery mechanism
-- **Complex**: 1,068 lines of patterns vs LangChain's dynamic tool selection
-
-**What replaced it:**
-- LangChain `create_sql_agent()` with ReAct pattern for SQL queries
-- LangChain `VectorStoreRetriever` for vector search
-- Agent-based tool selection (no manual classification needed)
-
-**Migration impact:**
-- **Code reduction**: -1,068 lines from query_classifier.py
-- **Improved accuracy**: Agent can self-correct SQL errors
-- **Better UX**: Users see reasoning trace for transparency
+**If you need it**: The prompt is still valid for generating human documentation of expected retrieval behavior, but it's optional and not used for evaluation metrics.
 
 ---
 
-## 📊 Migration Results
-
-**Testing (9 test cases, 3 from each category):**
-- ✅ SQL queries: 3/3 passed (100%)
-- ✅ Vector queries: 3/3 passed (100%)
-- ✅ Hybrid queries: 3/3 passed (100%)
-
-**Performance:**
-- Pattern-based: ~1,330ms average
-- LangChain agent: ~4,135ms average (+210%)
-- **Optimization applied**: Static schema pre-loading to reduce LLM calls
-
-**Code metrics:**
-- Removed: 1,068 lines (query_classifier.py)
-- Reduced: 186 lines in sql_tool.py (-28%)
-- Total savings: ~1,250 lines
-
----
-
-**Last Updated:** 2026-02-14  
-**Migration Status:** ✅ Complete
+**Evaluation Architecture (Current)**:
+- ✅ `ground_truth_answer`: Generated dynamically by judge LLM during evaluation
+- ✅ `ground_truth_vector`: Set to `None` - not needed (reference-free metrics)
+- ✅ Context Precision/Relevancy: LLM judges chunk relevance automatically
+- ✅ Context Recall: Skipped (requires manual ground truth)

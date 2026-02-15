@@ -173,12 +173,30 @@ class ChatService:
 
         logger.info(f"ChatService initialized (ReAct mode, SQL={enable_sql})")
 
+    def ensure_ready(self) -> None:
+        """Ensure service is ready (vector store loaded).
+
+        Raises:
+            IndexNotFoundError: If vector store is not loaded
+        """
+        if not self.vector_store.is_loaded:
+            raise IndexNotFoundError("Vector store index not loaded")
+
     @property
     def client(self) -> Any:
         """Lazy initialize Google Generative AI client."""
         if self._client is None:
             self._client = genai.Client(api_key=self._api_key)
         return self._client
+
+    @property
+    def is_ready(self) -> bool:
+        """Check if service is ready to handle requests.
+
+        Returns:
+            True if vector store is loaded, False otherwise
+        """
+        return self.vector_store.is_loaded
 
     @property
     def embedding_service(self) -> Any:
@@ -368,9 +386,25 @@ class ChatService:
             # Extract results directly from structured tool_results (no string parsing!)
             tool_results = result.get("tool_results", {})
 
-            # Extract SQL directly
+            # Extract SQL results (both query and data)
             sql_result = tool_results.get("query_nba_database", {})
             generated_sql = sql_result.get("sql", "")
+            sql_results = sql_result.get("results")  # Actual SQL data rows
+
+            # Extract vector search results
+            vector_result = tool_results.get("search_knowledge_base", {})
+            vector_sources = vector_result.get("results", [])
+
+            # Convert vector sources to SearchResult objects
+            sources = []
+            if vector_sources:
+                for src in vector_sources:
+                    sources.append(SearchResult(
+                        text=src.get("text", ""),
+                        score=src.get("score", 0.0),
+                        source=src.get("source", "unknown"),
+                        metadata=src.get("metadata", {})
+                    ))
 
             # Extract visualization directly
             viz_result = tool_results.get("create_visualization", {})
@@ -387,12 +421,13 @@ class ChatService:
             response = ChatResponse(
                 answer=result["answer"],
                 query=query,
-                sources=[],  # Deprecated - agent handles sources internally
+                sources=sources,  # Vector search sources from agent
                 processing_time_ms=processing_time_ms,
                 model=self.model,
                 conversation_id=request.conversation_id,
                 turn_number=request.turn_number,
                 generated_sql=generated_sql,
+                sql_results=sql_results,  # SQL data rows from agent
                 visualization=visualization,
                 query_type="agent",
                 reasoning_trace=result.get("reasoning_trace", []),
@@ -408,7 +443,7 @@ class ChatService:
                     turn_number=request.turn_number,
                     processing_time_ms=processing_time_ms,
                     query_type="agent",
-                    sources=[],
+                    sources=sources,  # Actual vector sources
                     generated_sql=generated_sql,
                 )
 

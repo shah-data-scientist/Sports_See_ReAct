@@ -94,8 +94,9 @@ database/
 *.ipynb_checkpoints/
 notebooks/*.html
 
-# Database files (legacy path + extensions)
+# Database files (runtime artifacts - GLOBAL_POLICY.md)
 database/
+*.db
 *.db-shm
 *.db-wal
 *.sqlite
@@ -133,7 +134,7 @@ scripts/retry_*.py
 scripts/fix_*.py
 scripts/merge_*.py
 scripts/run_*_sample_*.py
-scripts/global_policy/
+# NOTE: scripts/global_policy/ is tracked (enforcement scripts)
 # In tests/ subdirectory (only match files with single underscore prefix, not __init__.py)
 tests/_[a-z]*.py
 tests/debug_*.py

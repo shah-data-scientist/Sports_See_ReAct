@@ -14,7 +14,7 @@ from pathlib import Path
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.evaluation.ragas_calculator import calculate_ragas_metrics, format_ragas_report
+from src.evaluation.metrics import calculate_ragas_metrics, format_ragas_report
 
 
 def test_sql_only_query():
@@ -159,7 +159,7 @@ if __name__ == "__main__":
         print("- ✅ Vector queries: All 7 metrics calculated")
         print("- ✅ Report formatting: Nuclear explanations included")
         print("\nNext steps:")
-        print("1. Run full evaluation: poetry run python -m src.evaluation.run_evaluation --type all")
+        print("1. Run full evaluation: poetry run python -m src.evaluation.evaluator --type all")
         print("2. Review generated reports with RAGAS metrics")
         print("3. Commit changes")
 

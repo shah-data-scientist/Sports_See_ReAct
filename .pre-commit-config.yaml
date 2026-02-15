@@ -11,9 +11,9 @@ repos:
         always_run: true
 
       # BLOCKING: Documentation headers + comment hygiene
-      - id: validate-changed-files
-        name: Validate Changed Files (Headers + Comments)
-        entry: poetry run python scripts/global_policy/validate_changed_files.py --staged-only
+      - id: validate-headers
+        name: Validate Headers & Comments
+        entry: poetry run python scripts/global_policy/validate_headers.py --fix --staged-only
         language: system
         pass_filenames: false
         stages: [pre-commit]

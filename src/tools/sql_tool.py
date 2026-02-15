@@ -447,11 +447,24 @@ Thought: I should write a SQL query to answer this question.
 
                         # Convert tuples to dictionaries if needed
                         if parsed and isinstance(parsed[0], tuple):
-                            # We don't have column names here, so store raw tuples
-                            # The answer already has the formatted results
-                            results = parsed
+                            # Extract column names from SQL query
+                            column_names = self._extract_column_names_from_sql(sql_query) if sql_query else []
+
+                            if column_names and len(column_names) == len(parsed[0]):
+                                # Convert tuples to dicts using extracted column names
+                                results = [dict(zip(column_names, row)) for row in parsed]
+                                # If single result, unwrap list to dict for consistency
+                                if len(results) == 1 and sql_query and "LIMIT 1" in sql_query.upper():
+                                    results = results[0]
+                            else:
+                                # Can't determine columns reliably, store as tuples
+                                # This will be caught by validation
+                                results = parsed
                         elif parsed and isinstance(parsed[0], dict):
                             results = parsed
+                            # If single result, unwrap list to dict for consistency
+                            if len(results) == 1 and sql_query and "LIMIT 1" in sql_query.upper():
+                                results = results[0]
                         else:
                             results = parsed
                     except:
@@ -477,6 +490,90 @@ Thought: I should write a SQL query to answer this question.
                 "error": str(e),
                 "agent_steps": 0,
             }
+
+    @staticmethod
+    def _extract_column_names_from_sql(sql: str) -> list[str]:
+        """Extract column names from SELECT statement.
+
+        Args:
+            sql: SQL SELECT query
+
+        Returns:
+            List of column names (or aliases if present)
+
+        Example:
+            >>> _extract_column_names_from_sql("SELECT p.name, ps.pts FROM ...")
+            ['name', 'pts']
+            >>> _extract_column_names_from_sql("SELECT COUNT(*) as total FROM ...")
+            ['total']
+        """
+        if not sql:
+            return []
+
+        import re
+
+        # Remove comments and normalize whitespace
+        sql = re.sub(r'--.*$', '', sql, flags=re.MULTILINE)
+        sql = re.sub(r'/\*.*?\*/', '', sql, flags=re.DOTALL)
+        sql = ' '.join(sql.split())
+
+        # Extract SELECT ... FROM
+        match = re.search(r'SELECT\s+(.*?)\s+FROM', sql, re.IGNORECASE | re.DOTALL)
+        if not match:
+            return []
+
+        select_clause = match.group(1).strip()
+
+        # Handle SELECT *
+        if select_clause == '*':
+            return []  # Can't determine columns from *
+
+        # Split by comma (but not commas inside functions)
+        columns = []
+        paren_depth = 0
+        current = []
+
+        for char in select_clause + ',':
+            if char == '(':
+                paren_depth += 1
+                current.append(char)
+            elif char == ')':
+                paren_depth -= 1
+                current.append(char)
+            elif char == ',' and paren_depth == 0:
+                col = ''.join(current).strip()
+                if col:
+                    columns.append(col)
+                current = []
+            else:
+                current.append(char)
+
+        # Extract column names/aliases
+        result = []
+        for col in columns:
+            # Check for AS alias
+            alias_match = re.search(r'\bAS\s+([a-zA-Z_][a-zA-Z0-9_]*)\b', col, re.IGNORECASE)
+            if alias_match:
+                result.append(alias_match.group(1).lower())
+            else:
+                # Check for implicit alias (space before name)
+                implicit_match = re.search(r'\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*$', col)
+                if implicit_match:
+                    result.append(implicit_match.group(1).lower())
+                else:
+                    # Extract column name (after last dot if qualified)
+                    col_clean = col.strip()
+                    if '.' in col_clean:
+                        col_name = col_clean.split('.')[-1]
+                    else:
+                        col_name = col_clean
+
+                    # Remove any remaining special chars
+                    col_name = re.sub(r'[^a-zA-Z0-9_]', '', col_name)
+                    if col_name:
+                        result.append(col_name.lower())
+
+        return result
 
     @staticmethod
     def normalize_player_name(name: str) -> str:

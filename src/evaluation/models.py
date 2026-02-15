@@ -1,5 +1,5 @@
 """
-FILE: unified_model.py
+FILE: models.py
 STATUS: Active
 RESPONSIBILITY: Unified evaluation model for all test case types (SQL, Vector, Hybrid)
 LAST MAJOR UPDATE: 2026-02-15
@@ -427,6 +427,26 @@ class UnifiedEvaluationResult:
     ground_truth_data: dict | list | None = None
     """Expected SQL results data."""
 
+    sql_validation: dict | None = None
+    """SQL result validation comparing expected vs actual.
+
+    Dict with:
+    - match (bool): Do results match ground truth?
+    - mismatches (list): List of mismatch descriptions
+    - error (str|None): Validation error if any
+
+    Only populated for SQL/Hybrid test cases with ground_truth_data.
+    """
+
+    retrieval_warnings: list[str] = field(default_factory=list)
+    """Retrieval validation warnings.
+
+    Examples:
+    - "SQL-only query returned 5 vector sources (wasteful)"
+    - "Vector query returned 0 sources (retrieval failed)"
+    - "Hybrid query has no SQL results (SQL search failed)"
+    """
+
     # ========================================================================
     # CONVERSATION FIELDS (Optional)
     # ========================================================================
@@ -473,6 +493,8 @@ class UnifiedEvaluationResult:
             "ground_truth_vector": self.ground_truth_vector,
             "ground_truth_answer": self.ground_truth_answer,
             "ground_truth_data": self.ground_truth_data,
+            "sql_validation": self.sql_validation,
+            "retrieval_warnings": self.retrieval_warnings,
             "conversation_id": self.conversation_id,
             "turn_number": self.turn_number,
             "error": self.error,

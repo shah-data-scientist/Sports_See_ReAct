@@ -27,17 +27,24 @@ async def health_check() -> HealthResponse:
     Returns:
         HealthResponse with service status and index information
     """
+    import logging
+    logger = logging.getLogger(__name__)
+
     try:
         service = get_chat_service()
+        logger.info(f"Got service: {service}")
         is_loaded = service.is_ready
+        logger.info(f"is_ready: {is_loaded}")
         index_size = service.vector_store.index_size if is_loaded else 0
+        logger.info(f"index_size: {index_size}")
 
         if is_loaded:
             status = "healthy"
         else:
             status = "degraded"
 
-    except Exception:
+    except Exception as e:
+        logger.error(f"Health check exception: {e}", exc_info=True)
         status = "unhealthy"
         is_loaded = False
         index_size = 0

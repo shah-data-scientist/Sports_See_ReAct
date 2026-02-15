@@ -1,0 +1,190 @@
+{
+  "test_date": "2026-02-15T06:54:07.507648",
+  "total_queries": 9,
+  "passed": 9,
+  "failed": 0,
+  "warned": 0,
+  "errors": 0,
+  "wasteful_executions": 0,
+  "total_processing_time_ms": 34159.0,
+  "avg_processing_time_ms": 3795.0,
+  "results": [
+    {
+      "test_number": 1,
+      "question": "Who scored the most points this season?",
+      "category": "simple_sql_top_n",
+      "test_type": "SQL",
+      "expected_type": "sql_only",
+      "actual_type": "agent",
+      "sql_executed": true,
+      "vector_executed": false,
+      "viz_executed": false,
+      "tools_used": [
+        "query_nba_database"
+      ],
+      "vector_sources_count": 0,
+      "processing_time_ms": 8255.0,
+      "status": "PASS",
+      "issue": null,
+      "answer_preview": "Shai Gilgeous-Alexander scored the most points this season with 2485 points.\n"
+    },
+    {
+      "test_number": 2,
+      "question": "Who are the top 3 rebounders in the league?",
+      "category": "simple_sql_top_n",
+      "test_type": "SQL",
+      "expected_type": "sql_only",
+      "actual_type": "agent",
+      "sql_executed": true,
+      "vector_executed": false,
+      "viz_executed": true,
+      "tools_used": [
+        "query_nba_database",
+        "create_visualization"
+      ],
+      "vector_sources_count": 0,
+      "processing_time_ms": 3277.0,
+      "status": "PASS",
+      "issue": null,
+      "answer_preview": "The top 3 rebounders in the league are Ivica Zubac, Domantas Sabonis, and Karl-Anthony Towns.\n"
+    },
+    {
+      "test_number": 3,
+      "question": "Who are the top 5 players in steals?",
+      "category": "simple_sql_top_n",
+      "test_type": "SQL",
+      "expected_type": "sql_only",
+      "actual_type": "agent",
+      "sql_executed": true,
+      "vector_executed": false,
+      "viz_executed": true,
+      "tools_used": [
+        "query_nba_database",
+        "create_visualization"
+      ],
+      "vector_sources_count": 0,
+      "processing_time_ms": 2664.0,
+      "status": "PASS",
+      "issue": null,
+      "answer_preview": "The top 5 players in steals are Dyson Daniels, Shai Gilgeous-Alexander, Nikola Jokić, Kris Dunn, and Cason Wallace.\n"
+    },
+    {
+      "test_number": 4,
+      "question": "What do Reddit users think about teams that have impressed?",
+      "category": "simple",
+      "test_type": "VECTOR",
+      "expected_type": "vector_only",
+      "actual_type": "agent",
+      "sql_executed": false,
+      "vector_executed": true,
+      "viz_executed": false,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "vector_sources_count": 7,
+      "processing_time_ms": 3896.0,
+      "status": "PASS",
+      "issue": null,
+      "answer_preview": "Reddit users are discussing which playoff teams have impressed them. One user, u/MannerSuperb, mentions that the Orlando Magic have impressed them, despite their poor shooting, for pushing the defendi..."
+    },
+    {
+      "test_number": 5,
+      "question": "What are the most popular opinions about the top teams?",
+      "category": "simple",
+      "test_type": "VECTOR",
+      "expected_type": "vector_only",
+      "actual_type": "agent",
+      "sql_executed": false,
+      "vector_executed": true,
+      "viz_executed": false,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "vector_sources_count": 7,
+      "processing_time_ms": 1835.0,
+      "status": "PASS",
+      "issue": null,
+      "answer_preview": "Based on the Reddit posts, here are some popular opinions about top NBA teams in the playoffs:\n\n*   Some fans are impressed with teams that compete well against defending champions, even with shooting..."
+    },
+    {
+      "test_number": 6,
+      "question": "What do fans debate about Reggie Miller's efficiency?",
+      "category": "simple",
+      "test_type": "VECTOR",
+      "expected_type": "vector_only",
+      "actual_type": "agent",
+      "sql_executed": false,
+      "vector_executed": true,
+      "viz_executed": false,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "vector_sources_count": 7,
+      "processing_time_ms": 1744.0,
+      "status": "PASS",
+      "issue": null,
+      "answer_preview": "Fans debate Reggie Miller's efficiency, with some arguing he is the \"most efficient first option\" in NBA playoff history (Reddit 3.pdf). However, others believe he is the \"consensus worst player\" on a..."
+    },
+    {
+      "test_number": 7,
+      "question": "Who scored the most points this season and what makes them an effective scorer?",
+      "category": "tier1_stat_plus_context",
+      "test_type": "HYBRID",
+      "expected_type": "hybrid",
+      "actual_type": "agent",
+      "sql_executed": true,
+      "vector_executed": true,
+      "viz_executed": false,
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base"
+      ],
+      "vector_sources_count": 7,
+      "processing_time_ms": 4097.0,
+      "status": "PASS",
+      "issue": null,
+      "answer_preview": "Shai Gilgeous-Alexander scored the most points this season with 2485 points. His true shooting percentage is 63.7% and his effective field goal percentage is 56.9%, which indicates he is an effective ..."
+    },
+    {
+      "test_number": 8,
+      "question": "Compare LeBron James and Kevin Durant's scoring this season and explain their scoring styles.",
+      "category": "tier1_comparison_plus_context",
+      "test_type": "HYBRID",
+      "expected_type": "hybrid",
+      "actual_type": "agent",
+      "sql_executed": true,
+      "vector_executed": true,
+      "viz_executed": true,
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base",
+        "create_visualization"
+      ],
+      "vector_sources_count": 7,
+      "processing_time_ms": 5117.0,
+      "status": "PASS",
+      "issue": null,
+      "answer_preview": "LeBron James has scored 1708 points this season compared to Kevin Durant's 1649 points. James has a field goal percentage of 51.3% on 1267 attempts, while Durant has a slightly better field goal perce..."
+    },
+    {
+      "test_number": 9,
+      "question": "What is Nikola Jokić's scoring average and why is he considered an elite offensive player?",
+      "category": "tier1_stat_plus_explanation",
+      "test_type": "HYBRID",
+      "expected_type": "hybrid",
+      "actual_type": "agent",
+      "sql_executed": true,
+      "vector_executed": true,
+      "viz_executed": false,
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base"
+      ],
+      "vector_sources_count": 7,
+      "processing_time_ms": 3274.0,
+      "status": "PASS",
+      "issue": null,
+      "answer_preview": "Nikola Jokić averages 29.6 points per game. He is considered an elite offensive player because of his high scoring average.\n"
+    }
+  ]
+}

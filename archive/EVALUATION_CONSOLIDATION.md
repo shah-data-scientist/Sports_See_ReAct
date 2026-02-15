@@ -39,7 +39,7 @@ The evaluation framework has been consolidated from separate SQL, Vector, and Hy
 - **Total:** 3 separate runners (~800 lines each)
 
 **After:**
-- `src/evaluation/run_evaluation.py` (unified runner)
+- `src/evaluation/evaluator.py` (unified runner)
   - Single entry point for all evaluation types
   - Command-line filtering: `--type sql|vector|hybrid|all`
   - Consolidated logic for API calls, checkpointing, conversation management
@@ -56,25 +56,25 @@ The evaluation framework has been consolidated from separate SQL, Vector, and Hy
 
 #### Run All Test Types (206 cases)
 ```bash
-poetry run python -m src.evaluation.run_evaluation --type all
+poetry run python -m src.evaluation.evaluator --type all
 ```
 
 #### Run Specific Type
 ```bash
 # SQL only (80 cases)
-poetry run python -m src.evaluation.run_evaluation --type sql
+poetry run python -m src.evaluation.evaluator --type sql
 
 # Vector only (75 cases)
-poetry run python -m src.evaluation.run_evaluation --type vector
+poetry run python -m src.evaluation.evaluator --type vector
 
 # Hybrid only (51 cases)
-poetry run python -m src.evaluation.run_evaluation --type hybrid
+poetry run python -m src.evaluation.evaluator --type hybrid
 ```
 
 #### Mini Mode (Quick Validation)
 ```bash
 # Run 4 diverse test cases
-poetry run python -m src.evaluation.run_evaluation --mini --type sql
+poetry run python -m src.evaluation.evaluator --mini --type sql
 ```
 
 ### 4. File Structure
@@ -147,10 +147,10 @@ poetry run python -m src.evaluation.runners.run_hybrid_evaluation
 ### New Unified Approach (Recommended)
 ```bash
 # Single run for all types
-poetry run python -m src.evaluation.run_evaluation --type all
+poetry run python -m src.evaluation.evaluator --type all
 
 # Or run specific type
-poetry run python -m src.evaluation.run_evaluation --type sql
+poetry run python -m src.evaluation.evaluator --type sql
 ```
 
 ## Test Case Statistics
@@ -184,31 +184,31 @@ Total Test Cases:      206 (100.0%)
 
 ### Run Full Evaluation (206 cases)
 ```bash
-poetry run python -m src.evaluation.run_evaluation --type all
+poetry run python -m src.evaluation.evaluator --type all
 ```
 **Time:** ~70 minutes (20s rate limit between queries)
 
 ### Run SQL Tests Only
 ```bash
-poetry run python -m src.evaluation.run_evaluation --type sql
+poetry run python -m src.evaluation.evaluator --type sql
 ```
 **Time:** ~27 minutes (80 cases)
 
 ### Quick Validation (Mini Mode)
 ```bash
-poetry run python -m src.evaluation.run_evaluation --mini --type all
+poetry run python -m src.evaluation.evaluator --mini --type all
 ```
 **Time:** ~2 minutes (4-12 diverse cases)
 
 ### Resume After Crash
 ```bash
 # Automatically resumes from last checkpoint
-poetry run python -m src.evaluation.run_evaluation --type all
+poetry run python -m src.evaluation.evaluator --type all
 ```
 
 ### Force Fresh Start
 ```bash
-poetry run python -m src.evaluation.run_evaluation --type all --no-resume
+poetry run python -m src.evaluation.evaluator --type all --no-resume
 ```
 
 ## Next Steps

@@ -57,7 +57,7 @@ def is_valid(self) -> tuple[bool, list[str]]:
 
 ## Judge LLM Implementation
 
-### Location: `src/evaluation/run_evaluation.py`
+### Location: `src/evaluation/evaluator.py`
 
 ### Function: `_generate_ground_truth_answer(test_case: UnifiedTestCase) -> str`
 
@@ -245,7 +245,7 @@ UnifiedTestCase(
 
 ### Files Modified:
 
-1. **`src/evaluation/unified_model.py`** (509 lines)
+1. **`src/evaluation/models.py`** (509 lines)
    - Renamed `ground_truth` → `ground_truth_vector` (5 occurrences)
    - Removed `ground_truth_answer` from UnifiedTestCase
    - Updated `is_valid()` validation (no longer requires ground_truth_answer)
@@ -253,12 +253,12 @@ UnifiedTestCase(
    - Updated migration functions
    - Updated UnifiedEvaluationResult.to_dict() and from_dict()
 
-2. **`src/evaluation/consolidated_test_cases.py`** (2,287 → 1,888 lines, -17%)
+2. **`src/evaluation/test_data.py`** (2,287 → 1,888 lines, -17%)
    - Regenerated all 206 test cases
    - All use `ground_truth_vector` (not `ground_truth`)
    - All removed `ground_truth_answer` field
 
-3. **`src/evaluation/run_evaluation.py`** (580 → 660 lines, +14%)
+3. **`src/evaluation/evaluator.py`** (580 → 660 lines, +14%)
    - Added `_generate_ground_truth_answer()` function (67 lines)
    - Updated evaluation loop to call judge LLM before each test
    - Updated result recording to use dynamically generated `ground_truth_answer`
@@ -283,7 +283,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path('.').absolute()))
 
 from src.evaluation.consolidated_test_cases import ALL_TEST_CASES
-from src.evaluation.run_evaluation import _generate_ground_truth_answer
+from src.evaluation.evaluator import _generate_ground_truth_answer
 
 # Get first SQL test case
 sql_cases = [tc for tc in ALL_TEST_CASES if tc.test_type.value == 'sql']
@@ -302,16 +302,16 @@ print(f'Judge LLM Answer: {answer}')
 ### Run Full Evaluation:
 ```bash
 # Run SQL evaluation with judge LLM
-poetry run python -m src.evaluation.run_evaluation --type sql
+poetry run python -m src.evaluation.evaluator --type sql
 
 # Run Vector evaluation with judge LLM
-poetry run python -m src.evaluation.run_evaluation --type vector
+poetry run python -m src.evaluation.evaluator --type vector
 
 # Run Hybrid evaluation with judge LLM
-poetry run python -m src.evaluation.run_evaluation --type hybrid
+poetry run python -m src.evaluation.evaluator --type hybrid
 
 # Run ALL evaluations (206 test cases)
-poetry run python -m src.evaluation.run_evaluation --type all
+poetry run python -m src.evaluation.evaluator --type all
 ```
 
 ---

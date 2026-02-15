@@ -1,5 +1,5 @@
 """
-FILE: quality_analysis.py
+FILE: analyzer.py
 STATUS: Active
 RESPONSIBILITY: Unified evaluation analysis for SQL, Vector, and Hybrid test results
 LAST MAJOR UPDATE: 2026-02-15
@@ -17,7 +17,7 @@ CHANGES (2026-02-15):
 - UPDATED: analyze_ragas_metrics() - Now handles all 7 RAGAS metrics with nuclear explanations
 
 USAGE:
-    from src.evaluation.quality_analysis import analyze_results
+    from src.evaluation.analyzer import analyze_results
 
     analysis = analyze_results(results, test_cases)
     # Automatically detects test type and runs appropriate analyses

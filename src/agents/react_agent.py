@@ -39,17 +39,18 @@ class AgentStep:
 
 
 class ReActAgent:
-    """Simplified agent for NBA statistics queries - "Always Both" architecture.
+    """Smart agent for NBA statistics queries with intelligent tool selection.
 
-    This agent ALWAYS executes both SQL and Vector search for every query,
-    then lets the LLM intelligently combine the results in a single call.
+    This agent analyzes each query to determine which tools are needed:
+    - SQL-only: Statistical queries (top N, rankings, comparisons, stats)
+    - Vector-only: Contextual queries (why/how, opinions, explanations)
+    - Hybrid: Both statistical and contextual information needed
 
-    Key simplifications:
-    - No query classification (always both tools)
-    - No routing logic (fixed execution path)
-    - No iteration loop (single LLM call)
-    - No complexity estimation (fixed k=7)
-    - 67% less code than previous version
+    Key features:
+    - Lightweight query classification (heuristic-based, not regex)
+    - Conditional tool execution (only run necessary tools)
+    - Single LLM call for answer generation
+    - Auto-visualization for suitable SQL results
     """
 
     def __init__(
@@ -59,7 +60,7 @@ class ReActAgent:
         model: str = "gemini-2.0-flash",
         temperature: float = 0.1,
     ):
-        """Initialize simplified agent.
+        """Initialize smart agent.
 
         Args:
             tools: List of available tools (expects query_nba_database and search_knowledge_base)
@@ -75,16 +76,91 @@ class ReActAgent:
         # Tool results storage (structured access for direct extraction)
         self.tool_results: dict[str, Any] = {}
 
+    def _classify_query(self, question: str) -> str:
+        """Classify query to determine which tools are needed.
+
+        Uses simple heuristics (not complex regex patterns):
+        - SQL-only: top N, rankings, stats, numbers, comparisons
+        - Vector-only: why/how, opinions, debates, context, explanations
+        - Hybrid: biographical ("Who is X?"), stats + context
+
+        Args:
+            question: User question (lowercase for matching)
+
+        Returns:
+            "sql_only", "vector_only", or "hybrid"
+        """
+        q_lower = question.lower()
+
+        # Strong vector-only signals (override other signals)
+        # These indicate pure opinion/contextual queries
+        strong_vector_signals = [
+            "what do fans", "what are fans", "what do reddit",
+            "what do people think", "what are people", "debate about",
+            "popular opinion", "fans think", "fans believe"
+        ]
+
+        # Vector-only signals (why/how/opinion questions)
+        vector_signals = [
+            "why", "how", "what do", "what are", "debate", "think",
+            "opinion", "believe", "consider", "argue", "discuss",
+            "fan", "reddit", "style", "strategy", "approach",
+            "makes them", "makes him", "makes her", "playing style"
+        ]
+
+        # SQL-only signals (statistical queries)
+        sql_signals = [
+            "top", "most", "highest", "lowest", "average", "total",
+            "rank", "leader", "best", "worst", "compare", "vs",
+            "scored", "points", "rebounds", "assists", "steals",
+            "blocks", "percentage", "stats", "statistics"
+        ]
+
+        # Hybrid signals (biographical - need both stats and context)
+        hybrid_signals = ["who is", "tell me about", "what about"]
+
+        # Check strong vector signals first (highest priority)
+        if any(signal in q_lower for signal in strong_vector_signals):
+            return "vector_only"
+
+        # Check hybrid (biographical queries)
+        if any(signal in q_lower for signal in hybrid_signals):
+            return "hybrid"
+
+        # Count signals for each type
+        vector_count = sum(1 for signal in vector_signals if signal in q_lower)
+        sql_count = sum(1 for signal in sql_signals if signal in q_lower)
+
+        # If strong vector signal (why/how/think) present, prioritize vector
+        # even if SQL signals are also present
+        has_strong_opinion = any(word in q_lower for word in ["why", "how", "think", "believe", "opinion"])
+        if has_strong_opinion and vector_count > 0:
+            # If also asking for stats (e.g., "why did he score so many points?"), it's hybrid
+            if any(word in q_lower for word in ["scored", "points", "stats", "average"]):
+                return "hybrid"
+            return "vector_only"
+
+        # If both have signals, it's hybrid
+        if vector_count > 0 and sql_count > 0:
+            return "hybrid"
+
+        # If only vector signals, it's vector-only
+        if vector_count > 0:
+            return "vector_only"
+
+        # Default to SQL (most queries are statistical)
+        return "sql_only"
+
     def run(
         self, question: str, conversation_history: str = ""
     ) -> dict[str, Any]:
-        """Execute query with BOTH tools always (simplified architecture).
+        """Execute query with smart tool selection.
 
-        This is the "Always Both" approach:
-        - Always executes SQL database query
-        - Always executes vector search
-        - Single LLM call combines both results
-        - No classification, no routing, no iteration
+        This approach:
+        - Classifies query to determine needed tools
+        - Executes only necessary tools (SQL, vector, or both)
+        - Single LLM call combines results
+        - Reduces wasteful tool executions
 
         Args:
             question: User question
@@ -93,31 +169,39 @@ class ReActAgent:
         Returns:
             Dict with:
                 - answer: Final answer
-                - tools_used: Always both tools
-                - tool_results: Structured results from both tools
+                - tools_used: List of tools actually executed
+                - tool_results: Structured results from executed tools
+                - query_type: Classification result
         """
-        logger.info(f"Executing BOTH tools for query: '{question[:100]}'")
+        # Classify query to determine which tools are needed
+        query_type = self._classify_query(question)
+        logger.info(f"Query classified as: {query_type} - '{question[:100]}'")
 
         # Clear tool results for new query
         self.tool_results = {}
 
-        # ALWAYS execute BOTH tools (no classification needed)
+        # Execute tools based on classification
+        sql_result = None
+        vector_result = None
+
         try:
-            # Execute SQL database query
-            logger.debug("Executing query_nba_database...")
-            sql_result = self._execute_tool(
-                tool_name="query_nba_database",
-                tool_input={"question": question}
-            )
+            # Execute SQL if needed
+            if query_type in ["sql_only", "hybrid"]:
+                logger.debug("Executing query_nba_database...")
+                sql_result = self._execute_tool(
+                    tool_name="query_nba_database",
+                    tool_input={"question": question}
+                )
 
-            # Execute vector search (fixed k=7 for all queries)
-            logger.debug("Executing search_knowledge_base...")
-            vector_result = self._execute_tool(
-                tool_name="search_knowledge_base",
-                tool_input={"query": question, "k": 7}
-            )
+            # Execute vector search if needed
+            if query_type in ["vector_only", "hybrid"]:
+                logger.debug("Executing search_knowledge_base...")
+                vector_result = self._execute_tool(
+                    tool_name="search_knowledge_base",
+                    tool_input={"query": question, "k": 7}
+                )
 
-            logger.info("Both tools executed successfully")
+            logger.info(f"Tools executed successfully for {query_type} query")
 
             # AUTO-GENERATE VISUALIZATION if SQL has suitable data
             sql_data = self.tool_results.get("query_nba_database", {})
@@ -143,28 +227,41 @@ class ReActAgent:
 
         except Exception as e:
             logger.error(f"Tool execution failed: {e}")
+            # Build tools_used from what we attempted
+            attempted_tools = []
+            if query_type in ["sql_only", "hybrid"]:
+                attempted_tools.append("query_nba_database")
+            if query_type in ["vector_only", "hybrid"]:
+                attempted_tools.append("search_knowledge_base")
+
             return {
                 "answer": f"I encountered an error retrieving information: {str(e)}",
-                "tools_used": ["query_nba_database", "search_knowledge_base"],
+                "tools_used": attempted_tools,
                 "tool_results": self.tool_results,
+                "query_type": query_type,
                 "error": str(e),
             }
 
-        # Build prompt with BOTH results
+        # Build prompt with executed tool results
         prompt = self._build_combined_prompt(
             question=question,
             conversation_history=conversation_history,
             sql_result=sql_result,
             vector_result=vector_result,
+            query_type=query_type,
         )
 
-        # Single LLM call to combine both results
+        # Single LLM call to generate answer
         try:
             answer = self._call_llm(prompt)
             logger.info(f"LLM generated final answer (length: {len(answer)} chars)")
 
-            # Build tools_used list (includes visualization if generated)
-            tools_used = ["query_nba_database", "search_knowledge_base"]
+            # Build tools_used list from what was actually executed
+            tools_used = []
+            if sql_result is not None:
+                tools_used.append("query_nba_database")
+            if vector_result is not None:
+                tools_used.append("search_knowledge_base")
             if "create_visualization" in self.tool_results:
                 tools_used.append("create_visualization")
 
@@ -172,7 +269,8 @@ class ReActAgent:
                 "answer": answer,
                 "tools_used": tools_used,
                 "tool_results": self.tool_results,
-                "is_hybrid": True,  # Always hybrid now
+                "query_type": query_type,
+                "is_hybrid": query_type == "hybrid",
             }
 
         except Exception as e:
@@ -185,36 +283,59 @@ class ReActAgent:
         conversation_history: str,
         sql_result: Any,
         vector_result: Any,
+        query_type: str,
     ) -> str:
-        """Build prompt with BOTH tool results for single LLM call.
+        """Build prompt with executed tool results for single LLM call.
 
         Args:
             question: User question
             conversation_history: Previous conversation context
-            sql_result: Results from SQL database query
-            vector_result: Results from vector search
+            sql_result: Results from SQL database query (None if not executed)
+            vector_result: Results from vector search (None if not executed)
+            query_type: Classification result ("sql_only", "vector_only", "hybrid")
 
         Returns:
-            Prompt string with both results
+            Prompt string with available results
         """
-        # Format SQL results for readability
-        sql_formatted = json.dumps(sql_result, indent=2) if sql_result else "No results"
+        # Format SQL results if available
+        sql_formatted = json.dumps(sql_result, indent=2) if sql_result else "Not retrieved (not needed for this query type)"
 
-        # Format vector results for readability
-        vector_formatted = json.dumps(vector_result, indent=2) if vector_result else "No results"
+        # Format vector results if available
+        vector_formatted = json.dumps(vector_result, indent=2) if vector_result else "Not retrieved (not needed for this query type)"
 
-        prompt = f"""You are an NBA statistics assistant. You have been provided with results from TWO sources:
+        # Build instructions based on what was retrieved
+        if query_type == "sql_only":
+            instructions = """QUERY TYPE: Statistical (SQL-only)
+Your task: Answer using the SQL database results below. This is a pure statistical query.
 
-1. SQL DATABASE (factual statistics - THIS IS YOUR SOURCE OF TRUTH FOR NUMBERS)
-2. VECTOR SEARCH (contextual information, opinions, analysis)
+CRITICAL RULES:
+1. Use SQL results as your primary source
+2. Be concise and factual
+3. If SQL results are empty or don't answer the question, say so clearly"""
+
+        elif query_type == "vector_only":
+            instructions = """QUERY TYPE: Contextual (Vector-only)
+Your task: Answer using the vector search results below. This is a contextual/opinion query.
+
+CRITICAL RULES:
+1. Use vector search results for opinions, debates, explanations
+2. Cite sources when mentioning specific information
+3. If vector results don't answer the question, say so clearly"""
+
+        else:  # hybrid
+            instructions = """QUERY TYPE: Hybrid (SQL + Vector)
+Your task: Combine both SQL and vector results to provide a comprehensive answer.
 
 CRITICAL RULES:
 1. SQL results are ALWAYS the source of truth for statistics, scores, numbers
-2. If SQL has the answer, use it (you may ignore vector if irrelevant)
+2. Use vector results for context, opinions, "why/how" explanations, background
 3. If SQL and vector conflict on factual stats, TRUST SQL
-4. Use vector results for context, opinions, "why/how" questions, background info
-5. Combine both intelligently when both add value
-6. If both sources are empty or irrelevant, say you don't have enough information
+4. Combine both intelligently when both add value
+5. If both sources are empty or irrelevant, say you don't have enough information"""
+
+        prompt = f"""You are an NBA statistics assistant.
+
+{instructions}
 
 USER QUESTION:
 {question}
@@ -229,7 +350,7 @@ CONVERSATION HISTORY:
 {conversation_history or "None"}
 
 Based on the above information, provide a complete, accurate answer to the user's question.
-Focus on being helpful and concise. If the results don't answer the question, say so clearly.
+Focus on being helpful and concise.
 
 Your answer:"""
 

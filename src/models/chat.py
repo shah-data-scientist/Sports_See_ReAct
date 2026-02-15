@@ -173,6 +173,10 @@ class ChatResponse(BaseModel):
         default=None,
         description="Generated SQL query (if SQL tool was used)",
     )
+    sql_results: Any | None = Field(
+        default=None,
+        description="SQL query results (if SQL tool was used) - can be list of tuples, list of dicts, or dict",
+    )
     visualization: Visualization | None = Field(
         default=None,
         description="Visualization data for statistical queries",

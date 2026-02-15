@@ -314,11 +314,11 @@ TestCase(
 
 #### Layer 2: Verify (Verification Scripts)
 
-**Location**: `src/evaluation/verify_ground_truth.py`
+**Location**: `src/evaluation/validator.py`
 
 Unified script validates that ground truth matches actual database for both SQL and Hybrid test cases:
 
-- `verify_ground_truth.py` — Runs expected SQL queries against real database, compares expected vs actual results
+- `validator.py` — Runs expected SQL queries against real database, compares expected vs actual results
 
 **Example**:
 ```
@@ -358,7 +358,7 @@ SQLOracle Check: "2485" found in response ✓ → Accurate
                      ▼
     ┌────────────────────────────────┐
     │ VERIFICATION (Validation)      │
-    │ └─ verify_ground_truth.py      │
+    │ └─ validator.py      │
     │    └─ Compare: expected vs DB  │
     └────────────────────┬───────────┘
                          │
@@ -387,8 +387,8 @@ SQLOracle Check: "2485" found in response ✓ → Accurate
 
 Each dataset uses a different ground truth methodology:
 
-- **SQL (80 cases)**: Direct database verification. Each test case includes `expected_sql` executed against `data/sql/nba_stats.db`, with exact results stored in `ground_truth_data`. Verified automatically by `verify_ground_truth.py sql`.
-- **Hybrid (50 cases)**: Database verification + descriptive analysis. SQL component verified against DB; contextual component written manually based on Reddit document content. Verified by `verify_ground_truth.py hybrid`.
+- **SQL (80 cases)**: Direct database verification. Each test case includes `expected_sql` executed against `data/sql/nba_stats.db`, with exact results stored in `ground_truth_data`. Verified automatically by `validator.py sql`.
+- **Hybrid (50 cases)**: Database verification + descriptive analysis. SQL component verified against DB; contextual component written manually based on Reddit document content. Verified by `validator.py hybrid`.
 - **Vector (75 cases)**: LLM-assisted descriptive expectations. Ground truth describes expected retrieval behavior (source documents, similarity ranges, key content) rather than exact values. Validated during evaluation via RAGAS metrics. Methodology documented in [vector_ground_truth_prompt.md](src/evaluation/verification/vector_ground_truth_prompt.md).
 
 ### Running Evaluations
@@ -408,13 +408,13 @@ poetry run python -m src.evaluation.runners.run_hybrid_evaluation
 
 ```bash
 # Verify all ground truth against database (SQL + Hybrid)
-poetry run python src/evaluation/verify_ground_truth.py
+poetry run python src/evaluation/validator.py
 
 # Verify SQL only (expected: 80/80)
-poetry run python src/evaluation/verify_ground_truth.py sql
+poetry run python src/evaluation/validator.py sql
 
 # Verify Hybrid only (expected: 50/50)
-poetry run python src/evaluation/verify_ground_truth.py hybrid
+poetry run python src/evaluation/validator.py hybrid
 ```
 
 ### Evaluation Metrics

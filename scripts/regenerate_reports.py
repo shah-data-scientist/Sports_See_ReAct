@@ -20,9 +20,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 def regenerate_hybrid_report():
     """Regenerate hybrid MD report from updated JSON."""
-    from src.evaluation.quality_analysis import analyze_results
-    from src.evaluation.consolidated_test_cases import ALL_TEST_CASES
-    from src.evaluation.unified_model import TestType
+    from src.evaluation.analyzer import analyze_results
+    from src.evaluation.test_data import ALL_TEST_CASES
+    from src.evaluation.models import TestType
 
     json_path = Path("evaluation_results/hybrid_evaluation_20260212_070628.json")
     data = json.loads(json_path.read_text(encoding="utf-8"))
@@ -40,9 +40,9 @@ def regenerate_hybrid_report():
 
 def regenerate_vector_report():
     """Regenerate vector MD report from updated JSON."""
-    from src.evaluation.quality_analysis import analyze_results
-    from src.evaluation.consolidated_test_cases import ALL_TEST_CASES
-    from src.evaluation.unified_model import TestType
+    from src.evaluation.analyzer import analyze_results
+    from src.evaluation.test_data import ALL_TEST_CASES
+    from src.evaluation.models import TestType
 
     json_path = Path("evaluation_results/vector_evaluation_20260212_055129.json")
     data = json.loads(json_path.read_text(encoding="utf-8"))

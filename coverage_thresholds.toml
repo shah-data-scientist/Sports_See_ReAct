@@ -1,50 +1,42 @@
 # Coverage Thresholds Configuration
-# Used by: scripts/global_policy/check_coverage_thresholds.py
-#
-# Tier definitions (generic — same across all projects):
-#   tier1 = Critical modules (user-facing, data integrity)
-#   tier2 = Standard modules (moderate risk)
-#   tier3 = Best effort (UI, scripts, analysis)
-#
-# To apply to a new project:
-#   1. Copy this file to project root
-#   2. Adjust [modules] section to match your src/ directories
-#   3. Tier thresholds are universal — change only if justified
+# Per GLOBAL_POLICY.md tier-based coverage hierarchy
 
 [overall]
-# Current: 78.45% (2026-02-12)
-# Initial target: 75% (achievable with current test suite)
-# Long-term goal: 80% (requires additional tests for chat.py, conversation.py, utils)
-target = 75
+# Overall project coverage target
+threshold = 80
 
-[thresholds]
-# Generic recommendations: tier1=90, tier2=70, tier3=50
-# Sports_See initial targets (current coverage baseline):
-# Tier 1: 77% (covers all except services at 77.0%)
-# Tier 2: 24% (covers utils at 24.2% — marked for improvement)
-# Tier 3: 50% (UI/scripts baseline)
-tier1 = 77
-tier2 = 24
-tier3 = 50
+[tiers.tier1]
+# TIER 1 — CRITICAL (≥90% coverage)
+# Modules where bugs cause user-visible failures or data loss
+threshold = 90
+modules = [
+    "src/services/",
+    "src/core/",
+    "src/models/",
+    "src/api/",
+    "src/tools/"
+]
 
-[modules]
-# Tier 1 — Critical: bugs here cause user-visible failures
-services = "tier1"
-core = "tier1"
-models = "tier1"
-api = "tier1"
-repositories = "tier1"
-tools = "tier1"
+[tiers.tier2]
+# TIER 2 — STANDARD (≥70% coverage)
+# Modules with moderate risk
+threshold = 70
+modules = [
+    "src/pipeline/",
+    "src/evaluation/models.py",
+    "src/evaluation/validator.py",
+    "src/utils/"
+]
 
-# Tier 2 — Standard: moderate risk, detectable failures
-pipeline = "tier2"
-evaluation = "tier2"
-utils = "tier2"
-
-# Tier 3 — Best effort: UI rendering, reports, static data
-ui = "tier3"
-
-[excluded_modules]
-# Modules to exclude from coverage checks (e.g., UI requiring live server/browser)
-# Set to true to exclude from threshold enforcement
-ui = true
+[tiers.tier3]
+# TIER 3 — BEST EFFORT (≥50% coverage)
+# Modules where testing has diminishing returns
+threshold = 50
+modules = [
+    "src/ui/",
+    "src/evaluation/evaluator.py",
+    "src/evaluation/analyzer.py",
+    "src/evaluation/metrics.py",
+    "src/evaluation/test_data.py",
+    "scripts/"
+]

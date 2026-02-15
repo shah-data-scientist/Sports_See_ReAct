@@ -8,8 +8,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.evaluation.consolidated_test_cases import ALL_TEST_CASES
-from src.evaluation.unified_model import TestType
+from src.evaluation.test_data import ALL_TEST_CASES
+from src.evaluation.models import TestType
 
 
 def print_box(title, content, width=80):

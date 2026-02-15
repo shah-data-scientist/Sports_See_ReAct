@@ -965,14 +965,14 @@ Sports_See/
 
 ## Entry: Unified Ground Truth Verification Script (2026-02-13)
 
-**Change**: Merged two separate verification scripts into one unified `src/evaluation/verify_ground_truth.py`.
+**Change**: Merged two separate verification scripts into one unified `src/evaluation/validator.py`.
 
 **Before**:
 - `src/evaluation/verification/verify_all_sql_ground_truth.py` — SQL-only verification
 - `src/evaluation/verification/verify_all_hybrid_ground_truth.py` — Hybrid-only verification
 
 **After**:
-- `src/evaluation/verify_ground_truth.py` — Unified verification with CLI args: `all` (default), `sql`, `hybrid`
+- `src/evaluation/validator.py` — Unified verification with CLI args: `all` (default), `sql`, `hybrid`
 
 **Deleted**:
 - `src/evaluation/verification/` folder (including `__init__.py`, both old scripts, `__pycache__`)

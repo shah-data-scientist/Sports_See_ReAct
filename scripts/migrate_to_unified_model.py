@@ -19,7 +19,7 @@ sys.path.insert(0, str(project_root))
 from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
 from src.evaluation.test_cases.vector_test_cases import EVALUATION_TEST_CASES as VECTOR_TEST_CASES
 from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
-from src.evaluation.unified_model import (
+from src.evaluation.models import (
     UnifiedTestCase,
     migrate_from_sql_test_case,
     migrate_from_vector_test_case,
@@ -73,7 +73,7 @@ def main():
     print("="*80)
     print("\nNext steps:")
     print("1. Review missing_fields_report.txt for fields that need to be filled")
-    print("2. Update test cases in src/evaluation/consolidated_test_cases.py")
+    print("2. Update test cases in src/evaluation/test_data.py")
     print("3. Run validation again to verify completeness")
     print("="*80 + "\n")
 
@@ -146,7 +146,7 @@ def generate_missing_fields_report(test_cases: list[UnifiedTestCase]):
 
 def save_unified_test_cases(test_cases: list[UnifiedTestCase]):
     """Save all unified test cases to a Python file."""
-    output_file = Path("src/evaluation/consolidated_test_cases.py")
+    output_file = Path("src/evaluation/test_data.py")
 
     with open(output_file, "w", encoding="utf-8") as f:
         f.write('"""\n')
@@ -167,7 +167,7 @@ def save_unified_test_cases(test_cases: list[UnifiedTestCase]):
         f.write('- Fill missing fields as needed for comprehensive evaluation\n')
         f.write('"""\n\n')
 
-        f.write('from src.evaluation.unified_model import UnifiedTestCase, TestType, QueryType\n\n')
+        f.write('from src.evaluation.models import UnifiedTestCase, TestType, QueryType\n\n')
 
         f.write('# ============================================================================\n')
         f.write('# ALL TEST CASES (206 total)\n')

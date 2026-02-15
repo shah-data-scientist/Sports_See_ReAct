@@ -1280,13 +1280,13 @@ poetry run python -m src.evaluation.runners.run_hybrid_evaluation
 
 # Ground Truth Verification
 # Verify all ground truth against database (SQL + Hybrid)
-poetry run python src/evaluation/verify_ground_truth.py
+poetry run python src/evaluation/validator.py
 
 # Verify SQL only (expected: 80/80)
-poetry run python src/evaluation/verify_ground_truth.py sql
+poetry run python src/evaluation/validator.py sql
 
 # Verify Hybrid only (expected: 50/50)
-poetry run python src/evaluation/verify_ground_truth.py hybrid
+poetry run python src/evaluation/validator.py hybrid
 ```
 
 **4. Development Workflow** (README.md lines 487-506):

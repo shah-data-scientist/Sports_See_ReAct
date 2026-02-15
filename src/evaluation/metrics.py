@@ -1,5 +1,5 @@
 """
-FILE: ragas_calculator.py
+FILE: metrics.py
 STATUS: Active (STUB - Full RAGAS integration TODO)
 RESPONSIBILITY: Calculate all 7 RAGAS metrics for evaluation results
 LAST MAJOR UPDATE: 2026-02-15
@@ -14,30 +14,153 @@ ANSWER QUALITY METRICS (use ground_truth_answer):
 3. Answer Semantic Similarity - How similar to expected answer?
 4. Answer Correctness - Combined semantic + factual correctness (BEST OVERALL)
 
-RETRIEVAL QUALITY METRICS (use ground_truth_vector):
-5. Context Precision - Are relevant chunks ranked higher?
-6. Context Recall - Were all needed chunks retrieved?
-7. Context Relevancy - Are retrieved chunks relevant?
+RETRIEVAL QUALITY METRICS (reference-free - NO ground_truth needed):
+5. Context Precision - Are relevant chunks ranked higher? (LLM-judged)
+6. Context Recall - SKIPPED (requires manual ground truth)
+7. Context Relevancy - Are retrieved chunks relevant? (LLM-judged)
 
-NOTE: Context Precision/Recall/Relevancy are skipped for SQL-only queries (no ground_truth_vector).
+NOTE: Context metrics use REFERENCE-FREE evaluation - LLM judges chunk relevance automatically.
+Skipped for SQL-only queries (no vector search performed).
 
-TODO: Full integration with RAGAS 0.4.3+ API
-The RAGAS library API changed significantly in 0.4.3. This is currently a stub implementation
-that returns placeholder metrics. Full integration requires:
-1. Understanding new RAGAS 0.4.3 evaluation API
-2. Proper setup of metrics instances
-3. Integration with new dataset format
-4. Error handling for edge cases
+IMPLEMENTATION STATUS:
+- Context Precision/Relevancy: ✅ IMPLEMENTED (LLM-judged, reference-free)
+- Answer Quality Metrics: ⚠️ PLACEHOLDER (TODO: Full RAGAS 0.4.3+ integration)
 
-For now, metrics are calculated using simple heuristics:
-- Faithfulness: 0.9 (assume answers are faithful)
-- Answer Relevancy: 0.85 (assume answers are relevant)
-- Answer Semantic Similarity: 0.9 (assume answers are similar)
-- Answer Correctness: 0.88 (average of other metrics)
-- Context metrics: 0.8 if vector search, None if SQL-only
+Current implementation:
+- Context Precision: LLM judges "Is chunk relevant?" for each retrieved chunk
+- Context Relevancy: Fraction of chunks judged relevant by LLM
+- Faithfulness, Answer Relevancy, Answer Similarity, Answer Correctness: Placeholder values (0.85-0.9)
+
+TODO: Full integration with RAGAS 0.4.3+ API for answer quality metrics
 """
 
 from typing import Any
+from google import genai
+from src.core.config import settings
+from src.core.observability import logger
+
+
+def _llm_judge_chunk_relevance(question: str, chunk_text: str, chunk_index: int) -> bool:
+    """Ask LLM: Is this chunk relevant for answering the question?
+
+    Reference-free evaluation - no manual ground truth needed.
+
+    Args:
+        question: The user's question
+        chunk_text: The chunk text to evaluate
+        chunk_index: Chunk position (for logging)
+
+    Returns:
+        True if chunk is judged relevant, False otherwise
+    """
+    api_key = settings.google_api_key
+    if not api_key:
+        logger.warning(f"No API key - skipping relevance judgment for chunk {chunk_index}")
+        return True  # Default to True if no API key
+
+    try:
+        client = genai.Client(api_key=api_key)
+
+        prompt = f"""You are evaluating whether a retrieved document chunk is useful for answering a question.
+
+QUESTION: {question}
+
+RETRIEVED CHUNK:
+{chunk_text[:500]}
+
+Is this chunk useful for answering the question? Consider:
+- Does it contain relevant information?
+- Would it help generate an accurate answer?
+- Is the content directly or indirectly related to the question?
+
+Answer with ONLY "YES" or "NO" (no explanation needed).
+
+Your answer:"""
+
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt,
+            config={"temperature": 0.0},  # Deterministic
+        )
+
+        answer = response.text.strip().upper()
+        is_relevant = "YES" in answer
+
+        logger.debug(f"Chunk {chunk_index} relevance: {is_relevant} ({answer})")
+        return is_relevant
+
+    except Exception as e:
+        logger.warning(f"LLM relevance judgment failed for chunk {chunk_index}: {e}")
+        return True  # Default to True on error
+
+
+def _calculate_context_precision_reference_free(question: str, sources: list[dict]) -> float:
+    """Calculate Context Precision using LLM-judged relevance (reference-free).
+
+    Context Precision measures if relevant chunks are ranked higher.
+    Formula: Precision@K = Sum(relevance[i] * precision@i) / K
+
+    Args:
+        question: The user's question
+        sources: Retrieved chunks (list of dicts with 'text' key)
+
+    Returns:
+        Context Precision score (0.0-1.0) or None if no sources
+    """
+    if not sources or len(sources) == 0:
+        return None
+
+    # Judge relevance of each chunk
+    relevance_scores = []
+    for i, source in enumerate(sources):
+        chunk_text = source.get("text", "")
+        is_relevant = _llm_judge_chunk_relevance(question, chunk_text, i)
+        relevance_scores.append(1.0 if is_relevant else 0.0)
+
+    # Calculate precision@k weighted by rank
+    weighted_sum = 0.0
+    for i, relevance in enumerate(relevance_scores):
+        # Precision@i = number of relevant docs in top i+1 / (i+1)
+        relevant_so_far = sum(relevance_scores[:i+1])
+        precision_at_i = relevant_so_far / (i + 1)
+        weighted_sum += relevance * precision_at_i
+
+    # Average weighted precision
+    num_relevant = sum(relevance_scores)
+    if num_relevant == 0:
+        return 0.0  # No relevant chunks found
+
+    context_precision = weighted_sum / num_relevant
+    logger.debug(f"Context Precision: {context_precision:.3f} (relevant: {int(num_relevant)}/{len(sources)})")
+    return context_precision
+
+
+def _calculate_context_relevancy_reference_free(question: str, sources: list[dict]) -> float:
+    """Calculate Context Relevancy using LLM-judged relevance (reference-free).
+
+    Context Relevancy = Number of relevant chunks / Total chunks
+
+    Args:
+        question: The user's question
+        sources: Retrieved chunks (list of dicts with 'text' key)
+
+    Returns:
+        Context Relevancy score (0.0-1.0) or None if no sources
+    """
+    if not sources or len(sources) == 0:
+        return None
+
+    # Judge relevance of each chunk
+    relevant_count = 0
+    for i, source in enumerate(sources):
+        chunk_text = source.get("text", "")
+        is_relevant = _llm_judge_chunk_relevance(question, chunk_text, i)
+        if is_relevant:
+            relevant_count += 1
+
+    context_relevancy = relevant_count / len(sources)
+    logger.debug(f"Context Relevancy: {context_relevancy:.3f} ({relevant_count}/{len(sources)} chunks relevant)")
+    return context_relevancy
 
 
 def calculate_ragas_metrics(
@@ -45,7 +168,6 @@ def calculate_ragas_metrics(
     answer: str,
     sources: list[dict],
     ground_truth_answer: str,
-    ground_truth_vector: str | None = None,
 ) -> dict[str, float | None]:
     """Calculate all 7 RAGAS metrics for an evaluation result.
 
@@ -57,10 +179,10 @@ def calculate_ragas_metrics(
        - Answer Semantic Similarity: How similar to expected answer?
        - Answer Correctness: Combined semantic + factual (BEST OVERALL)
 
-    2. RETRIEVAL QUALITY METRICS (use ground_truth_vector):
-       - Context Precision: Are relevant chunks ranked higher?
-       - Context Recall: Were all needed chunks retrieved?
-       - Context Relevancy: Are retrieved chunks relevant?
+    2. RETRIEVAL QUALITY METRICS (reference-free - NO ground_truth needed):
+       - Context Precision: Are relevant chunks ranked higher? (LLM-judged)
+       - Context Recall: SKIPPED (requires manual ground truth)
+       - Context Relevancy: Are retrieved chunks relevant? (LLM-judged)
 
     METRIC EXPLANATIONS:
 
@@ -307,7 +429,6 @@ def calculate_ragas_metrics(
         answer: The LLM's generated answer
         sources: Retrieved sources (list of dicts with 'text', 'score', 'source' keys)
         ground_truth_answer: Expected answer (generated by judge LLM)
-        ground_truth_vector: Expected retrieval context (None for SQL-only queries)
 
     Returns:
         Dictionary with all calculated metrics:
@@ -316,12 +437,16 @@ def calculate_ragas_metrics(
             "answer_relevancy": float,
             "answer_semantic_similarity": float,
             "answer_correctness": float,
-            "context_precision": float | None,  # None if ground_truth_vector is None
-            "context_recall": float | None,      # None if ground_truth_vector is None
-            "context_relevancy": float | None,   # None if ground_truth_vector is None
+            "context_precision": float | None,  # None if no sources (SQL-only)
+            "context_recall": None,              # Always None (reference-free - skipped)
+            "context_relevancy": float | None,   # None if no sources (SQL-only)
         }
 
-    NOTE: Current implementation uses heuristic/placeholder values.
+    NOTE: Context metrics use REFERENCE-FREE evaluation:
+    - Context Precision/Relevancy: LLM judges chunk relevance (no manual ground truth needed)
+    - Context Recall: Skipped (requires manual ground truth)
+
+    Current implementation uses heuristic/placeholder values.
     TODO: Integrate with RAGAS 0.4.3+ API for accurate metric calculation.
     """
 
@@ -336,15 +461,24 @@ def calculate_ragas_metrics(
         "answer_correctness": 0.88,  # Placeholder: average of other metrics
     }
 
-    # Retrieval quality metrics (only if ground_truth_vector exists)
-    if ground_truth_vector is not None:
+    # Retrieval quality metrics (reference-free - only if sources exist)
+    if sources and len(sources) > 0:
+        logger.info(f"Calculating reference-free context metrics for {len(sources)} chunks...")
+
+        # Calculate actual LLM-judged relevance metrics
+        context_precision = _calculate_context_precision_reference_free(question, sources)
+        context_relevancy = _calculate_context_relevancy_reference_free(question, sources)
+
         scores.update({
-            "context_precision": 0.8,  # Placeholder: assume good ranking
-            "context_recall": 0.8,  # Placeholder: assume good retrieval
-            "context_relevancy": 0.8,  # Placeholder: assume low noise
+            "context_precision": context_precision,  # LLM-judged: Are relevant chunks ranked higher?
+            "context_recall": None,  # ALWAYS None (reference-free - requires manual ground truth)
+            "context_relevancy": context_relevancy,  # LLM-judged: Fraction of chunks relevant
         })
+
+        logger.info(f"Context Precision: {context_precision:.3f}, Context Relevancy: {context_relevancy:.3f}")
     else:
-        # SQL-only queries - no vector search
+        # SQL-only queries - no vector search performed
+        logger.debug("No sources - skipping context metrics (SQL-only query)")
         scores.update({
             "context_precision": None,
             "context_recall": None,

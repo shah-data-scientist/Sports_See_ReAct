@@ -1,0 +1,40 @@
+[
+  {
+    "query": "Who are the top 5 scorers?",
+    "expected_type": "sql_only",
+    "actual_type": "agent",
+    "sql_executed": true,
+    "vector_executed": false,
+    "tools_used": [
+      "query_nba_database",
+      "create_visualization"
+    ],
+    "status": "PASS",
+    "answer": "The top 5 scorers are Shai Gilgeous-Alexander, Anthony Edwards, Nikola Jokić, Giannis Antetokounmpo, and Jayson Tatum.\n"
+  },
+  {
+    "query": "What do fans think about efficiency?",
+    "expected_type": "vector_only",
+    "actual_type": "agent",
+    "sql_executed": false,
+    "vector_executed": true,
+    "tools_used": [
+      "search_knowledge_base"
+    ],
+    "status": "PASS",
+    "answer": "Fan opinions on efficiency as a metric seem to vary. One Reddit comment suggests that efficiency is a \"useless\" metric (Reddit 3.pdf). Another commenter was surprised by the efficiency comparison betw..."
+  },
+  {
+    "query": "Who is Nikola Jokić?",
+    "expected_type": "hybrid",
+    "actual_type": "agent",
+    "sql_executed": true,
+    "vector_executed": true,
+    "tools_used": [
+      "query_nba_database",
+      "search_knowledge_base"
+    ],
+    "status": "PASS",
+    "answer": "Nikola Jokić plays for the Denver Nuggets (DEN) and is 30 years old. Some Reddit users have commented on his playing style, with one user mentioning his alleged flopping and perceived lack of defense...."
+  }
+]

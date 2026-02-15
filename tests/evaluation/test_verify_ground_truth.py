@@ -8,7 +8,7 @@ MAINTAINER: Shahu
 
 import pytest
 from unittest.mock import MagicMock, patch
-from src.evaluation.verify_ground_truth import (
+from src.evaluation.validator import (
     normalize_value,
     compare_results,
     query_db,
@@ -89,7 +89,7 @@ class TestCompareResults:
 class TestQueryDb:
     """Tests for query_db() function with mocked sqlite3."""
 
-    @patch("src.evaluation.verify_ground_truth.sqlite3.connect")
+    @patch("src.evaluation.validator.sqlite3.connect")
     def test_query_db_success(self, mock_connect):
         """Test query_db with mocked successful query execution."""
         # Arrange
@@ -113,7 +113,7 @@ class TestQueryDb:
         mock_cursor.execute.assert_called_once_with("SELECT name, pts FROM player_stats LIMIT 2")
         mock_conn.close.assert_called_once()
 
-    @patch("src.evaluation.verify_ground_truth.sqlite3.connect")
+    @patch("src.evaluation.validator.sqlite3.connect")
     def test_query_db_sql_error(self, mock_connect):
         """Test query_db with SQL execution error."""
         # Arrange
