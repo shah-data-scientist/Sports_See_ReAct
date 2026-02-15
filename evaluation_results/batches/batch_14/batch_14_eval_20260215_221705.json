@@ -1,0 +1,750 @@
+{
+  "batch_num": 14,
+  "timestamp": "20260215_221705",
+  "queries_tested": 10,
+  "results": [
+    {
+      "batch_num": 14,
+      "query_num": 1,
+      "original_index": 52,
+      "question": "Which of them plays for the Hawks?",
+      "test_type": "sql",
+      "category": "conversational_filter_followup",
+      "answer": "Trae Young, Dyson Daniels, Onyeka Okongwu, Zaccharie Risacher, Georges Niang, Caris LeVert, Jalen Johnson, Terance Mann, Clint Capela, Vít Krejčí, Garrison Mathews, Larry Nance Jr,, Mouhamed Gueye, Keaton Wallace, Dominick Barlow, Kobe Bufkin, Daeqwon Plowden, and Jacob Toppin play for the Hawks.\n\nSources: NBA Database",
+      "generated_sql": "SELECT name FROM players WHERE team_abbr = 'ATL';",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 1,
+        "joins": 0,
+        "filters": 1,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "create_visualization"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 8080.144166946411,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 14,
+      "query_num": 2,
+      "original_index": 53,
+      "question": "Show me the pts leaders this season",
+      "test_type": "sql",
+      "category": "conversational_stat_abbreviation",
+      "answer": "I can tell you that \"PTS\" refers to points scored per game. However, I don't have information about who the leading scorers are this season.\n\nSources: u/unknown (0 upvotes), u/unknown (0 upvotes), u/unknown (0 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "NBA Statistics Glossary\n================================================================================\n\nMETRIC: Player\nDescription: Nom du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: Team\nDescription: Équipe du joueur (code à 3 lettres)\n--------------------------------------------------------------------------------\n\nMETRIC: Age\nDescription: Âge du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: GP\nDescription: Nombre de matchs joués (Games Played)\n--------------------------------------------------------------------------------\n\nMETRIC: W\nDescription: Nombre de victoires de l'équipe lors des matchs joués\n--------------------------------------------------------------------------------\n\nMETRIC: L\nDescription: Nombre de défaites\n--------------------------------------------------------------------------------\n\nMETRIC: Min\nDescription: Minutes moyennes jouées par match\n--------------------------------------------------------------------------------\n\nMETRIC: PTS\nDescription: Points marqués en moyenne par match\n--------------------------------------------------------------------------------\n\nMETRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------",
+          "score": 51.07624696382172,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: OREB\nDescription: Rebonds offensifs\n--------------------------------------------------------------------------------\n\nMETRIC: DREB\nDescription: Rebonds défensifs\n--------------------------------------------------------------------------------\n\nMETRIC: REB\nDescription: Rebonds totaux\n--------------------------------------------------------------------------------\n\nMETRIC: AST\nDescription: Passes décisives (Assists)\n--------------------------------------------------------------------------------\n\nMETRIC: TOV\nDescription: Balles perdues (Turnovers)\n--------------------------------------------------------------------------------\n\nMETRIC: STL\nDescription: Interceptions (Steals)\n--------------------------------------------------------------------------------\n\nMETRIC: BLK\nDescription: Contres (Blocks)\n--------------------------------------------------------------------------------\n\nMETRIC: PF\nDescription: Fautes personnelles\n--------------------------------------------------------------------------------\n\nMETRIC: FP\nDescription: Fantasy Points\n--------------------------------------------------------------------------------\n\nMETRIC: DD2\nDescription: Double-doubles (≥10 dans deux catégories principales)\n--------------------------------------------------------------------------------\n\nMETRIC: TD3\nDescription: Triple-doubles (≥10 dans trois catégories principales)\n--------------------------------------------------------------------------------",
+          "score": 45.052733421325684,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------\n\nMETRIC: FGA\nDescription: Tirs tentés par match (Field Goals Attempted)\n--------------------------------------------------------------------------------\n\nMETRIC: FG%\nDescription: Pourcentage de réussite aux tirs\n--------------------------------------------------------------------------------\n\nMETRIC: 15:00:00\nDescription: Minutes jouées après 15:00 de jeu\n--------------------------------------------------------------------------------\n\nMETRIC: 3PA\nDescription: Tirs à 3 points tentés par match\n--------------------------------------------------------------------------------\n\nMETRIC: 3P%\nDescription: Pourcentage de réussite à 3 points\n--------------------------------------------------------------------------------\n\nMETRIC: FTM\nDescription: Lancers francs réussis (Free Throws Made)\n--------------------------------------------------------------------------------\n\nMETRIC: FTA\nDescription: Lancers francs tentés\n--------------------------------------------------------------------------------\n\nMETRIC: FT%\nDescription: Pourcentage de réussite aux lancers francs\n--------------------------------------------------------------------------------\n\nMETRIC: OREB\nDescription: Rebonds offensifs\n--------------------------------------------------------------------------------",
+          "score": 44.6476674079895,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (42/64) ===\nu/Relevant_Gold4912 (0 upvotes):\nWas north of 359 this season\n",
+          "score": 59.18371319770813,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (30/64) ===\nu/Kingmav24 (0 upvotes):\nthis might be the least watched finals of all time\n",
+          "score": 52.29202455933816,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (59/64) ===\nu/StanVanGhandi (0 upvotes):\nYes, would be excited to see what kind of numbers Paolo could put up if he had more creation and shooting: Hell, would be excited to see what Paolo's numbers look if the Magic were just ONE of the slowest pace team and just ONE of the lowest scoring teams and not dead last in both. wonder what he would average if the Magic were 25th in pace and 25th in scoring versus 3Oth. 4 1\n",
+          "score": 48.101678622007164,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (55/64) ===\nu/PootieTooGood (0 upvotes):\n1% Im praying that they do not believe Ty Jerome is their answer since 're the team with the cap space to pry him away from us\n",
+          "score": 47.68825721212671,
+          "source": "Reddit 1.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 4579.309940338135,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 14,
+      "query_num": 3,
+      "original_index": 54,
+      "question": "Who is the MVP this season?",
+      "test_type": "sql",
+      "category": "conversational_ambiguous",
+      "answer": "Shai Gilgeous-Alexander scored the most points this season with 2485 points. I don't have detailed analysis of who is considered to be the MVP this season.\n\nSources: NBA Database, u/mokaloca82 (457 upvotes), u/hqppp (1300 upvotes), u/mokaloca82 (457 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes)",
+      "generated_sql": "SELECT p.name, ps.pts FROM players p JOIN player_stats ps ON p.id = ps.player_id ORDER BY ps.pts DESC LIMIT 1;",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 2,
+        "joins": 1,
+        "filters": 0,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (40/111) ===\nu/GodWhyPlease (13 upvotes):\n~15 j Modifié il y a-15 j BruceBrownMVP ~15 j The same was said at the start of the season about how you guys and Denver fans wouldn't get toxic over the MVP since you have a shared love of Westbrook and we saw how that ended up\n",
+          "score": 64.84434843063354,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (43/166) ===\nu/NotUrAvgShitposter (16 upvotes):\n-10j East was weak but West was way too strong; especially when it came to guards. West had 3 MVP guards; the occasional healthy CP3, and Dame. You also had washed Kobe getting dumbasses voting him in and Klay when the Warriors averaged like 65+ wins season: That's like all of the non wild card guard slots guaranteed to be occupied. Like Ant wouldn't sniff an all star appearance some years in that era either and he's the best SG and top 10 rn.\n",
+          "score": 60.34429972234388,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (8/111) ===\nu/HitboxOfASnail (151 upvotes):\n~15 j Comm. du top 1% everyone wants to see the thunder lose; and SGA \"exposed\" , and Haliburton and the Pacers have had protagonist energy all playoffs. Will be a great series but this sub will be a dumpster fire lol\n",
+          "score": 60.26420703720173,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (28/64) ===\nu/TappedRidgeline (0 upvotes):\nRandle's playoff reputation really ignores the circumstances. He had actual poor playoff series against the Hawks; with 3 million year old DRose as the next best player on the roster; and then had like 3 ankle sprains in 2 weeks the next time the Knicks made the playoffs. This is his first opportunity to shine; and it's been to watch him and donte in these playoffs on another team. 4 1 &\n",
+          "score": 58.73016271736629,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (30/64) ===\nu/Kingmav24 (0 upvotes):\nthis might be the least watched finals of all time\n",
+          "score": 58.45960577116902,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (43/64) ===\nu/Klaytheist (0 upvotes):\nthink the issue is that don't really have a secondary playmaker. Their second best shot creator Shroeder. He's asked to do a lot as the sole focus of the opposing team.\n",
+          "score": 56.3425794014868,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (19/64) ===\nu/Relevant_Gold4912 (13 upvotes):\n19 get frustrated with his sloppy turnovers a lot but he needs just one more guy who can score or create their own shots for themselves or others. Hopefully it's Ivey. Cade is sloppy with the ball and forces a lot of bad turnovers but he's kind of in the position he has to. Too many possessions where we can't even the ball inside 30 feet of the basket if he doesn't touch the ball 4\n",
+          "score": 56.2736219509581,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (10/64) ===\nu/IGbaby245 (32 upvotes):\nRandle knows he can out muscle most guys one on one; and then makes the correct read when doubles come. He also plays defense with his chest, not hands so he doesn't get the fouls Kat did. Luka and Bron can't just shove Randle out of the way on every drive.\n",
+          "score": 54.7077244405462,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (50/64) ===\nu/georgiosauce (0 upvotes):\nMagic are down 3-1 despite injuring 3 Celtics starters along the way, 're solid trash 4 54\n",
+          "score": 54.62311281625347,
+          "source": "Reddit 1.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 6234.559535980225,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 14,
+      "query_num": 4,
+      "original_index": 55,
+      "question": "Show me players with good three-point shooting",
+      "test_type": "sql",
+      "category": "conversational_progressive_filtering",
+      "answer": "Randle is shooting 45% from three, which is a massive boost from his 33% career average.\n\nSources: u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (3/64) ===\nu/NotManyBuses (80 upvotes):\nYou must hate good offense; have been disgusted watching the Magic play\n",
+          "score": 64.02226686477661,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (55/64) ===\nu/PootieTooGood (0 upvotes):\n1% Im praying that they do not believe Ty Jerome is their answer since 're the team with the cap space to pry him away from us\n",
+          "score": 62.95849873111325,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (33/64) ===\nu/smkmn13 (0 upvotes):\nRandle shooting 45% from three is a massive boost for a 33% career guy. Balancing out Donte/NAW/Copley's rough shooting:\n",
+          "score": 51.68316365488951,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (58/64) ===\nu/Proof-Umpire-7718 (0 upvotes):\nMagic need to get some competent offensive playsrs; particularly some shooters, around him and Franz this offseason.\n",
+          "score": 51.63633045032154,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (15/64) ===\nu/Niceguydan8 (22 upvotes):\nFor me it's the teams and more so players. Paolo is the big standout for me\n",
+          "score": 51.52941943624131,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (47/64) ===\nu/xWolfsbane (0 upvotes):\nMagic have no shooters. It's like watching the early 20O0s. don't mind it, but won't win without a 3 ball.\n",
+          "score": 51.25771367517218,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (54/64) ===\nu/Other-Owl4441 (0 upvotes):\nLove Ivey but isn't the ideal profile for that missing piece a shot creator who's a knockdown shooter, instead?\n",
+          "score": 51.1656470406619,
+          "source": "Reddit 1.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.3333333333333333,
+        "context_recall": null,
+        "context_relevancy": 0.14285714285714285
+      },
+      "processing_time_ms": 3114.217519760132,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.333 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.143 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 14,
+      "query_num": 5,
+      "original_index": 132,
+      "question": "What do people debate about his efficiency?",
+      "test_type": "vector",
+      "category": "conversational",
+      "answer": "People debate the usefulness of efficiency as a metric when evaluating Reggie Miller. Some argue that he wasn't a \"pure\" point guard and wasn't consistently able to take advantage of double teams because he wasn't enough of a distributor. Others question the sorting and calculation methods used in efficiency statistics, especially when comparing players across different eras.\n\nSources: u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (56/166) ===\nu/costelci (4 upvotes):\n-10 j You could argue it had the best engineering ever though; as it was the furthest ahead of the competition operating with the same technology. Relative stats are a way of comparing sports people across eras. Whether comparing people of different eras matters in any way is up to you | guess.\n",
+          "score": 66.49383962154388,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (155/166) ===\nu/False_Pear1860 (0 upvotes):\n~10j What is this table sorted by?? Though it was crazy that was so far down the list, but then realized he should be like 3rd place if sorted by rTS\n",
+          "score": 62.69609843027685,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (65/166) ===\nu/chunksss (0 upvotes):\n-10 j Was he though? He was never really a \"pure\" point guard; more so a strong scorer and a plus defender. Using the caveat of pure to try and elevate him doesnt make sense when he wasn't really that archetype; and he was a clear notch below 4-5 PGs in the west every year he got an all star , scoring or passing wise: Hell, he was only ever even top 10 in assists 3 times He was a guard and clearly a notch below the best in the league; hence why he only the single all nba selection. Pretty much every year of his prime; CP3, Westbrook; Harden and Lillard were clearly better than him thats just in the West 0 11\n",
+          "score": 59.57963566653652,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (162/166) ===\nu/Javd318 (0 upvotes):\n~7j Really illuminates how useless efficiency is as a metric\n",
+          "score": 52.270033955574036,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (153/166) ===\nu/PagelTheReal18 (0 upvotes):\n~10 j don't agree with you: But thanks for abusing the downvote button. And note; did not and don't intend on EVER downvoting someone over a difference of opinion:\n",
+          "score": 51.7617404460907,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (152/166) ===\nu/man (0 upvotes):\n-10 j mean this just isn't true: You couldn't even play defense in the same ways you can now where \"gravity\" is a and Reggie wasn't nearly enough of a distributor to consistently take advantage of double teams. 4 1\n",
+          "score": 51.661362648010254,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (157/166) ===\nu/Zazi751 (0 upvotes):\n-10j If you don't also provide how rTS is calculated then the whole list is garbage. Some of these guys played through multiple eras with significant shifts\n",
+          "score": 51.62840962409973,
+          "source": "Reddit 3.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 1.0,
+        "context_recall": null,
+        "context_relevancy": 1.0
+      },
+      "processing_time_ms": 3031.904697418213,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 14,
+      "query_num": 6,
+      "original_index": 133,
+      "question": "Tell me about home court advantage in playoffs.",
+      "test_type": "vector",
+      "category": "conversational",
+      "answer": "I don't have specific statistics regarding home court advantage in the playoffs. However, I did find a discussion about teams that didn't have home court advantage until the NBA Finals, and the 2020 Lakers and Heat are mentioned as teams that didn't have home court advantage throughout the entire playoffs.\n\nSources: NBA Database, u/DonT012 (272 upvotes), u/DonT012 (272 upvotes), u/DonT012 (272 upvotes), u/DonT012 (272 upvotes), u/DonT012 (272 upvotes)",
+      "generated_sql": null,
+      "sql_complexity": null,
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (19/33) ===\nu/DemonsReturns7 (0 upvotes):\n-12 j But did have home court adv in the finals though? don't remember U 2\n",
+          "score": 65.60231804847717,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (10/33) ===\nu/Turd_fergu5On (4 upvotes):\n-12 j Im not sure any hockey teams home court tbh.\n",
+          "score": 65.28764871698287,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (6/33) ===\nu/CapriciousManchild (13 upvotes):\n-12 j 2020 lakers and heat never had home court the entire playoffs for every game\n",
+          "score": 65.11867680989144,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (9/33) ===\nu/runevault (4 upvotes):\n~11 j Comm. du top 1% The funny was the Nuggets took their foot off the gas after getting a 7 game lead over the 2 seed Grizz and people worried were throwing away home court in the finals because at least the top 2 seeds in the east had better records Instead Nuggets faced the Heat loll\n",
+          "score": 64.77514720209614,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (12/33) ===\nu/HeresTheAnswer (4 upvotes):\n-12 j you could be any seed below Ath. If both teams were 8th seeds the one with better record would have home court\n",
+          "score": 64.71291635455133,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (20/33) ===\nu/hickok3 (0 upvotes):\n-12 j Comm. du top 1% No, Denver was the 1 seed iirc; and at the very least had home court. U 7\n",
+          "score": 64.37307442606692,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (15/33) ===\nu/Ladnil (0 upvotes):\nIt does prevent tanking. Just not 100% of it. But there are degrees of this 4 1\n",
+          "score": 64.29289856534089,
+          "source": "Reddit 4.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 4440.61541557312,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 14,
+      "query_num": 7,
+      "original_index": 134,
+      "question": "Going back to efficiency, who else is considered efficient?",
+      "test_type": "vector",
+      "category": "conversational",
+      "answer": "Kai Jones, Jarrett Allen, Patrick Baldwin Jr, Jaxson Hayes, and Daniel Gafford are considered efficient.\n\nSources: NBA Database, u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes)",
+      "generated_sql": "SELECT p.name, ps.ts_pct FROM players p JOIN player_stats ps ON p.id = ps.player_id WHERE ps.gp >= 20 ORDER BY ps.ts_pct DESC LIMIT 5;",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 3,
+        "joins": 1,
+        "filters": 1,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base",
+        "create_visualization"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (46/166) ===\nu/Sad_Bathroom1448 (13 upvotes):\n-10j https:/lwww reddit.comlrInbalcommentsl /1/161bplreggie miller_is top they deep hqppp top being 210 j point top Reggie Miller is the most efficient first option in NBA playoff history The modern NBA the most efficient NBA isn't just about rule changes; it's that too; but moreso it's offensive strategy centered around maximizing efficiency; and IMO players who are collectively more talented than ever. No reason why the player with the highest absolute TS% shouldn't be considered the most efficient in history 4\n",
+          "score": 70.09530305862427,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (24/166) ===\nu/UniversityOk5928 (42 upvotes):\n-10 j The question was who is the most valuable to a franchise. Yall love arguing without reading the question 0\n",
+          "score": 67.0764442991464,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (95/166) ===\nu/PensiveinNJ (0 upvotes):\n-10 j Chuck was a monster who was unlucky to play a lot of his coming up against Jordan and then Hakeem. 4 11\n",
+          "score": 66.63712166365087,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (79/166) ===\nu/Unusual-Weather1902 (0 upvotes):\n~10 j Didn't expect Kobe to be more efficient than Bird\n",
+          "score": 62.20961629282833,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (145/166) ===\nu/Virtual-Database-238 (0 upvotes):\n-10i remember checking during the 2022-2023 season and AD had the highest playoff TS% ever, with Kawhi right behind him. think that Gobert and Ayton have since played enough games to be counted and now they have the highest. What's AD's rTS?\n",
+          "score": 61.70040901063784,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (111/166) ===\nu/GreedyWarlord (0 upvotes):\n-10 j 3rd best SG of all time; arguably; top 5 definitely: Won 3 chips. One with a waning Shaq: That doesn't mean he was necessarily a more efficient scorer. https:Ilwww reddit.comlrInbalcomments/1/161bplreggie miller_is Jerry top guard top they' 10 j Reggie Miller is the most efficient first option in NBA playoff history there is an argument to say that Reggie may be the Sth most valuable guard for a single franchise ever after Jordan; Magic; Curry, and Kobe Im just arguing this point. And after rereading it, Zeke is ahead of Reggie too\n",
+          "score": 60.85531949895904,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (162/166) ===\nu/Javd318 (0 upvotes):\n~7j Really illuminates how useless efficiency is as a metric\n",
+          "score": 60.340104726697405,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (82/166) ===\nu/Kaltho (0 upvotes):\n10j Wdym its sorted by row number\n",
+          "score": 59.57237897337308,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (28/166) ===\nu/MarkoSeke (33 upvotes):\n-10j TS rewards three point shooters. Also it's not \"low\" this is a list of the of all time\n",
+          "score": 59.56872966684669,
+          "source": "Reddit 3.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 1.0,
+        "context_recall": null,
+        "context_relevancy": 1.0
+      },
+      "processing_time_ms": 4325.986862182617,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 14,
+      "query_num": 8,
+      "original_index": 135,
+      "question": "Returning to home court, which teams historically lacked it?",
+      "test_type": "vector",
+      "category": "conversational",
+      "answer": "The teams that historically lacked home court advantage, based on win percentage, are: Utah Jazz, Charlotte Hornets, Philadelphia 76ers, New Orleans Pelicans, and Washington Wizards.\n\nSources: NBA Database, u/DonT012 (272 upvotes), u/DonT012 (272 upvotes), u/DonT012 (272 upvotes), u/DonT012 (272 upvotes), u/DonT012 (272 upvotes)",
+      "generated_sql": "SELECT t.name, AVG(CASE WHEN ps.w + ps.l > 0 THEN CAST(ps.w AS FLOAT) / (ps.w + ps.l) ELSE NULL END) AS win_percentage FROM teams t JOIN players p ON t.abbreviation = p.team_abbr JOIN player_stats ps ON p.id = ps.player_id GROUP BY t.name ORDER BY win_percentage ASC LIMIT 5;",
+      "sql_complexity": {
+        "level": "Moderate",
+        "score": 7,
+        "joins": 2,
+        "filters": 0,
+        "aggregation": true,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base",
+        "create_visualization"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (4/33) ===\nu/iustmefishes (26 upvotes):\n~12 j The play-in is worthwhile for its own sake. It's a few mini-Game 7s amongst not-great but not - completely-awful teams which makes for a nice appetizer going into the playoffs. Personally find it very interesting to see more flawed average teams in that situation as you get to learn things about teams and players you otherwise wouldn't; because they'd either miss the playoffs entirely or get bounced quickly in the first round by a much better team_ re: the Mavs, don't think tanked; it was actually disastrous for them to miss the playoffs after the Luka trade and it was almost entirely down to injuries got lucky in the lottery but we know what their odds were; and it's really not worth tanking out of the play-in for such low odds. A statistical fluke doesn't change that\n",
+          "score": 70.4106056690216,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (14/33) ===\nu/almondsandrice69 (0 upvotes):\nit only exists for an extra 4 games of revenue; but would not mind if reverted it to the system from the bubble; where it only kicked in if the teams were within a certain number of games of each other. in 2024, 8-seed Miami won more games than the 9-seed Bulls & this year; the grizzlies won 8 more games than the 9-seed there's absolutely no reason why either of those teams needed to have a play-in game.\n",
+          "score": 69.06625874695432,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (32/33) ===\nu/Maleficent_Resolve44 (0 upvotes):\nHasn't happened yet. You'd need two proper low seeds to come out of both the west and east. Never been done before because the best teams usually get the highest seeds. 4 1\n",
+          "score": 68.3553131714573,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (7/33) ===\nu/ISalty_Watermelon (12 upvotes):\n-12j '1l066qq/which_nba home_court advantager they They They Which NBA team did not have home court advantage until the NBA Finals? A 9th or 1Oth placed team is almost guaranteed to smashed in the Ist round, and has pretty much no chance of making the Finals It was cool that the 1Oth placed Heat made the playoffs until lost to the Cavs in one of those most uncompetitive series of all time And the argument that it prevents tanking falls somewhat short when the Mavericks have already tanked to avoid the play-in; and then got rewarded for it by keeping their pick and drafting Lively _\n",
+          "score": 67.17649222381192,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (10/33) ===\nu/Turd_fergu5On (4 upvotes):\n-12 j Im not sure any hockey teams home court tbh.\n",
+          "score": 66.38146867695922,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (12/33) ===\nu/HeresTheAnswer (4 upvotes):\n-12 j you could be any seed below Ath. If both teams were 8th seeds the one with better record would have home court\n",
+          "score": 66.13977275175701,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (1/33) ===\nu/ADE (240 upvotes):\n500 adidas fr 55555_55555 ~12 j Six teams have made the Finals with lower than a 4 seed and none of them have had home court in the Finals. Think the answer is none; at least in the modern NBA\n",
+          "score": 65.6221074986795,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (25/33) ===\nu/SourBerry1425 (0 upvotes):\n-12 j Comm. du top 1% Don't know off the top of my head but bet this has happened to some Western Conference team when the conferences were truly lopsided. 4 5\n",
+          "score": 65.22656695881328,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (23/33) ===\nu/ionos (0 upvotes):\najustable en un clic Inclus : protection DDoS, anti-malware et sauvegardes quotidiennes. ionos fr Heberismnent 1€ hr37 yousaytomaco -12j https:llwww reddit.comlrInbalcomments/1I066qq/which_nba home_court advantager they thing they They Which NBA team did not have home court advantage until the NBA Finals? would really need a very lopsided difference between conference; like in 2008 when Golden State missed the playoffs at 48-34 in the west but the Cavs could be a Sth seed at 45-37.That year, for example; had the Suns and Rockets (both 55-27 and the 6th and Sth seed) made a run (not as crazy as it sounds the Lakers were Ist at only 57-25), with the Suns going to the finals, and the Magic (52-30) gotten hot and also gone ot the finals, like they did next year, the Suns would have been the lower seed each round until the finals\n",
+          "score": 64.32061624756103,
+          "source": "Reddit 4.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.2,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 5461.256742477417,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.200 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 14,
+      "query_num": 9,
+      "original_index": 181,
+      "question": "Show me the Pacers' team stats — why have fans found them impressive this season?",
+      "test_type": "hybrid",
+      "category": "hybrid_team_profile",
+      "answer": "The Indiana Pacers have accumulated 9630 points, 3441 rebounds, 2395 assists, 700 steals, and 457 blocks.\n\nFans find the Pacers impressive because their offense is no joke, they play with more ball movement, and everyone gets involved. They've also had some exciting comeback wins and are a fun team to watch.\n\nSources: NBA Database, u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes), u/mokaloca82 (457 upvotes), u/mokaloca82 (457 upvotes), u/mokaloca82 (457 upvotes)",
+      "generated_sql": "SELECT t.name, SUM(ps.pts) as total_pts, SUM(ps.reb) as total_reb, SUM(ps.ast) as total_ast, SUM(ps.stl) as total_stl, SUM(ps.blk) as total_blk FROM teams t JOIN players p ON t.abbreviation = p.team_abbr JOIN player_stats ps ON p.id = ps.player_id WHERE t.abbreviation = 'IND' GROUP BY t.name;",
+      "sql_complexity": {
+        "level": "Moderate",
+        "score": 8,
+        "joins": 2,
+        "filters": 1,
+        "aggregation": true,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (5/64) ===\nu/No_Albatross916 (57 upvotes):\n19 Indiana and Minnesota to me\n",
+          "score": 69.41543102264404,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (17/64) ===\nu/HS941317 (16 upvotes):\nIndiana but kind of expected it. really think they have a legit shot against the Cavs next round: Their offense is no joke:\n",
+          "score": 69.23511146766091,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (37/111) ===\nu/Ical679 (15 upvotes):\n~15j It was fitting that HHH was in attendance last night; wrestling fans are another group that will take TV ratings and ticket sales as an indicator of quality rather than the quality of the actual content. Pacers are my backup favorite after the Celtics because they're just so damn fun to watch.\n",
+          "score": 68.24655357569473,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (108/111) ===\nu/skj458 (0 upvotes):\n-15 j OKC's offense is more heliocentric around Shai, especially in the half court. Shai is undeniably great; but he isn't the most exciting to watch with all the flopping and foul baiting. Pacers play with more ball movement and everyone gets involved. Pacers have also had some comeback wins which have been exciting to watch.\n",
+          "score": 65.80765985579734,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (27/111) ===\nu/cactusmanbwl9o (24 upvotes):\n~15 j This. The amount of people in game threads saying 'WOW, didn't know the Pacers played like this\" is insane. Hibbert: Y'all mother fxckers don't watch us play.\n",
+          "score": 64.07910501970174,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (6/64) ===\nu/ProvocativeHotTakes (51 upvotes):\nPistons are one shot creator from an ECF contending team imo.\n",
+          "score": 63.93864851248082,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (59/64) ===\nu/StanVanGhandi (0 upvotes):\nYes, would be excited to see what kind of numbers Paolo could put up if he had more creation and shooting: Hell, would be excited to see what Paolo's numbers look if the Magic were just ONE of the slowest pace team and just ONE of the lowest scoring teams and not dead last in both. wonder what he would average if the Magic were 25th in pace and 25th in scoring versus 3Oth. 4 1\n",
+          "score": 63.17782358745602,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (35/111) ===\nu/dontletmecook73 (17 upvotes):\n-15 j Comm. du top 1% think so too. Both teams are very fun to in my opinion. OKC has a historic defense and the Pacers play so fast and fun\n",
+          "score": 63.07683731530477,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (11/64) ===\nu/bronet (31 upvotes):\nHoping we get T-wolves vs Pacers in the finals so we get some real beyblade duel action\n",
+          "score": 62.49060074907656,
+          "source": "Reddit 1.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 1.0,
+        "context_recall": null,
+        "context_relevancy": 0.2222222222222222
+      },
+      "processing_time_ms": 7215.135812759399,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.222 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 14,
+      "query_num": 10,
+      "original_index": 182,
+      "question": "Which young players under 25 are putting up the best numbers, and what do fans expect from the next generation?",
+      "test_type": "hybrid",
+      "category": "hybrid_young_talent",
+      "answer": "Paolo Banchero and Franz Wagner are considered a dynamic young duo. Some think that Paolo Banchero could put up even better numbers if his team weren't last in pace and scoring. There is hope that with health, more 3-point shooting, and the continued growth of Paolo and the Wagners, the Magic will be a regular conference contender.\n\nSources: u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (59/64) ===\nu/StanVanGhandi (0 upvotes):\nYes, would be excited to see what kind of numbers Paolo could put up if he had more creation and shooting: Hell, would be excited to see what Paolo's numbers look if the Magic were just ONE of the slowest pace team and just ONE of the lowest scoring teams and not dead last in both. wonder what he would average if the Magic were 25th in pace and 25th in scoring versus 3Oth. 4 1\n",
+          "score": 67.6943427324295,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (28/64) ===\nu/TappedRidgeline (0 upvotes):\nRandle's playoff reputation really ignores the circumstances. He had actual poor playoff series against the Hawks; with 3 million year old DRose as the next best player on the roster; and then had like 3 ankle sprains in 2 weeks the next time the Knicks made the playoffs. This is his first opportunity to shine; and it's been to watch him and donte in these playoffs on another team. 4 1 &\n",
+          "score": 62.92890271367379,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (55/64) ===\nu/PootieTooGood (0 upvotes):\n1% Im praying that they do not believe Ty Jerome is their answer since 're the team with the cap space to pry him away from us\n",
+          "score": 62.91952962125093,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (49/64) ===\nu/-1m (0 upvotes):\nPaolo and Franz have been a dynamic duo this whole series agaisnt one of the best defensive teams in basketball plus the defending champs. Yes the supporting cast has been laughably bad at times around them offensively but they their asses off and really giving the Celtics a fight despite missing Suggs and the other Wagner brother. thkkk their floor spacers and average PG away from being an true contender -24\n",
+          "score": 60.97216889285943,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (20/64) ===\nu/BonesllX (12 upvotes):\nMagic is one of those \"if they figure it out; they're gonna be scary\" examples. I've been pretty high on them for 2+ seasons. Hoping for health for them next will be a regular conference contender if get a little more 3pt shooting and continue to ride the growth of Paolo and the Wagners\n",
+          "score": 58.96340415512556,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (9/64) ===\nu/flyingcrayons (36 upvotes):\nRandle has been past beyblade mode for years now; unfortunately he's been hurt the last few times the Knicks were in the playoffs and everyone was watching so people still think he's the Randle from 4-5 years ago\n",
+          "score": 58.56697750610472,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (15/64) ===\nu/Niceguydan8 (22 upvotes):\nFor me it's the teams and more so players. Paolo is the big standout for me\n",
+          "score": 56.77546359287744,
+          "source": "Reddit 1.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 1.0,
+        "context_recall": null,
+        "context_relevancy": 1.0
+      },
+      "processing_time_ms": 8714.282751083374,
+      "success": true,
+      "issues": []
+    }
+  ]
+}

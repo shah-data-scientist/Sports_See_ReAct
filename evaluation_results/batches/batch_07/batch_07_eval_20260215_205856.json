@@ -1,0 +1,665 @@
+{
+  "batch_num": 7,
+  "timestamp": "20260215_205856",
+  "queries_tested": 10,
+  "results": [
+    {
+      "batch_num": 7,
+      "query_num": 1,
+      "original_index": 24,
+      "question": "How many players scored over 1000 points?",
+      "test_type": "sql",
+      "category": "aggregation_sql_count",
+      "answer": "84 players scored over 1000 points.\n\nSources: NBA Database",
+      "generated_sql": "SELECT COUNT(*) FROM player_stats WHERE pts > 1000;",
+      "sql_complexity": {
+        "level": "Moderate",
+        "score": 4,
+        "joins": 0,
+        "filters": 1,
+        "aggregation": true,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 4730.904579162598,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 7,
+      "query_num": 2,
+      "original_index": 25,
+      "question": "How many players have a true shooting percentage over 60%?",
+      "test_type": "sql",
+      "category": "aggregation_sql_count",
+      "answer": "142 players have a true shooting percentage over 60%.\n\nSources: NBA Database",
+      "generated_sql": "SELECT COUNT(*) FROM player_stats WHERE ts_pct > 60;",
+      "sql_complexity": {
+        "level": "Moderate",
+        "score": 4,
+        "joins": 0,
+        "filters": 1,
+        "aggregation": true,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 2667.5474643707275,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 7,
+      "query_num": 3,
+      "original_index": 26,
+      "question": "How many players have more than 500 assists?",
+      "test_type": "sql",
+      "category": "aggregation_sql_count",
+      "answer": "There are 10 players with more than 500 assists.\n\nSources: NBA Database",
+      "generated_sql": "SELECT COUNT(*) FROM players p JOIN player_stats ps ON p.id = ps.player_id WHERE ps.ast > 500;",
+      "sql_complexity": {
+        "level": "Moderate",
+        "score": 6,
+        "joins": 1,
+        "filters": 1,
+        "aggregation": true,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 2676.1975288391113,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 7,
+      "query_num": 4,
+      "original_index": 27,
+      "question": "How many players played more than 50 games?",
+      "test_type": "sql",
+      "category": "aggregation_sql_count",
+      "answer": "282 players played more than 50 games.\n\nSources: NBA Database",
+      "generated_sql": "SELECT COUNT(*) FROM player_stats WHERE gp > 50;",
+      "sql_complexity": {
+        "level": "Moderate",
+        "score": 4,
+        "joins": 0,
+        "filters": 1,
+        "aggregation": true,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 2661.1435413360596,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 7,
+      "query_num": 5,
+      "original_index": 104,
+      "question": "What is a triple-double?",
+      "test_type": "vector",
+      "category": "simple",
+      "answer": "A triple-double is when a player records 10 or more in three of the five main statistical categories: points, rebounds, assists, steals, and blocks.\n\nSources: NBA Database, u/unknown (0 upvotes), u/unknown (0 upvotes), u/unknown (0 upvotes), u/mokaloca82 (457 upvotes), u/mokaloca82 (457 upvotes)",
+      "generated_sql": null,
+      "sql_complexity": null,
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "METRIC: OREB\nDescription: Rebonds offensifs\n--------------------------------------------------------------------------------\n\nMETRIC: DREB\nDescription: Rebonds défensifs\n--------------------------------------------------------------------------------\n\nMETRIC: REB\nDescription: Rebonds totaux\n--------------------------------------------------------------------------------\n\nMETRIC: AST\nDescription: Passes décisives (Assists)\n--------------------------------------------------------------------------------\n\nMETRIC: TOV\nDescription: Balles perdues (Turnovers)\n--------------------------------------------------------------------------------\n\nMETRIC: STL\nDescription: Interceptions (Steals)\n--------------------------------------------------------------------------------\n\nMETRIC: BLK\nDescription: Contres (Blocks)\n--------------------------------------------------------------------------------\n\nMETRIC: PF\nDescription: Fautes personnelles\n--------------------------------------------------------------------------------\n\nMETRIC: FP\nDescription: Fantasy Points\n--------------------------------------------------------------------------------\n\nMETRIC: DD2\nDescription: Double-doubles (≥10 dans deux catégories principales)\n--------------------------------------------------------------------------------\n\nMETRIC: TD3\nDescription: Triple-doubles (≥10 dans trois catégories principales)\n--------------------------------------------------------------------------------",
+          "score": 51.97101593017578,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "NBA Statistics Glossary\n================================================================================\n\nMETRIC: Player\nDescription: Nom du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: Team\nDescription: Équipe du joueur (code à 3 lettres)\n--------------------------------------------------------------------------------\n\nMETRIC: Age\nDescription: Âge du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: GP\nDescription: Nombre de matchs joués (Games Played)\n--------------------------------------------------------------------------------\n\nMETRIC: W\nDescription: Nombre de victoires de l'équipe lors des matchs joués\n--------------------------------------------------------------------------------\n\nMETRIC: L\nDescription: Nombre de défaites\n--------------------------------------------------------------------------------\n\nMETRIC: Min\nDescription: Minutes moyennes jouées par match\n--------------------------------------------------------------------------------\n\nMETRIC: PTS\nDescription: Points marqués en moyenne par match\n--------------------------------------------------------------------------------\n\nMETRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------",
+          "score": 51.520792841911316,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------\n\nMETRIC: FGA\nDescription: Tirs tentés par match (Field Goals Attempted)\n--------------------------------------------------------------------------------\n\nMETRIC: FG%\nDescription: Pourcentage de réussite aux tirs\n--------------------------------------------------------------------------------\n\nMETRIC: 15:00:00\nDescription: Minutes jouées après 15:00 de jeu\n--------------------------------------------------------------------------------\n\nMETRIC: 3PA\nDescription: Tirs à 3 points tentés par match\n--------------------------------------------------------------------------------\n\nMETRIC: 3P%\nDescription: Pourcentage de réussite à 3 points\n--------------------------------------------------------------------------------\n\nMETRIC: FTM\nDescription: Lancers francs réussis (Free Throws Made)\n--------------------------------------------------------------------------------\n\nMETRIC: FTA\nDescription: Lancers francs tentés\n--------------------------------------------------------------------------------\n\nMETRIC: FT%\nDescription: Pourcentage de réussite aux lancers francs\n--------------------------------------------------------------------------------\n\nMETRIC: OREB\nDescription: Rebonds offensifs\n--------------------------------------------------------------------------------",
+          "score": 50.05904793739319,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (106/111) ===\nu/ND7020 (0 upvotes):\n-15 j Comm. du 1% the_two best_teams the playoffsl they day top bitching talking top How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is that's true or not anyway); and 2. Those saying the Thunder will win easily. think (and hope) that's wrong. If you believe the Thunder's defense will just smother the Pacers, then yes, it will be a snooze, particularly as don't play an exciting brand of basketball. BUT the Pacers play very exciting ball, Carlisle is a hell of a coach; their PG doesn't turn the ball over, and are great at dictating the pace of games. They've been counted out a lot. Im not counting them out in the finals.\n",
+          "score": 61.83548450469971,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (76/111) ===\nu/dalivo (0 upvotes):\n~15 j It'Il be a snooze fest because OKC is going to steamroll Indiana https:/lwww reddit.comlrInbalcomments/1kxixih/how_is_it_that_the_two best_teams_ the playoffsl they' they they they pro How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is Which is so ironic because ratings be down (which costs them money and nobody else) because of them directly. 4 1\n",
+          "score": 61.63253058536358,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (40/111) ===\nu/GodWhyPlease (13 upvotes):\n~15 j Modifié il y a-15 j BruceBrownMVP ~15 j The same was said at the start of the season about how you guys and Denver fans wouldn't get toxic over the MVP since you have a shared love of Westbrook and we saw how that ended up\n",
+          "score": 60.8172003353789,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (38/111) ===\nu/the_two (14 upvotes):\nbest_teams_ the_playoffsl Bay top Bay bay have How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is tne doors OT tneir establsned tavorites 0\n",
+          "score": 60.75070623342195,
+          "source": "Reddit 2.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 6415.346384048462,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 7,
+      "query_num": 6,
+      "original_index": 105,
+      "question": "Explain the difference between man-to-man and zone defense.",
+      "test_type": "vector",
+      "category": "complex",
+      "answer": "I am sorry, but I don't have information about the difference between man-to-man and zone defense.\n\nSources: u/MannerSuperb (31 upvotes), u/mokaloca82 (457 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (46/64) ===\nu/NotManyBuses (0 upvotes):\nare; the difference is have Steph. You have Van Vleet. 4 1\n",
+          "score": 63.19381833076477,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (5/111) ===\nu/twrs_29 (210 upvotes):\n~15 j Comm. du top 1% doubt it will even be extremely toxic between the Pacers and Thunder fans, mostly just everyone else\n",
+          "score": 62.45550512886165,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (10/64) ===\nu/IGbaby245 (32 upvotes):\nRandle knows he can out muscle most guys one on one; and then makes the correct read when doubles come. He also plays defense with his chest, not hands so he doesn't get the fouls Kat did. Luka and Bron can't just shove Randle out of the way on every drive.\n",
+          "score": 54.98649625767494,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (23/64) ===\nu/NotManyBuses (4 upvotes):\nI'm not responsible for the takes of others. Im not anti-physicality but am a fan of talent and skill in the game: Orlando and Houston have very little Both teams are hilariously overmatched in terms of shooting and scoring ability and have resorted to shots and fouls to hurt their opponents instead of actually with their game. I'm not going to reward or applaud that behavior, not some equalizing skill to try to injure your opponents. Goons like Anthony Mason and Bill Laimbeer were bad for the game and would've said as much at the time:\n",
+          "score": 54.837610857208176,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (9/64) ===\nu/flyingcrayons (36 upvotes):\nRandle has been past beyblade mode for years now; unfortunately he's been hurt the last few times the Knicks were in the playoffs and everyone was watching so people still think he's the Randle from 4-5 years ago\n",
+          "score": 54.311106100651955,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (19/111) ===\nu/the_two (39 upvotes):\nbest_teams_ the playoffsl they being being they They' point How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is While think NBA marketing has something to do with it; you also can't manufacture hype and interest nothing. This is where eras of parity are bad for casual viewers. It takes time and prolonged dominance to attract the attention of casual viewers. Casual viewers that don't live and breathe the NBA probably still think LeBron and Curry are the best players in the world. They don't realize that the Thunder are a historically great team; or that the Pacers are in back to back conference finals. Having 7 different teams and sets of players win the last finals is exciting for die-hard fans, but bad for casual viewers as there is no opportunity for continual discourse about a team that's dominating. 0\n",
+          "score": 54.31006128862093,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (9/111) ===\nu/begging_brother (105 upvotes):\n~15 j The NFL has absolutely perfected the idea that the entire league as a whole is the product. The Pittsburgh Steelers remain one of the most popular teams in the league; even though the city is quite small and haven't had stellar success in recent years. The internet is convinced that the NFL is rigging games in favor of Kansas City, the 3Oth largest media market in the country. Dallas, LA, New York; Miami; Chicago; any of these major markets could be in the Super Bowl and the ratings would be largely on par with a Green vs Buffalo Super Bowl.\n",
+          "score": 54.29529024746959,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (3/64) ===\nu/NotManyBuses (80 upvotes):\nYou must hate good offense; have been disgusted watching the Magic play\n",
+          "score": 54.2847919284482,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (106/111) ===\nu/ND7020 (0 upvotes):\n-15 j Comm. du 1% the_two best_teams the playoffsl they day top bitching talking top How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is that's true or not anyway); and 2. Those saying the Thunder will win easily. think (and hope) that's wrong. If you believe the Thunder's defense will just smother the Pacers, then yes, it will be a snooze, particularly as don't play an exciting brand of basketball. BUT the Pacers play very exciting ball, Carlisle is a hell of a coach; their PG doesn't turn the ball over, and are great at dictating the pace of games. They've been counted out a lot. Im not counting them out in the finals.\n",
+          "score": 54.15818459471329,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (47/64) ===\nu/xWolfsbane (0 upvotes):\nMagic have no shooters. It's like watching the early 20O0s. don't mind it, but won't win without a 3 ball.\n",
+          "score": 54.071003114436444,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (58/64) ===\nu/Proof-Umpire-7718 (0 upvotes):\nMagic need to get some competent offensive playsrs; particularly some shooters, around him and Franz this offseason.\n",
+          "score": 54.01778207420309,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (77/111) ===\nu/WeenisWrinkle (0 upvotes):\nRight? Big markets, big stars, and big brands get viewers. The hardcore fans want good basketball above all else; but most casual viewers don't. 4 1\n",
+          "score": 53.813635740718034,
+          "source": "Reddit 2.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 3752.197265625,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 7,
+      "query_num": 7,
+      "original_index": 106,
+      "question": "What basketball terms are important for understanding efficiency?",
+      "test_type": "vector",
+      "category": "complex",
+      "answer": "To understand efficiency in basketball, some important terms are True Shooting percentage (TS%), Effective Field Goal percentage (EFG%), Offensive Rating (OFFRTG), and Defensive Rating (DEFRTG). Other terms include Field Goals Made (FGM), Field Goals Attempted (FGA), Field Goal percentage (FG%), 3-point percentage (3P%), Free Throws Made (FTM), Free Throws Attempted (FTA), and Free Throw percentage (FT%). Also relevant are Assists (AST), Turnovers (TOV), and Possessions (POSS).\n\nSources: u/hqppp (1300 upvotes), u/unknown (0 upvotes), u/unknown (0 upvotes), u/unknown (0 upvotes), u/unknown (0 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (46/166) ===\nu/Sad_Bathroom1448 (13 upvotes):\n-10j https:/lwww reddit.comlrInbalcommentsl /1/161bplreggie miller_is top they deep hqppp top being 210 j point top Reggie Miller is the most efficient first option in NBA playoff history The modern NBA the most efficient NBA isn't just about rule changes; it's that too; but moreso it's offensive strategy centered around maximizing efficiency; and IMO players who are collectively more talented than ever. No reason why the player with the highest absolute TS% shouldn't be considered the most efficient in history 4\n",
+          "score": 67.10837721824646,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "NBA Statistics Glossary\n================================================================================\n\nMETRIC: Player\nDescription: Nom du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: Team\nDescription: Équipe du joueur (code à 3 lettres)\n--------------------------------------------------------------------------------\n\nMETRIC: Age\nDescription: Âge du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: GP\nDescription: Nombre de matchs joués (Games Played)\n--------------------------------------------------------------------------------\n\nMETRIC: W\nDescription: Nombre de victoires de l'équipe lors des matchs joués\n--------------------------------------------------------------------------------\n\nMETRIC: L\nDescription: Nombre de défaites\n--------------------------------------------------------------------------------\n\nMETRIC: Min\nDescription: Minutes moyennes jouées par match\n--------------------------------------------------------------------------------\n\nMETRIC: PTS\nDescription: Points marqués en moyenne par match\n--------------------------------------------------------------------------------\n\nMETRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------",
+          "score": 54.1892409324646,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: DREB%\nDescription: Idem en défensif\n--------------------------------------------------------------------------------\n\nMETRIC: REB%\nDescription: Pourcentage de rebonds totaux parmi ceux disponibles\n--------------------------------------------------------------------------------\n\nMETRIC: TO RATIO\nDescription: Turnover Ratio – pertes de balle par 100 possessions\n--------------------------------------------------------------------------------\n\nMETRIC: EFG%\nDescription: Effective Field Goal % (pondère les 3 points)\n--------------------------------------------------------------------------------\n\nMETRIC: TS%\nDescription: True Shooting % (inclut FG et FT dans l'efficacité)\n--------------------------------------------------------------------------------\n\nMETRIC: USG%\nDescription: Usage Rate – % des actions utilisées par le joueur\n--------------------------------------------------------------------------------\n\nMETRIC: PACE\nDescription: Rythme de jeu (possessions par 48 minutes)\n--------------------------------------------------------------------------------\n\nMETRIC: PIE\nDescription: Player Impact Estimate – évaluation globale de l’impact\n--------------------------------------------------------------------------------\n\nMETRIC: POSS\nDescription: Nombre total de possessions jouées\n--------------------------------------------------------------------------------",
+          "score": 53.90385389328003,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: + / -\nDescription: Plus-Minus (écart de score lorsque le joueur est sur le terrain)\n--------------------------------------------------------------------------------\n\nMETRIC: OFFRTG\nDescription: Offensive Rating (points marqués par 100 possessions)\n--------------------------------------------------------------------------------\n\nMETRIC: DEFRTG\nDescription: Defensive Rating (points encaissés par 100 possessions)\n--------------------------------------------------------------------------------\n\nMETRIC: NETRTG\nDescription: Net Rating = OFFRTG - DEFRTG\n--------------------------------------------------------------------------------\n\nMETRIC: AST%\nDescription: Pourcentage d'assists – implication dans les passes décisives\n--------------------------------------------------------------------------------\n\nMETRIC: AST/TO\nDescription: Ratio passes / pertes de balle\n--------------------------------------------------------------------------------\n\nMETRIC: AST RATIO\nDescription: Ratio d’assists pour 100 possessions\n--------------------------------------------------------------------------------\n\nMETRIC: OREB%\nDescription: Pourcentage de rebonds offensifs parmi ceux disponibles\n--------------------------------------------------------------------------------\n\nMETRIC: DREB%\nDescription: Idem en défensif\n--------------------------------------------------------------------------------",
+          "score": 53.61609697341919,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------\n\nMETRIC: FGA\nDescription: Tirs tentés par match (Field Goals Attempted)\n--------------------------------------------------------------------------------\n\nMETRIC: FG%\nDescription: Pourcentage de réussite aux tirs\n--------------------------------------------------------------------------------\n\nMETRIC: 15:00:00\nDescription: Minutes jouées après 15:00 de jeu\n--------------------------------------------------------------------------------\n\nMETRIC: 3PA\nDescription: Tirs à 3 points tentés par match\n--------------------------------------------------------------------------------\n\nMETRIC: 3P%\nDescription: Pourcentage de réussite à 3 points\n--------------------------------------------------------------------------------\n\nMETRIC: FTM\nDescription: Lancers francs réussis (Free Throws Made)\n--------------------------------------------------------------------------------\n\nMETRIC: FTA\nDescription: Lancers francs tentés\n--------------------------------------------------------------------------------\n\nMETRIC: FT%\nDescription: Pourcentage de réussite aux lancers francs\n--------------------------------------------------------------------------------\n\nMETRIC: OREB\nDescription: Rebonds offensifs\n--------------------------------------------------------------------------------",
+          "score": 53.35667014122009,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: OREB\nDescription: Rebonds offensifs\n--------------------------------------------------------------------------------\n\nMETRIC: DREB\nDescription: Rebonds défensifs\n--------------------------------------------------------------------------------\n\nMETRIC: REB\nDescription: Rebonds totaux\n--------------------------------------------------------------------------------\n\nMETRIC: AST\nDescription: Passes décisives (Assists)\n--------------------------------------------------------------------------------\n\nMETRIC: TOV\nDescription: Balles perdues (Turnovers)\n--------------------------------------------------------------------------------\n\nMETRIC: STL\nDescription: Interceptions (Steals)\n--------------------------------------------------------------------------------\n\nMETRIC: BLK\nDescription: Contres (Blocks)\n--------------------------------------------------------------------------------\n\nMETRIC: PF\nDescription: Fautes personnelles\n--------------------------------------------------------------------------------\n\nMETRIC: FP\nDescription: Fantasy Points\n--------------------------------------------------------------------------------\n\nMETRIC: DD2\nDescription: Double-doubles (≥10 dans deux catégories principales)\n--------------------------------------------------------------------------------\n\nMETRIC: TD3\nDescription: Triple-doubles (≥10 dans trois catégories principales)\n--------------------------------------------------------------------------------",
+          "score": 52.92799711227417,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (162/166) ===\nu/Javd318 (0 upvotes):\n~7j Really illuminates how useless efficiency is as a metric\n",
+          "score": 52.749701142311096,
+          "source": "Reddit 3.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.8178571428571427,
+        "context_recall": null,
+        "context_relevancy": 0.8571428571428571
+      },
+      "processing_time_ms": 4664.6246910095215,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 7,
+      "query_num": 8,
+      "original_index": 107,
+      "question": "What does 'first option' mean in basketball?",
+      "test_type": "vector",
+      "category": "simple",
+      "answer": "Based on a Reddit post, the term \"first option\" refers to a player who can be the primary scorer. It can also refer to a player with gravity, although this may be less obvious than in ISO games.\n\nSources: u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (29/166) ===\nu/Curry (33 upvotes):\ndriving good Curry, they got good and Shaq, being being every optionl Reggie Miller is the most efficient first option in NBA playoff history gravity can be from a first option. It's just less obvious in counting stats compared to ISO games. Maybe he didn't need a #1 and maybe he just needed a better supporting cast. We can definitely conclude he was an incredibly efficient playoff scorer as the post says.\n",
+          "score": 66.78703308105469,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (46/166) ===\nu/Sad_Bathroom1448 (13 upvotes):\n-10j https:/lwww reddit.comlrInbalcommentsl /1/161bplreggie miller_is top they deep hqppp top being 210 j point top Reggie Miller is the most efficient first option in NBA playoff history The modern NBA the most efficient NBA isn't just about rule changes; it's that too; but moreso it's offensive strategy centered around maximizing efficiency; and IMO players who are collectively more talented than ever. No reason why the player with the highest absolute TS% shouldn't be considered the most efficient in history 4\n",
+          "score": 66.55237734923462,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (115/166) ===\nu/Larry (0 upvotes):\noption optionl Reggie Miller is the most efficient first option in NBA playoff history UuiEI 4 3\n",
+          "score": 66.48087500050718,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (20/166) ===\nu/IChrisclc13 (57 upvotes):\n~10 j https:/lwww reddit.comlrInbalcommentsl /1/161bplreggie miller_is Tim they they put optionl Reggie Miller is the most efficient first option in NBA playoff history U 22\n",
+          "score": 66.32888638607774,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (104/166) ===\nu/miller_is (0 upvotes):\nCurry Jerry Larry Larry optionl Reggie Miller is the most efficient first option in NBA playoff history\n",
+          "score": 66.30990146115477,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (76/166) ===\nu/ISportsBettingRef (0 upvotes):\n-9 j Modifié ~9 j /1/161bplreggie miller Curry Jerry Erving Larry il y a optionl Reggie Miller is the most efficient first option in NBA playoff history double checking Edit2 : l've correct it.\n",
+          "score": 65.94255057232021,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (154/166) ===\nu/6unk (0 upvotes):\n-10 j https:Ilwww reddit.comlrInbalcomments/1/161bplreggie miller_is being him got Spree option refugee thing good Reggie Miller is the most efficient first option in NBA playoff history itself as well.)\n",
+          "score": 65.87603577913461,
+          "source": "Reddit 3.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.8178571428571427,
+        "context_recall": null,
+        "context_relevancy": 0.8571428571428571
+      },
+      "processing_time_ms": 3904.341697692871,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 7,
+      "query_num": 9,
+      "original_index": 167,
+      "question": "What's the relationship between three-point shooting volume and efficiency, and how has this changed the modern NBA?",
+      "test_type": "hybrid",
+      "category": "tier4_league_trend_analysis",
+      "answer": "Here are the top 5 players with the highest 3-point percentage (minimum 20 games played), along with their 3-point attempts: Patrick Baldwin Jr (56.5%, 24 attempts), Drew Eubanks (50%, 6 attempts), Taj Gibson (50%, 4 attempts), Markelle Fultz (50%, 8 attempts), and Alex Ducas (47.6%, 21 attempts).\n\nThe modern NBA's offensive strategy is centered around maximizing efficiency. True shooting percentage is affected by how good a 3-point shooter you are.\n\nSources: NBA Database, u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes)",
+      "generated_sql": "SELECT p.name, ps.three_pct, ps.three_pa FROM players p JOIN player_stats ps ON p.id = ps.player_id WHERE ps.gp >= 20 ORDER BY ps.three_pct DESC LIMIT 5;",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 3,
+        "joins": 1,
+        "filters": 1,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base",
+        "create_visualization"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (46/166) ===\nu/Sad_Bathroom1448 (13 upvotes):\n-10j https:/lwww reddit.comlrInbalcommentsl /1/161bplreggie miller_is top they deep hqppp top being 210 j point top Reggie Miller is the most efficient first option in NBA playoff history The modern NBA the most efficient NBA isn't just about rule changes; it's that too; but moreso it's offensive strategy centered around maximizing efficiency; and IMO players who are collectively more talented than ever. No reason why the player with the highest absolute TS% shouldn't be considered the most efficient in history 4\n",
+          "score": 68.4002959728241,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (37/166) ===\nu/miller_is (19 upvotes):\nbeing top Reggie Miller is the most efficient first option in NBA playoff history much true shooting is affected by how good of a 3p shooter you are and being the best, pretty insane West is able to match him on more points, without 3p shots even existing.\n",
+          "score": 67.28600093583904,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (28/166) ===\nu/MarkoSeke (33 upvotes):\n-10j TS rewards three point shooters. Also it's not \"low\" this is a list of the of all time\n",
+          "score": 67.24881652477342,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (152/166) ===\nu/man (0 upvotes):\n-10 j mean this just isn't true: You couldn't even play defense in the same ways you can now where \"gravity\" is a and Reggie wasn't nearly enough of a distributor to consistently take advantage of double teams. 4 1\n",
+          "score": 66.91583513500468,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (111/166) ===\nu/GreedyWarlord (0 upvotes):\n-10 j 3rd best SG of all time; arguably; top 5 definitely: Won 3 chips. One with a waning Shaq: That doesn't mean he was necessarily a more efficient scorer. https:Ilwww reddit.comlrInbalcomments/1/161bplreggie miller_is Jerry top guard top they' 10 j Reggie Miller is the most efficient first option in NBA playoff history there is an argument to say that Reggie may be the Sth most valuable guard for a single franchise ever after Jordan; Magic; Curry, and Kobe Im just arguing this point. And after rereading it, Zeke is ahead of Reggie too\n",
+          "score": 66.3322932521229,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (27/166) ===\nu/miller_is (36 upvotes):\nCurry it's Jerry time top top top europe Reggie Miller is the most efficient first option in NBA playoff history TirinAnr rcrie Brice $ la Lubtication # genande _ rapidité et flexibilité pages xometry.eu erithtotl ~10 j Reggie was way ahead of his time: Imagine if he was shooting 10 3s a game like players do now? | feel like you could basically transplant him from the 1990s to now and he'd be just as effective if not more so, unlike some players whose games have aged very poorly. He was a statheads player before there were really statheads\n",
+          "score": 65.35691951794792,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (43/166) ===\nu/NotUrAvgShitposter (16 upvotes):\n-10j East was weak but West was way too strong; especially when it came to guards. West had 3 MVP guards; the occasional healthy CP3, and Dame. You also had washed Kobe getting dumbasses voting him in and Klay when the Warriors averaged like 65+ wins season: That's like all of the non wild card guard slots guaranteed to be occupied. Like Ant wouldn't sniff an all star appearance some years in that era either and he's the best SG and top 10 rn.\n",
+          "score": 63.922398383668536,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (147/166) ===\nu/-10j (0 upvotes):\nrefugee_man -10j Reggie wasn't what I'd really consider a first option: believe Jalen Rose and Smits at various points had more shot attempts\n",
+          "score": 63.14718665209149,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (162/166) ===\nu/Javd318 (0 upvotes):\n~7j Really illuminates how useless efficiency is as a metric\n",
+          "score": 62.88267367148578,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (66/166) ===\nu/shooting (0 upvotes):\nDrexler, Mitch Richmond; Jeff Hornacek, etc. While the East had Jordan, Dumars, etc. That's the era the comment you're replying to is referring to 'when the East was better\" Miller's era Edit: see we're addressing different sentences the comment you replied to. Confusing:\n",
+          "score": 62.673101198980596,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (49/166) ===\nu/MalcolmSupleX (10 upvotes):\n~10j ReggieTS%?\n",
+          "score": 62.56594212498303,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (24/166) ===\nu/UniversityOk5928 (42 upvotes):\n-10 j The question was who is the most valuable to a franchise. Yall love arguing without reading the question 0\n",
+          "score": 62.503637339046634,
+          "source": "Reddit 3.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.5
+      },
+      "processing_time_ms": 7746.687650680542,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "warning",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.500 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 7,
+      "query_num": 10,
+      "original_index": 168,
+      "question": "Compare advanced efficiency metrics (PIE, TS%) for MVP candidates and explain what these metrics reveal about player impact.",
+      "test_type": "hybrid",
+      "category": "tier4_advanced_metrics_interpretation",
+      "answer": "Here's a comparison of the advanced efficiency metrics (PIE, TS%) for the MVP candidates and an explanation of what these metrics reveal about player impact:\n\n*   **Giannis Antetokounmpo**: PIE of 21, TS% of 62.5\n*   **Jayson Tatum**: PIE of 15.8, TS% of 58.2\n*   **Joel Embiid**: PIE of 16.9, TS% of 58\n*   **Luka Dončić**: PIE of 17, TS% of 58.7\n*   **Nikola Jokić**: PIE of 20.6, TS% of 66.3\n\nPIE (Player Impact Estimate) attempts to measure a player's overall statistical impact on a game. TS% (True Shooting Percentage) measures shooting efficiency, considering 2-point field goals, 3-point field goals, and free throws. Higher values in both metrics generally indicate a greater positive impact and efficiency. For example, Nikola Jokić has a very high TS% and a PIE, suggesting he is both highly efficient and impactful.\n\nSources: NBA Database, u/mokaloca82 (457 upvotes), u/mokaloca82 (457 upvotes), u/mokaloca82 (457 upvotes), u/mokaloca82 (457 upvotes), u/hqppp (1300 upvotes)",
+      "generated_sql": "SELECT p.name, ps.pie, ps.ts_pct FROM players p JOIN player_stats ps ON p.id = ps.player_id WHERE p.name IN ('Nikola Jokić', 'Joel Embiid', 'Giannis Antetokounmpo', 'Luka Dončić', 'Jayson Tatum');",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 3,
+        "joins": 1,
+        "filters": 1,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base",
+        "create_visualization"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (40/111) ===\nu/GodWhyPlease (13 upvotes):\n~15 j Modifié il y a-15 j BruceBrownMVP ~15 j The same was said at the start of the season about how you guys and Denver fans wouldn't get toxic over the MVP since you have a shared love of Westbrook and we saw how that ended up\n",
+          "score": 68.80423545837402,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (26/111) ===\nu/nowhathappenedwas (25 upvotes):\n-15 j Comm. du 1% two best teams in advanced stats in the playoffs What do you mean by \"advanced stats?\" certainly lead the playoffs in wins, but 're 2nd and Sth (respectively) in playoff net rating.\n",
+          "score": 64.31849157543228,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (70/111) ===\nu/CMYGQZ (0 upvotes):\n-15 j Actually think it's the other way around, 'Il love them when they've become established favorites, not when first broke out of the scenes. Giannis in Milwaukee and Jokic in Denver has gained fan interests in US after they've experienced multiple playoffs runs where casual fans don't care for them (but none in the Finals) , and when finally reached the finals casual fans know who they are already. In this case this is only SGA's 2nd year of superstardom and Hali's Oth/Ist? . When actually become established; it's actually fine\n",
+          "score": 63.485417638963064,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (65/111) ===\nu/Snakescipio (0 upvotes):\n-15 j The second apron's as close to a hard as we're gonna get; and we're definitely in this age of parity right now. In previous years the Celtics probably just eats an injury year from Tatum and then run it back; but now it looks like 're gonna blow up the roster. 4 7\n",
+          "score": 63.37985577597368,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (157/166) ===\nu/Zazi751 (0 upvotes):\n-10j If you don't also provide how rTS is calculated then the whole list is garbage. Some of these guys played through multiple eras with significant shifts\n",
+          "score": 61.95529541385545,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (74/111) ===\nu/metaldetector6g (0 upvotes):\n~15 j Giannis to lakers mock during game finals halftime show. 0 1\n",
+          "score": 61.44879463387783,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "NBA Statistics Glossary\n================================================================================\n\nMETRIC: Player\nDescription: Nom du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: Team\nDescription: Équipe du joueur (code à 3 lettres)\n--------------------------------------------------------------------------------\n\nMETRIC: Age\nDescription: Âge du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: GP\nDescription: Nombre de matchs joués (Games Played)\n--------------------------------------------------------------------------------\n\nMETRIC: W\nDescription: Nombre de victoires de l'équipe lors des matchs joués\n--------------------------------------------------------------------------------\n\nMETRIC: L\nDescription: Nombre de défaites\n--------------------------------------------------------------------------------\n\nMETRIC: Min\nDescription: Minutes moyennes jouées par match\n--------------------------------------------------------------------------------\n\nMETRIC: PTS\nDescription: Points marqués en moyenne par match\n--------------------------------------------------------------------------------\n\nMETRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------",
+          "score": 60.851482178182465,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (43/166) ===\nu/NotUrAvgShitposter (16 upvotes):\n-10j East was weak but West was way too strong; especially when it came to guards. West had 3 MVP guards; the occasional healthy CP3, and Dame. You also had washed Kobe getting dumbasses voting him in and Klay when the Warriors averaged like 65+ wins season: That's like all of the non wild card guard slots guaranteed to be occupied. Like Ant wouldn't sniff an all star appearance some years in that era either and he's the best SG and top 10 rn.\n",
+          "score": 60.646765717191855,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "METRIC: DREB%\nDescription: Idem en défensif\n--------------------------------------------------------------------------------\n\nMETRIC: REB%\nDescription: Pourcentage de rebonds totaux parmi ceux disponibles\n--------------------------------------------------------------------------------\n\nMETRIC: TO RATIO\nDescription: Turnover Ratio – pertes de balle par 100 possessions\n--------------------------------------------------------------------------------\n\nMETRIC: EFG%\nDescription: Effective Field Goal % (pondère les 3 points)\n--------------------------------------------------------------------------------\n\nMETRIC: TS%\nDescription: True Shooting % (inclut FG et FT dans l'efficacité)\n--------------------------------------------------------------------------------\n\nMETRIC: USG%\nDescription: Usage Rate – % des actions utilisées par le joueur\n--------------------------------------------------------------------------------\n\nMETRIC: PACE\nDescription: Rythme de jeu (possessions par 48 minutes)\n--------------------------------------------------------------------------------\n\nMETRIC: PIE\nDescription: Player Impact Estimate – évaluation globale de l’impact\n--------------------------------------------------------------------------------\n\nMETRIC: POSS\nDescription: Nombre total de possessions jouées\n--------------------------------------------------------------------------------",
+          "score": 60.03798085614745,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (79/111) ===\nu/twrs_29 (0 upvotes):\n~15 j Comm. du top 1% wavefree3 ~15 j Comm. du top 1% Rapper_Laugh ~15 j https:/lwww. reddit.comlrInbalcomments/ 1kxixihlhow it_that the_two best_teams the playoffsl will How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is much shit? know he's always talking; but that doesn't necessarily mean shit talking. It often reads to me more like he's just a very vocal player. I've seen clips of him cheering his teammates on, giving them information; complimenting the other team; speaking up in team huddles; and more; but Im not sure if | can actually remember a clip of him talking shit for real. For what's it worth; lm the rare Bucks fan that loves Hali. Wisconsin kid from my hometown who plays ethical basketball. 0 1\n",
+          "score": 59.8350434652831,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (127/166) ===\nu/MiopTop (0 upvotes):\n~10j Where would AD be on this? IIRC he has the highest career playoff TS% of any player with a 20+ ppg average 4 1\n",
+          "score": 59.505509523638395,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (77/166) ===\nu/rayrayiscray (0 upvotes):\n-10 j Giannis | can understand; his ft% (and high volume of them) really brings down the overall ts% even despite one of the most efficient 2pt scorers in league history. 4 14\n",
+          "score": 59.11723014275836,
+          "source": "Reddit 3.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 24546.972036361694,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    }
+  ]
+}

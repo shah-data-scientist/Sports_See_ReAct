@@ -1,0 +1,531 @@
+{
+  "batch_num": 10,
+  "timestamp": "20260215_211851",
+  "queries_tested": 10,
+  "results": [
+    {
+      "batch_num": 10,
+      "query_num": 1,
+      "original_index": 36,
+      "question": "Which players have the best assist-to-turnover ratio among those with 300+ assists?",
+      "test_type": "sql",
+      "category": "complex_sql_ratio_calculation",
+      "answer": "I don't have that information.\n\nSources: NBA Database",
+      "generated_sql": null,
+      "sql_complexity": null,
+      "tools_used": [
+        "query_nba_database"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 54997.24078178406,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 10,
+      "query_num": 2,
+      "original_index": 37,
+      "question": "What percentage of players have a true shooting percentage above 60%?",
+      "test_type": "sql",
+      "category": "complex_sql_percentage_calculation",
+      "success": false,
+      "error": "Agent failed: LLM call failed: LLM call failed after 3 attempts: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details.', 'status': 'RESOURCE_EXHAUSTED'}}"
+    },
+    {
+      "batch_num": 10,
+      "query_num": 3,
+      "original_index": 38,
+      "question": "Who are the most efficient scorers among players with 50+ games played?",
+      "test_type": "sql",
+      "category": "complex_sql_filtering",
+      "answer": "Jarrett Allen, Jaxson Hayes, Daniel Gafford, Adem Bona, and Dwight Powell are the most efficient scorers among players with 50+ games played.\n\nSources: NBA Database",
+      "generated_sql": "SELECT p.name, ps.ts_pct FROM players p JOIN player_stats ps ON p.id = ps.player_id WHERE ps.gp >= 50 ORDER BY ps.ts_pct DESC LIMIT 5;",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 3,
+        "joins": 1,
+        "filters": 1,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "create_visualization"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 18070.5726146698,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 10,
+      "query_num": 4,
+      "original_index": 39,
+      "question": "Who are the top 3 players in points per game among those who played at least 70 games?",
+      "test_type": "sql",
+      "category": "complex_sql_filtering_calculation",
+      "answer": "Shai Gilgeous-Alexander, Nikola Joki\\u0107, and Anthony Edwards are the top 3 players in points per game among those who played at least 70 games.\n\nSources: NBA Database",
+      "generated_sql": "SELECT p.name, ROUND(CAST(ps.pts AS FLOAT) / ps.gp, 1) AS ppg FROM players p JOIN player_stats ps ON p.id = ps.player_id WHERE ps.gp >= 70 ORDER BY ppg DESC LIMIT 3;",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 3,
+        "joins": 1,
+        "filters": 1,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "create_visualization"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 31459.10120010376,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 10,
+      "query_num": 5,
+      "original_index": 116,
+      "question": "asdfghjkl qwerty12345",
+      "test_type": "vector",
+      "category": "noisy",
+      "answer": "I am sorry, I cannot answer your question with the information I have.\n\nSources: u/unknown (0 upvotes), u/unknown (0 upvotes), u/unknown (0 upvotes), u/unknown (0 upvotes), u/unknown (0 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "METRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------\n\nMETRIC: FGA\nDescription: Tirs tentés par match (Field Goals Attempted)\n--------------------------------------------------------------------------------\n\nMETRIC: FG%\nDescription: Pourcentage de réussite aux tirs\n--------------------------------------------------------------------------------\n\nMETRIC: 15:00:00\nDescription: Minutes jouées après 15:00 de jeu\n--------------------------------------------------------------------------------\n\nMETRIC: 3PA\nDescription: Tirs à 3 points tentés par match\n--------------------------------------------------------------------------------\n\nMETRIC: 3P%\nDescription: Pourcentage de réussite à 3 points\n--------------------------------------------------------------------------------\n\nMETRIC: FTM\nDescription: Lancers francs réussis (Free Throws Made)\n--------------------------------------------------------------------------------\n\nMETRIC: FTA\nDescription: Lancers francs tentés\n--------------------------------------------------------------------------------\n\nMETRIC: FT%\nDescription: Pourcentage de réussite aux lancers francs\n--------------------------------------------------------------------------------\n\nMETRIC: OREB\nDescription: Rebonds offensifs\n--------------------------------------------------------------------------------",
+          "score": 49.61190402507782,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: OREB\nDescription: Rebonds offensifs\n--------------------------------------------------------------------------------\n\nMETRIC: DREB\nDescription: Rebonds défensifs\n--------------------------------------------------------------------------------\n\nMETRIC: REB\nDescription: Rebonds totaux\n--------------------------------------------------------------------------------\n\nMETRIC: AST\nDescription: Passes décisives (Assists)\n--------------------------------------------------------------------------------\n\nMETRIC: TOV\nDescription: Balles perdues (Turnovers)\n--------------------------------------------------------------------------------\n\nMETRIC: STL\nDescription: Interceptions (Steals)\n--------------------------------------------------------------------------------\n\nMETRIC: BLK\nDescription: Contres (Blocks)\n--------------------------------------------------------------------------------\n\nMETRIC: PF\nDescription: Fautes personnelles\n--------------------------------------------------------------------------------\n\nMETRIC: FP\nDescription: Fantasy Points\n--------------------------------------------------------------------------------\n\nMETRIC: DD2\nDescription: Double-doubles (≥10 dans deux catégories principales)\n--------------------------------------------------------------------------------\n\nMETRIC: TD3\nDescription: Triple-doubles (≥10 dans trois catégories principales)\n--------------------------------------------------------------------------------",
+          "score": 49.24961268901825,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: + / -\nDescription: Plus-Minus (écart de score lorsque le joueur est sur le terrain)\n--------------------------------------------------------------------------------\n\nMETRIC: OFFRTG\nDescription: Offensive Rating (points marqués par 100 possessions)\n--------------------------------------------------------------------------------\n\nMETRIC: DEFRTG\nDescription: Defensive Rating (points encaissés par 100 possessions)\n--------------------------------------------------------------------------------\n\nMETRIC: NETRTG\nDescription: Net Rating = OFFRTG - DEFRTG\n--------------------------------------------------------------------------------\n\nMETRIC: AST%\nDescription: Pourcentage d'assists – implication dans les passes décisives\n--------------------------------------------------------------------------------\n\nMETRIC: AST/TO\nDescription: Ratio passes / pertes de balle\n--------------------------------------------------------------------------------\n\nMETRIC: AST RATIO\nDescription: Ratio d’assists pour 100 possessions\n--------------------------------------------------------------------------------\n\nMETRIC: OREB%\nDescription: Pourcentage de rebonds offensifs parmi ceux disponibles\n--------------------------------------------------------------------------------\n\nMETRIC: DREB%\nDescription: Idem en défensif\n--------------------------------------------------------------------------------",
+          "score": 49.172078371047974,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "NBA Statistics Glossary\n================================================================================\n\nMETRIC: Player\nDescription: Nom du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: Team\nDescription: Équipe du joueur (code à 3 lettres)\n--------------------------------------------------------------------------------\n\nMETRIC: Age\nDescription: Âge du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: GP\nDescription: Nombre de matchs joués (Games Played)\n--------------------------------------------------------------------------------\n\nMETRIC: W\nDescription: Nombre de victoires de l'équipe lors des matchs joués\n--------------------------------------------------------------------------------\n\nMETRIC: L\nDescription: Nombre de défaites\n--------------------------------------------------------------------------------\n\nMETRIC: Min\nDescription: Minutes moyennes jouées par match\n--------------------------------------------------------------------------------\n\nMETRIC: PTS\nDescription: Points marqués en moyenne par match\n--------------------------------------------------------------------------------\n\nMETRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------",
+          "score": 48.86178255081177,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: DREB%\nDescription: Idem en défensif\n--------------------------------------------------------------------------------\n\nMETRIC: REB%\nDescription: Pourcentage de rebonds totaux parmi ceux disponibles\n--------------------------------------------------------------------------------\n\nMETRIC: TO RATIO\nDescription: Turnover Ratio – pertes de balle par 100 possessions\n--------------------------------------------------------------------------------\n\nMETRIC: EFG%\nDescription: Effective Field Goal % (pondère les 3 points)\n--------------------------------------------------------------------------------\n\nMETRIC: TS%\nDescription: True Shooting % (inclut FG et FT dans l'efficacité)\n--------------------------------------------------------------------------------\n\nMETRIC: USG%\nDescription: Usage Rate – % des actions utilisées par le joueur\n--------------------------------------------------------------------------------\n\nMETRIC: PACE\nDescription: Rythme de jeu (possessions par 48 minutes)\n--------------------------------------------------------------------------------\n\nMETRIC: PIE\nDescription: Player Impact Estimate – évaluation globale de l’impact\n--------------------------------------------------------------------------------\n\nMETRIC: POSS\nDescription: Nombre total de possessions jouées\n--------------------------------------------------------------------------------",
+          "score": 48.71438264846802,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (12/111) ===\nu/jackaholicus (67 upvotes):\n215 j Comm. du top https:/lwww reddit.comlrInbalcomments/ 1kxixih/how best_teams the playoffsl get rating push its acting How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is U 1\n",
+          "score": 48.13956141471863,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (72/111) ===\nu/cactusmanbwl9o (0 upvotes):\n~15 j AE DRINKS SPRITE!?!?!\n",
+          "score": 47.97669470310211,
+          "source": "Reddit 2.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 4569.8041915893555,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 10,
+      "query_num": 6,
+      "original_index": 117,
+      "question": "Give me a 10000 word essay on the history of the universe.",
+      "test_type": "vector",
+      "category": "noisy",
+      "answer": "I am sorry, but I do not have enough information to write a 10000 word essay on the history of the universe.\n\nSources: u/mokaloca82 (457 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (9/111) ===\nu/begging_brother (105 upvotes):\n~15 j The NFL has absolutely perfected the idea that the entire league as a whole is the product. The Pittsburgh Steelers remain one of the most popular teams in the league; even though the city is quite small and haven't had stellar success in recent years. The internet is convinced that the NFL is rigging games in favor of Kansas City, the 3Oth largest media market in the country. Dallas, LA, New York; Miami; Chicago; any of these major markets could be in the Super Bowl and the ratings would be largely on par with a Green vs Buffalo Super Bowl.\n",
+          "score": 61.780710220336914,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (24/166) ===\nu/UniversityOk5928 (42 upvotes):\n-10 j The question was who is the most valuable to a franchise. Yall love arguing without reading the question 0\n",
+          "score": 55.93780459257217,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (22/166) ===\nu/-10j (48 upvotes):\nHe will make exceptions if his customers are a certain age though: The junior discount; if you will. 4\n",
+          "score": 55.725999695629255,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (54/166) ===\nu/Cletus_Starfish (4 upvotes):\nWasn't originally. Thankfully OP edited the post; but it was in a seemingly totally random order before.\n",
+          "score": 55.66738496258987,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (103/166) ===\nu/ItheeExample (0 upvotes):\n-10 j Was? You know he's still playing right? Lol\n",
+          "score": 55.44238911534444,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (93/166) ===\nu/TRossW18 (0 upvotes):\n-10j Everything requires context and nuance. Thats not disrespect. 4 2\n",
+          "score": 55.3675229261471,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (82/166) ===\nu/Kaltho (0 upvotes):\n10j Wdym its sorted by row number\n",
+          "score": 55.269254306456794,
+          "source": "Reddit 3.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 4284.741640090942,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 10,
+      "query_num": 7,
+      "original_index": 118,
+      "question": "Translate 'hello' to 50 different languages.",
+      "test_type": "vector",
+      "category": "noisy",
+      "answer": "I am sorry, but I don't have the capacity to translate 'hello' into 50 different languages. The documents provided contain NBA statistics and discussions about teams and players.\n\nSources: u/unknown (0 upvotes), u/unknown (0 upvotes), u/unknown (0 upvotes), u/unknown (0 upvotes), u/unknown (0 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "METRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------\n\nMETRIC: FGA\nDescription: Tirs tentés par match (Field Goals Attempted)\n--------------------------------------------------------------------------------\n\nMETRIC: FG%\nDescription: Pourcentage de réussite aux tirs\n--------------------------------------------------------------------------------\n\nMETRIC: 15:00:00\nDescription: Minutes jouées après 15:00 de jeu\n--------------------------------------------------------------------------------\n\nMETRIC: 3PA\nDescription: Tirs à 3 points tentés par match\n--------------------------------------------------------------------------------\n\nMETRIC: 3P%\nDescription: Pourcentage de réussite à 3 points\n--------------------------------------------------------------------------------\n\nMETRIC: FTM\nDescription: Lancers francs réussis (Free Throws Made)\n--------------------------------------------------------------------------------\n\nMETRIC: FTA\nDescription: Lancers francs tentés\n--------------------------------------------------------------------------------\n\nMETRIC: FT%\nDescription: Pourcentage de réussite aux lancers francs\n--------------------------------------------------------------------------------\n\nMETRIC: OREB\nDescription: Rebonds offensifs\n--------------------------------------------------------------------------------",
+          "score": 47.11346983909607,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: DREB%\nDescription: Idem en défensif\n--------------------------------------------------------------------------------\n\nMETRIC: REB%\nDescription: Pourcentage de rebonds totaux parmi ceux disponibles\n--------------------------------------------------------------------------------\n\nMETRIC: TO RATIO\nDescription: Turnover Ratio – pertes de balle par 100 possessions\n--------------------------------------------------------------------------------\n\nMETRIC: EFG%\nDescription: Effective Field Goal % (pondère les 3 points)\n--------------------------------------------------------------------------------\n\nMETRIC: TS%\nDescription: True Shooting % (inclut FG et FT dans l'efficacité)\n--------------------------------------------------------------------------------\n\nMETRIC: USG%\nDescription: Usage Rate – % des actions utilisées par le joueur\n--------------------------------------------------------------------------------\n\nMETRIC: PACE\nDescription: Rythme de jeu (possessions par 48 minutes)\n--------------------------------------------------------------------------------\n\nMETRIC: PIE\nDescription: Player Impact Estimate – évaluation globale de l’impact\n--------------------------------------------------------------------------------\n\nMETRIC: POSS\nDescription: Nombre total de possessions jouées\n--------------------------------------------------------------------------------",
+          "score": 46.994032859802246,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "NBA Statistics Glossary\n================================================================================\n\nMETRIC: Player\nDescription: Nom du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: Team\nDescription: Équipe du joueur (code à 3 lettres)\n--------------------------------------------------------------------------------\n\nMETRIC: Age\nDescription: Âge du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: GP\nDescription: Nombre de matchs joués (Games Played)\n--------------------------------------------------------------------------------\n\nMETRIC: W\nDescription: Nombre de victoires de l'équipe lors des matchs joués\n--------------------------------------------------------------------------------\n\nMETRIC: L\nDescription: Nombre de défaites\n--------------------------------------------------------------------------------\n\nMETRIC: Min\nDescription: Minutes moyennes jouées par match\n--------------------------------------------------------------------------------\n\nMETRIC: PTS\nDescription: Points marqués en moyenne par match\n--------------------------------------------------------------------------------\n\nMETRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------",
+          "score": 46.93565785884857,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: + / -\nDescription: Plus-Minus (écart de score lorsque le joueur est sur le terrain)\n--------------------------------------------------------------------------------\n\nMETRIC: OFFRTG\nDescription: Offensive Rating (points marqués par 100 possessions)\n--------------------------------------------------------------------------------\n\nMETRIC: DEFRTG\nDescription: Defensive Rating (points encaissés par 100 possessions)\n--------------------------------------------------------------------------------\n\nMETRIC: NETRTG\nDescription: Net Rating = OFFRTG - DEFRTG\n--------------------------------------------------------------------------------\n\nMETRIC: AST%\nDescription: Pourcentage d'assists – implication dans les passes décisives\n--------------------------------------------------------------------------------\n\nMETRIC: AST/TO\nDescription: Ratio passes / pertes de balle\n--------------------------------------------------------------------------------\n\nMETRIC: AST RATIO\nDescription: Ratio d’assists pour 100 possessions\n--------------------------------------------------------------------------------\n\nMETRIC: OREB%\nDescription: Pourcentage de rebonds offensifs parmi ceux disponibles\n--------------------------------------------------------------------------------\n\nMETRIC: DREB%\nDescription: Idem en défensif\n--------------------------------------------------------------------------------",
+          "score": 46.888498067855835,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "METRIC: OREB\nDescription: Rebonds offensifs\n--------------------------------------------------------------------------------\n\nMETRIC: DREB\nDescription: Rebonds défensifs\n--------------------------------------------------------------------------------\n\nMETRIC: REB\nDescription: Rebonds totaux\n--------------------------------------------------------------------------------\n\nMETRIC: AST\nDescription: Passes décisives (Assists)\n--------------------------------------------------------------------------------\n\nMETRIC: TOV\nDescription: Balles perdues (Turnovers)\n--------------------------------------------------------------------------------\n\nMETRIC: STL\nDescription: Interceptions (Steals)\n--------------------------------------------------------------------------------\n\nMETRIC: BLK\nDescription: Contres (Blocks)\n--------------------------------------------------------------------------------\n\nMETRIC: PF\nDescription: Fautes personnelles\n--------------------------------------------------------------------------------\n\nMETRIC: FP\nDescription: Fantasy Points\n--------------------------------------------------------------------------------\n\nMETRIC: DD2\nDescription: Double-doubles (≥10 dans deux catégories principales)\n--------------------------------------------------------------------------------\n\nMETRIC: TD3\nDescription: Triple-doubles (≥10 dans trois catégories principales)\n--------------------------------------------------------------------------------",
+          "score": 46.57512307167053,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (79/111) ===\nu/twrs_29 (0 upvotes):\n~15 j Comm. du top 1% wavefree3 ~15 j Comm. du top 1% Rapper_Laugh ~15 j https:/lwww. reddit.comlrInbalcomments/ 1kxixihlhow it_that the_two best_teams the playoffsl will How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is much shit? know he's always talking; but that doesn't necessarily mean shit talking. It often reads to me more like he's just a very vocal player. I've seen clips of him cheering his teammates on, giving them information; complimenting the other team; speaking up in team huddles; and more; but Im not sure if | can actually remember a clip of him talking shit for real. For what's it worth; lm the rare Bucks fan that loves Hali. Wisconsin kid from my hometown who plays ethical basketball. 0 1\n",
+          "score": 46.42318367958069,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (50/64) ===\nu/georgiosauce (0 upvotes):\nMagic are down 3-1 despite injuring 3 Celtics starters along the way, 're solid trash 4 54\n",
+          "score": 46.2548303604126,
+          "source": "Reddit 1.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 3902.3914337158203,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 10,
+      "query_num": 8,
+      "original_index": 119,
+      "question": "<script>alert('XSS')</script> Who won the MVP?",
+      "test_type": "vector",
+      "category": "noisy",
+      "answer": "The database does not contain MVP information.\n\nSources: NBA Database",
+      "generated_sql": null,
+      "sql_complexity": null,
+      "tools_used": [
+        "query_nba_database"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 2629.9448013305664,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 10,
+      "query_num": 9,
+      "original_index": 173,
+      "question": "Who is LeBron?",
+      "test_type": "hybrid",
+      "category": "hybrid_player_profile",
+      "answer": "LeBron James is a player in the NBA. I don't have detailed analysis of his playing style.\n\nSources: NBA Database, u/MannerSuperb (31 upvotes), u/DonT012 (272 upvotes), u/DonT012 (272 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes)",
+      "generated_sql": "SELECT name FROM players WHERE name LIKE '%LeBron%';",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 1,
+        "joins": 0,
+        "filters": 1,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (62/64) ===\nu/fantasiafootball (0 upvotes):\nhttps:/lwww. reddit comlrInbalcomments/ 1k9wrcj /who_are teams being being they Who are teams in the playoffs that have impressed you ? majority of his attempts from dribble pull-ups. He was in this area before but now he's elite and it's obviously a vital component to closing out games and stifling runs 2 Jaden has taken an incremental step on offense; becoming much more willing/able to dribble - drive into short range pull-ups and attempts at the rim. Again; he would do this last season but now he's it with greater consistency. Donte as a bench creator /ball-handler who can hold his own somewhat on defense is a huge addition that helps mitigate Conley having down streaks. 4. Julius is less of a dynamic scorer compared to KAT but he still fills the role as a \"get-a-bucket\" iso guy. He's also a better passer off the dribble although that hasn't been as apparent in this series so far. 4 4\n",
+          "score": 62.92500376701355,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (33/33) ===\nu/Dr_Satan36 (0 upvotes):\n-12 j sigto117 -12 j ilya 5 j doesn't NBA hype up finals like Bowl? It should be a spectacle. ilya 11 j Which NBA team without a championship has the most storied history? ilya 12j What's the 'deepest\" an NBA Finals team has ever dug to win? r/hockey ily a 12j Is this the first Stanley Cup Final where neither team had home ice advantage throughout the playoffs? ilya 8 a How is home court advantage decided in the NBA finals? '1l066qq/which_nba home_court advantager 211 j Why Super Which NBA team did not have home court advantage until the NBA Finals? ilya 26j All possible home court advantage scenarios for the NBA finals ilya 10j Robert Sarver is responsible for building both finals teams ilya 11j Has any team ever won an NBA title by winning 4 Game 7s? ilya 11 j [Smith] This is now reality: Thunder vs Pacers will be the first NBA Finals since the luxury tax has been in effect where neither team was a taxpayer for that season. r/hockey ily a 13 j The Oilers are the first Canadian team to have home-ice advantage in the Stanley Cup Finals since the 2011 Vancouver Canucks ilya 11j The Knicks have now lost to a lower seed in 5 straight playoff appearances 3 of those losses came against the Pacers. ilya 2 m. This was an all time Great of nba playoff basketball ilya 2 a NBA team logos over time https:/lwww. reddit.comlrInbalcomments/1l066qq/which_nba home_court advantager day Which NBA team did not have home court advantage until the NBA Finals? ilya 2 m. NBA Teams That Never Met in the Playoffs (Same Conference) ilya 2 m. Who would've won the 2018 NBA Finals if the Rockets beat the Warriors in game 7 of the WCF? r/algeria ilya 9j known Algerian basketball teams? r/pacers il y a 28 j If Pacers and Nuggies Go to Finals, Who Has Homecourt? upvotes r/canes ily a The last time we won a double OT game in the first round of the playoffs youtu commentaires r/AllAmericanTV ilya 1 a What NFL team will Spencer play for? ilya 13 a NBA Court Explained ilya 6 a Can someone explain to me what it means for a team in the playoffs to take home court? upvote ilya 3 m. https:llwww reddit.comlrInbalcomments/1I066qq/which_nba home_court advantager Any Which NBA team did not have home court advantage until the NBA Finals? commentaires r/lakers 2 m. [Buha] Luka Doncic notes that this is the first time he'll have home-court advantage in a playoff series. Discussions connexes Best NBA Teams That Never Won a Championship Best NBA Record 82-Game Season Règles de Reddit Politique de confidentialité Contrat d'utilisation Reddit, Inc. 2025. Tous droits réservés '1l066qq/which_nba home_court advantager il y a\n",
+          "score": 60.72514420362371,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (7/33) ===\nu/ISalty_Watermelon (12 upvotes):\n-12j '1l066qq/which_nba home_court advantager they They They Which NBA team did not have home court advantage until the NBA Finals? A 9th or 1Oth placed team is almost guaranteed to smashed in the Ist round, and has pretty much no chance of making the Finals It was cool that the 1Oth placed Heat made the playoffs until lost to the Cavs in one of those most uncompetitive series of all time And the argument that it prevents tanking falls somewhat short when the Mavericks have already tanked to avoid the play-in; and then got rewarded for it by keeping their pick and drafting Lively _\n",
+          "score": 54.268271694541596,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (36/64) ===\nu/SignificantScreen100 (0 upvotes):\nhttps:/lwww reddit.comlrInbalcomments/1k9wrcj/who_are teams They year. they from yeah Who are teams in the playoffs that have impressed you ? réponse supplémentaire hollow-ataraxia -1m: Trae won't credit for it because he went cold in the second half of game 6 and he started the series slow but that game 5 and first half of game 6 was some of the best basketball I've ever seen him play. He single handedly almost willed us to a game 7 but ran out of gas.\n",
+          "score": 53.836294217843715,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (10/64) ===\nu/IGbaby245 (32 upvotes):\nRandle knows he can out muscle most guys one on one; and then makes the correct read when doubles come. He also plays defense with his chest, not hands so he doesn't get the fouls Kat did. Luka and Bron can't just shove Randle out of the way on every drive.\n",
+          "score": 52.6393392464433,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "NBA Statistics Glossary\n================================================================================\n\nMETRIC: Player\nDescription: Nom du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: Team\nDescription: Équipe du joueur (code à 3 lettres)\n--------------------------------------------------------------------------------\n\nMETRIC: Age\nDescription: Âge du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: GP\nDescription: Nombre de matchs joués (Games Played)\n--------------------------------------------------------------------------------\n\nMETRIC: W\nDescription: Nombre de victoires de l'équipe lors des matchs joués\n--------------------------------------------------------------------------------\n\nMETRIC: L\nDescription: Nombre de défaites\n--------------------------------------------------------------------------------\n\nMETRIC: Min\nDescription: Minutes moyennes jouées par match\n--------------------------------------------------------------------------------\n\nMETRIC: PTS\nDescription: Points marqués en moyenne par match\n--------------------------------------------------------------------------------\n\nMETRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------",
+          "score": 49.04729664325714,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (17/33) ===\nu/kalebglover (0 upvotes):\n-12 j Comm. du top https:llwww reddit.comlrInbalcomments/1I066qq/which_nba home_court advantager they kings. They they has Which NBA team did not have home court advantage until the NBA Finals? u 24 <\n",
+          "score": 48.23483228683472,
+          "source": "Reddit 4.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 4113.381862640381,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 10,
+      "query_num": 10,
+      "original_index": 174,
+      "question": "Tell me about Anthony Edwards' season stats and what makes him such an exciting player to watch",
+      "test_type": "hybrid",
+      "category": "hybrid_player_profile",
+      "answer": "Anthony Edwards' season stats are: 2180 points, 450 rebounds, 356 assists, 95 steals, 47 blocks, 44.7% field goal percentage, and 39.5% 3-point percentage. I don't have specific information available about what makes him an exciting player to watch.\n\nSources: NBA Database, u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes), u/MannerSuperb (31 upvotes)",
+      "generated_sql": "SELECT p.name, ps.pts, ps.reb, ps.ast, ps.stl, ps.blk, ps.fg_pct, ps.three_pct FROM players p JOIN player_stats ps ON p.id = ps.player_id WHERE p.name LIKE '%Anthony Edwards%';",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 3,
+        "joins": 1,
+        "filters": 1,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (41/64) ===\nu/Jamstarr2024 (0 upvotes):\nHe also needs to seriously work on his jumper. His 3-ball isn't very That needs to be north of 35% to explode 4 1\n",
+          "score": 58.972017765045166,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (59/64) ===\nu/StanVanGhandi (0 upvotes):\nYes, would be excited to see what kind of numbers Paolo could put up if he had more creation and shooting: Hell, would be excited to see what Paolo's numbers look if the Magic were just ONE of the slowest pace team and just ONE of the lowest scoring teams and not dead last in both. wonder what he would average if the Magic were 25th in pace and 25th in scoring versus 3Oth. 4 1\n",
+          "score": 56.740260770077946,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (39/64) ===\nu/Inevitable-Paint-650 (0 upvotes):\nMaybe to you but we got humbled last year\n",
+          "score": 56.3279716339559,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (43/64) ===\nu/Klaytheist (0 upvotes):\nthink the issue is that don't really have a secondary playmaker. Their second best shot creator Shroeder. He's asked to do a lot as the sole focus of the opposing team.\n",
+          "score": 55.59878210028023,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (6/64) ===\nu/ProvocativeHotTakes (51 upvotes):\nPistons are one shot creator from an ECF contending team imo.\n",
+          "score": 52.97500325183469,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (11/64) ===\nu/bronet (31 upvotes):\nHoping we get T-wolves vs Pacers in the finals so we get some real beyblade duel action\n",
+          "score": 52.88121320637765,
+          "source": "Reddit 1.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Who are teams in the playoffs that have impressed you ?\nAuthor: u/MannerSuperb | Upvotes: 31 | Comments: 236\nPost: For me it's the Despite awful shooting have really taken the defending champs to the brink. Im a little biased as a Duke fan but Paolo and Franz are absolute dogs and my favorite young wing duo in the league those guys have shown are built for playof...\n\n=== COMMENT (54/64) ===\nu/Other-Owl4441 (0 upvotes):\nLove Ivey but isn't the ideal profile for that missing piece a shot creator who's a knockdown shooter, instead?\n",
+          "score": 52.7554446640071,
+          "source": "Reddit 1.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 5174.542427062988,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    }
+  ]
+}

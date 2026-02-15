@@ -1,0 +1,538 @@
+{
+  "batch_num": 1,
+  "timestamp": "20260215_191016",
+  "queries_tested": 10,
+  "results": [
+    {
+      "batch_num": 1,
+      "query_num": 1,
+      "original_index": 0,
+      "question": "Who scored the most points this season?",
+      "test_type": "sql",
+      "category": "simple_sql_top_n",
+      "answer": "Shai Gilgeous-Alexander scored the most points this season with 2485 points.\n\nSources: NBA Database",
+      "generated_sql": "SELECT p.name, ps.pts FROM players p JOIN player_stats ps ON p.id = ps.player_id ORDER BY ps.pts DESC LIMIT 1;",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 2,
+        "joins": 1,
+        "filters": 0,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 10846.954107284546,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 1,
+      "query_num": 2,
+      "original_index": 1,
+      "question": "Who are the top 3 rebounders in the league?",
+      "test_type": "sql",
+      "category": "simple_sql_top_n",
+      "answer": "Ivica Zubac, Domantas Sabonis, and Karl-Anthony Towns are the top 3 rebounders in the league.\n\nSources: NBA Database",
+      "generated_sql": "SELECT p.name, ps.reb FROM players p JOIN player_stats ps ON p.id = ps.player_id ORDER BY ps.reb DESC LIMIT 3;",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 2,
+        "joins": 1,
+        "filters": 0,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "create_visualization"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 13011.693239212036,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 1,
+      "query_num": 3,
+      "original_index": 2,
+      "question": "Who are the top 5 players in steals?",
+      "test_type": "sql",
+      "category": "simple_sql_top_n",
+      "answer": "The top 5 players in steals are Dyson Daniels, Shai Gilgeous-Alexander, Nikola Jokić, Kris Dunn, and Cason Wallace.\n\nSources: NBA Database",
+      "generated_sql": "SELECT p.name, ps.stl FROM players p JOIN player_stats ps ON p.id = ps.player_id ORDER BY ps.stl DESC LIMIT 5;",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 2,
+        "joins": 1,
+        "filters": 0,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "create_visualization"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 5262.568235397339,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 1,
+      "query_num": 4,
+      "original_index": 3,
+      "question": "Who has the best free throw percentage?",
+      "test_type": "sql",
+      "category": "simple_sql_top_n",
+      "answer": "Sam Hauser has the best free throw percentage.\n\nSources: NBA Database",
+      "generated_sql": "SELECT p.name, ps.ft_pct FROM players p JOIN player_stats ps ON p.id = ps.player_id WHERE ps.gp >= 20 ORDER BY ps.ft_pct DESC LIMIT 1;",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 3,
+        "joins": 1,
+        "filters": 1,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 7226.0730266571045,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 1,
+      "query_num": 5,
+      "original_index": 80,
+      "question": "What do Reddit users think about teams that have impressed in the playoffs?",
+      "test_type": "vector",
+      "category": "simple",
+      "answer": "I don't have information about what Reddit users think about teams that have impressed in the playoffs.\n",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": null,
+        "context_recall": null,
+        "context_relevancy": null
+      },
+      "processing_time_ms": 18167.76752471924,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 1,
+      "query_num": 6,
+      "original_index": 81,
+      "question": "What are the most popular opinions about the two best playoff teams?",
+      "test_type": "vector",
+      "category": "simple",
+      "answer": "Many people are not interested in a potential finals matchup between the two best teams in the playoffs. Some think the NBA and the media are biased and terrible at marketing the league. Others believe that casual viewers are not interested when there is no long-term team dominance. Some fans are simply upset that their team is not in the running.\n\nSources: u/mokaloca82 (457 upvotes), u/mokaloca82 (457 upvotes), u/mokaloca82 (457 upvotes), u/mokaloca82 (457 upvotes), u/mokaloca82 (457 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (9/111) ===\nu/begging_brother (105 upvotes):\n~15 j The NFL has absolutely perfected the idea that the entire league as a whole is the product. The Pittsburgh Steelers remain one of the most popular teams in the league; even though the city is quite small and haven't had stellar success in recent years. The internet is convinced that the NFL is rigging games in favor of Kansas City, the 3Oth largest media market in the country. Dallas, LA, New York; Miami; Chicago; any of these major markets could be in the Super Bowl and the ratings would be largely on par with a Green vs Buffalo Super Bowl.\n",
+          "score": 70.56488156318665,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (11/111) ===\nu/best_teams (72 upvotes):\nthe playoffsl They against thing top Yup, Why How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is Klaw95 -15 j Comm. du top 1% Everyone acting like they are NBA executives caring about ratings and shit. In reality; they are just mad it's not their team\n",
+          "score": 65.79955528226071,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (19/111) ===\nu/the_two (39 upvotes):\nbest_teams_ the playoffsl they being being they They' point How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is While think NBA marketing has something to do with it; you also can't manufacture hype and interest nothing. This is where eras of parity are bad for casual viewers. It takes time and prolonged dominance to attract the attention of casual viewers. Casual viewers that don't live and breathe the NBA probably still think LeBron and Curry are the best players in the world. They don't realize that the Thunder are a historically great team; or that the Pacers are in back to back conference finals. Having 7 different teams and sets of players win the last finals is exciting for die-hard fans, but bad for casual viewers as there is no opportunity for continual discourse about a team that's dominating. 0\n",
+          "score": 65.09532544709323,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (98/111) ===\nu/ThatBull_cj (0 upvotes):\n-15 j Other than SGA getting fouled no one cares enough about any players on either side for it to be toxic 0 1\n",
+          "score": 63.204947493227465,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (94/111) ===\nu/best_teams (0 upvotes):\nthe playoffsl ratings top from get How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is Even the two Celtics fans were pumped to see a Knicks vs Pacers ECF. And we are all excited for any possible Final from the four remaining teams. IIl be rooting for the Pacers to win it all, but whatever.\n",
+          "score": 62.30646100283676,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (102/111) ===\nu/Overall_Turnip8405 (0 upvotes):\n~15 j think so too; both teams have been playing very well and are actually fun to watch\n",
+          "score": 62.123562620584515,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (38/111) ===\nu/the_two (14 upvotes):\nbest_teams_ the_playoffsl Bay top Bay bay have How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is tne doors OT tneir establsned tavorites 0\n",
+          "score": 60.78480842689291,
+          "source": "Reddit 2.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 1.0,
+        "context_recall": null,
+        "context_relevancy": 1.0
+      },
+      "processing_time_ms": 3534.780740737915,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 1,
+      "query_num": 7,
+      "original_index": 82,
+      "question": "What do fans debate about Reggie Miller's efficiency?",
+      "test_type": "vector",
+      "category": "simple",
+      "answer": "Fans debate whether Reggie Miller is properly rated all-time, with some arguing he is overrated. Some believe his efficiency is a product of his limited shot-making arsenal, as he was not as versatile a scorer as players like Jordan, Kobe, and Bird. Others feel that he didn't take as many shots per game as other stars, and it's debatable whether more volume would have lowered his efficiency.\n\nSources: u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (27/166) ===\nu/miller_is (36 upvotes):\nCurry it's Jerry time top top top europe Reggie Miller is the most efficient first option in NBA playoff history TirinAnr rcrie Brice $ la Lubtication # genande _ rapidité et flexibilité pages xometry.eu erithtotl ~10 j Reggie was way ahead of his time: Imagine if he was shooting 10 3s a game like players do now? | feel like you could basically transplant him from the 1990s to now and he'd be just as effective if not more so, unlike some players whose games have aged very poorly. He was a statheads player before there were really statheads\n",
+          "score": 73.43189060688019,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (58/166) ===\nu/JohnBlunt (4 upvotes):\n-10j It's funny because Reggie is probably the consensus worst player on this list\n",
+          "score": 62.68050914237361,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (42/166) ===\nu/miller_is (17 upvotes):\nprime 410 j grain 410 j like optionl Reggie Miller is the most efficient first option in NBA playoff history Ivumper o1 points matters. Smaller sample sizes, no games played outside of peak /prime; etc If you pick MJ's best 2972 point stretch, bet he clears Reggie easily.\n",
+          "score": 62.58538347161001,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (97/166) ===\nu/StupidWriterProf175z (0 upvotes):\nReggie was an excellent player on an excellent team. don't seek to downgrade him:. think he's properly rated on all-time lists and whatever. am against his elevation to a status that he didn't actually play to in his career. In large part, the efficiency that you see here is the product of Reggie's very limited shot-making arsenal. The guy wasn't nearly as versatile a scorer as players Jordan, Kobe and Bird who handled the ball much more; made plays for others as well as themselves; drove the ball, played through contact; etc, none of which Reggie had the physicality to do. Even compared to Steph; Reggie was a much, much more circumscribed scorer.\n",
+          "score": 62.44454191467361,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (160/166) ===\nu/notatowel42o (0 upvotes):\n-10 j Reggie is one of the most overrated players of all time. You remove that Knicks series he would be a forgotten player.\n",
+          "score": 62.38187089758011,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (159/166) ===\nu/Nolofinwe_2782 (0 upvotes):\n-10j He's one of the most overrated players of all time Now if he played in this era? 25 ppg probably\n",
+          "score": 62.37075986533734,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (137/166) ===\nu/miller_is (0 upvotes):\nrings Jerry optionl Reggie Miller is the most efficient first option in NBA playoff history keep in mind that he didn't take nearly as many FGA per game as stars did back then or now. Like; he'd often g0 6/8. And that's it. Would more volume have lowered his numbers? Maybe; but doubt it. Also; very few players increase their stats in the playoffs. Reggie always did.\n",
+          "score": 62.316157828511365,
+          "source": "Reddit 3.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 1.0,
+        "context_recall": null,
+        "context_relevancy": 1.0
+      },
+      "processing_time_ms": 8693.907260894775,
+      "success": true,
+      "issues": []
+    },
+    {
+      "batch_num": 1,
+      "query_num": 8,
+      "original_index": 83,
+      "question": "Which NBA teams didn't have home court advantage in finals according to discussions?",
+      "test_type": "vector",
+      "category": "simple",
+      "answer": "According to discussions, no teams in the modern NBA have made the Finals without home court advantage. If two 8th seed teams made it to the finals, the team with the better record would have home court advantage.\n\nSources: u/DonT012 (272 upvotes), u/DonT012 (272 upvotes), u/DonT012 (272 upvotes), u/DonT012 (272 upvotes), u/DonT012 (272 upvotes)",
+      "generated_sql": "",
+      "sql_complexity": null,
+      "tools_used": [
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (33/33) ===\nu/Dr_Satan36 (0 upvotes):\n-12 j sigto117 -12 j ilya 5 j doesn't NBA hype up finals like Bowl? It should be a spectacle. ilya 11 j Which NBA team without a championship has the most storied history? ilya 12j What's the 'deepest\" an NBA Finals team has ever dug to win? r/hockey ily a 12j Is this the first Stanley Cup Final where neither team had home ice advantage throughout the playoffs? ilya 8 a How is home court advantage decided in the NBA finals? '1l066qq/which_nba home_court advantager 211 j Why Super Which NBA team did not have home court advantage until the NBA Finals? ilya 26j All possible home court advantage scenarios for the NBA finals ilya 10j Robert Sarver is responsible for building both finals teams ilya 11j Has any team ever won an NBA title by winning 4 Game 7s? ilya 11 j [Smith] This is now reality: Thunder vs Pacers will be the first NBA Finals since the luxury tax has been in effect where neither team was a taxpayer for that season. r/hockey ily a 13 j The Oilers are the first Canadian team to have home-ice advantage in the Stanley Cup Finals since the 2011 Vancouver Canucks ilya 11j The Knicks have now lost to a lower seed in 5 straight playoff appearances 3 of those losses came against the Pacers. ilya 2 m. This was an all time Great of nba playoff basketball ilya 2 a NBA team logos over time https:/lwww. reddit.comlrInbalcomments/1l066qq/which_nba home_court advantager day Which NBA team did not have home court advantage until the NBA Finals? ilya 2 m. NBA Teams That Never Met in the Playoffs (Same Conference) ilya 2 m. Who would've won the 2018 NBA Finals if the Rockets beat the Warriors in game 7 of the WCF? r/algeria ilya 9j known Algerian basketball teams? r/pacers il y a 28 j If Pacers and Nuggies Go to Finals, Who Has Homecourt? upvotes r/canes ily a The last time we won a double OT game in the first round of the playoffs youtu commentaires r/AllAmericanTV ilya 1 a What NFL team will Spencer play for? ilya 13 a NBA Court Explained ilya 6 a Can someone explain to me what it means for a team in the playoffs to take home court? upvote ilya 3 m. https:llwww reddit.comlrInbalcomments/1I066qq/which_nba home_court advantager Any Which NBA team did not have home court advantage until the NBA Finals? commentaires r/lakers 2 m. [Buha] Luka Doncic notes that this is the first time he'll have home-court advantage in a playoff series. Discussions connexes Best NBA Teams That Never Won a Championship Best NBA Record 82-Game Season Règles de Reddit Politique de confidentialité Contrat d'utilisation Reddit, Inc. 2025. Tous droits réservés '1l066qq/which_nba home_court advantager il y a\n",
+          "score": 75.94474852085114,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (7/33) ===\nu/ISalty_Watermelon (12 upvotes):\n-12j '1l066qq/which_nba home_court advantager they They They Which NBA team did not have home court advantage until the NBA Finals? A 9th or 1Oth placed team is almost guaranteed to smashed in the Ist round, and has pretty much no chance of making the Finals It was cool that the 1Oth placed Heat made the playoffs until lost to the Cavs in one of those most uncompetitive series of all time And the argument that it prevents tanking falls somewhat short when the Mavericks have already tanked to avoid the play-in; and then got rewarded for it by keeping their pick and drafting Lively _\n",
+          "score": 73.13826846560906,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (1/33) ===\nu/ADE (240 upvotes):\n500 adidas fr 55555_55555 ~12 j Six teams have made the Finals with lower than a 4 seed and none of them have had home court in the Finals. Think the answer is none; at least in the modern NBA\n",
+          "score": 72.49804133570225,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (23/33) ===\nu/ionos (0 upvotes):\najustable en un clic Inclus : protection DDoS, anti-malware et sauvegardes quotidiennes. ionos fr Heberismnent 1€ hr37 yousaytomaco -12j https:llwww reddit.comlrInbalcomments/1I066qq/which_nba home_court advantager they thing they They Which NBA team did not have home court advantage until the NBA Finals? would really need a very lopsided difference between conference; like in 2008 when Golden State missed the playoffs at 48-34 in the west but the Cavs could be a Sth seed at 45-37.That year, for example; had the Suns and Rockets (both 55-27 and the 6th and Sth seed) made a run (not as crazy as it sounds the Lakers were Ist at only 57-25), with the Suns going to the finals, and the Magic (52-30) gotten hot and also gone ot the finals, like they did next year, the Suns would have been the lower seed each round until the finals\n",
+          "score": 71.49503057756718,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (12/33) ===\nu/HeresTheAnswer (4 upvotes):\n-12 j you could be any seed below Ath. If both teams were 8th seeds the one with better record would have home court\n",
+          "score": 71.20420053284886,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (31/33) ===\nu/daymanahhhahhhhhh (0 upvotes):\n-12 j This has never happened in the nba https:llwww reddit.comlrInbalcomments/1I066qq/which_nba home_court advantager get god Which NBA team did not have home court advantage until the NBA Finals? Skinnecott -12 j if the lakers would have made the finals in 2023 it would have been heat vs lakers and only time heat had homecourt would be finals. but denver beat them 3rd round and had homecourt over us\n",
+          "score": 70.36476746836972,
+          "source": "Reddit 4.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Which NBA team did not have home court advantage until the NBA Finals?\nAuthor: u/DonT012 | Upvotes: 272 | Comments: 0\nPost: In the NHL, the Edmonton Oilers just reached the NHL Finals. In their 3 rounds of play, did not have home court advantage: played the Kings on the road. Then the Golden Knights on the road. Then finally , the Stars on the road will now host the Panth...\n\n=== COMMENT (27/33) ===\nu/HeresTheAnswer (0 upvotes):\n-12 j And had picked up Clyde Drexler in Feb https:llwww reddit.comlrInbalcomments/1I066qq/which_nba home_court advantager likely being they Which NBA team did not have home court advantage until the NBA Finals? Comm. du top 1% Never happened b/c the East's badness was vastly overexaggerated\n",
+          "score": 70.25543406608877,
+          "source": "Reddit 4.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.14285714285714285
+      },
+      "processing_time_ms": 5181.0548305511475,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.143 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 1,
+      "query_num": 9,
+      "original_index": 155,
+      "question": "Who scored the most points this season and what makes them an effective scorer?",
+      "test_type": "hybrid",
+      "category": "tier1_stat_plus_context",
+      "answer": "Shai Gilgeous-Alexander scored the most points this season with 2485 points. His true shooting percentage is 63.7% and his effective field goal percentage is 56.9%, which indicates he is an effective scorer.\n\nI don't have detailed analysis of what specifically makes Shai Gilgeous-Alexander an effective scorer.\n\nSources: NBA Database, u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes), u/hqppp (1300 upvotes)",
+      "generated_sql": "SELECT p.name, ps.pts, ps.ts_pct, ps.efg_pct FROM players p JOIN player_stats ps ON p.id = ps.player_id ORDER BY ps.pts DESC LIMIT 1;",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 2,
+        "joins": 1,
+        "filters": 0,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (142/166) ===\nu/CRich19 (0 upvotes):\n~9j Modifié ya -9 j This is really cool, thank you! I've been trying to poke holes but really can't :) Couple guys to call out: Kevin McHale; 3000+ playoff points; 115 rTS%, led in playoff points a couple years over Bird. James Worthy; 3000+ playoff points, 107 rTS%, was the Lakers #1 scorer for majority of his career 4 1\n",
+          "score": 61.01158380508423,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (19/166) ===\nu/jackaholicus (58 upvotes):\n-10 j Comm. du 1% always tell people Reggie is closer to Steph than he is to Klay. 4\n",
+          "score": 45.970473885536194,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (87/166) ===\nu/Giveadont (0 upvotes):\n-10 j Modifié il y a -10j mostly agree with that. And I'm not trying to underplay how good Miller was. would personally rank him as good or better than Scottie Pippen as far as the 9Os are concerned. Miller is probably in the top 10 if we're considering that he was way more consistent than a lot of players for that entire decade. He probably could have gotten by as a number 1 in the sense that he's a team's highest scorer, but he probably needed someone to handle the creation part of things and take some on-ball scoring load off of him to beat any of the teams he faced (and lost to) in the finals or conference finals. That's not really a knock on Miller IMO; though. That's why gave the example of Miller on a team like the 2004 Pistons. If he had a balanced team of really solid defensive and players that were comparable to that; he could probably outscore everyone on his team effectively and still win a championship. Compare to Miller's actual career: Mark Jackson was probably the best he as a creator. Chauncey is already an upgrade there. Maybe not as a pure creator; but his 3-Level scoring is already better at creating distraction for Miller than he ever had in Jackson: The best team Miller had overall was probably when he was nearing the later part of his career in the mid-20OOs and heading into retirement:. But then all got suspended for the whole \"Malice at the Palace\" situation. 4 7\n",
+          "score": 45.962350368499756,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (67/166) ===\nu/realfakejames (0 upvotes):\n-10j Comm. du top 1% When Reggie was playing there was one guard spot on the east every year guys had to compete for because the other automatically was Michael Jordan Imao 4 4\n",
+          "score": 45.940654277801514,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (64/166) ===\nu/Virgil_hawkinss (3 upvotes):\n-10 j https:llwww reddit.comlrInbalcomments/1l161bplreggie miller_is Lowry really scoring got Curry, every talking like guards from optionl Reggie Miller is the most efficient first option in NBA playoff history\n",
+          "score": 45.90812683105469,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (99/166) ===\nu/Angularbackhands (0 upvotes):\n-10 j Comm. du 1% Playoff riser 4 12\n",
+          "score": 45.9043425321579,
+          "source": "Reddit 3.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: Reggie Miller is the most efficient first option in NBA playoff history\nAuthor: u/hqppp | Upvotes: 1300 | Comments: 317\nPost: The Pacers-Knicks series had me going back through Reggie Miller's career and it highlighted something that goes a little under the radar that Reggie Miller is the most efficient first ever. Here is how Reggie stacks up against 20 of the best first o...\n\n=== COMMENT (148/166) ===\nu/RecommendationReal61 (0 upvotes):\n-10 j Modifié il y a -10j He was a first in the sense that he was the team's best shot maker, so was the top priority to try to get open. More like a Glen Rice; Allan Houston; or Peja than a Mitch Richmond; Mark Price; or Clyde Drexler. The offense was built around him, but not necessarily through him.\n",
+          "score": 45.90135931968689,
+          "source": "Reddit 3.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.7,
+        "context_recall": null,
+        "context_relevancy": 0.42857142857142855
+      },
+      "processing_time_ms": 16418.761253356934,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.429 (below 0.7 threshold)"
+        }
+      ]
+    },
+    {
+      "batch_num": 1,
+      "query_num": 10,
+      "original_index": 156,
+      "question": "Compare LeBron James and Kevin Durant's scoring this season and explain their scoring styles.",
+      "test_type": "hybrid",
+      "category": "tier1_comparison_plus_context",
+      "answer": "LeBron James has scored 1708 points this season, compared to Kevin Durant's 1649 points.\n\nHere's a breakdown of their scoring statistics:\n\n*   **LeBron James:** 1267 field goal attempts, 51.3% field goal percentage, 399 three-point attempts, 37.6% three-point percentage, 329 free throw attempts, and 78.2% free throw percentage.\n*   **Kevin Durant:** 1122 field goal attempts, 52.7% field goal percentage, 372 three-point attempts, 43% three-point percentage, 360 free throw attempts, and 83.9% free throw percentage.\n\nI don't have detailed analysis of their specific scoring styles.\n\nSources: NBA Database, u/mokaloca82 (457 upvotes), u/mokaloca82 (457 upvotes), u/unknown (0 upvotes), u/mokaloca82 (457 upvotes), u/mokaloca82 (457 upvotes)",
+      "generated_sql": "SELECT p.name, ps.pts, ps.fga, ps.fg_pct, ps.three_pa, ps.three_pct, ps.fta, ps.ft_pct FROM players p JOIN player_stats ps ON p.id = ps.player_id WHERE p.name IN ('LeBron James', 'Kevin Durant');",
+      "sql_complexity": {
+        "level": "Simple",
+        "score": 3,
+        "joins": 1,
+        "filters": 1,
+        "aggregation": false,
+        "subqueries": false,
+        "window_functions": false
+      },
+      "tools_used": [
+        "query_nba_database",
+        "search_knowledge_base",
+        "create_visualization"
+      ],
+      "sources": [
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (42/111) ===\nu/GunstarGreen (4 upvotes):\n-15 j Its a superstars league. Its not Lakers vs Minny; its LeBron vs Antman: 're desperate for superstars yo be in big games. ESPN could be talking about bowling and they'd turn it into a discussion on LeBron. Two teams playing great team ball, one with the \"boring\" MVP and the other the most overrated player in the game: The media domt know what yo do.\n",
+          "score": 65.55443227291107,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (19/111) ===\nu/the_two (39 upvotes):\nbest_teams_ the playoffsl they being being they They' point How is it that the two best teams in the playoffs based on stats having chance of playing against each other in the Finals, is While think NBA marketing has something to do with it; you also can't manufacture hype and interest nothing. This is where eras of parity are bad for casual viewers. It takes time and prolonged dominance to attract the attention of casual viewers. Casual viewers that don't live and breathe the NBA probably still think LeBron and Curry are the best players in the world. They don't realize that the Thunder are a historically great team; or that the Pacers are in back to back conference finals. Having 7 different teams and sets of players win the last finals is exciting for die-hard fans, but bad for casual viewers as there is no opportunity for continual discourse about a team that's dominating. 0\n",
+          "score": 61.81177766287546,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "METRIC: OREB\nDescription: Rebonds offensifs\n--------------------------------------------------------------------------------\n\nMETRIC: DREB\nDescription: Rebonds défensifs\n--------------------------------------------------------------------------------\n\nMETRIC: REB\nDescription: Rebonds totaux\n--------------------------------------------------------------------------------\n\nMETRIC: AST\nDescription: Passes décisives (Assists)\n--------------------------------------------------------------------------------\n\nMETRIC: TOV\nDescription: Balles perdues (Turnovers)\n--------------------------------------------------------------------------------\n\nMETRIC: STL\nDescription: Interceptions (Steals)\n--------------------------------------------------------------------------------\n\nMETRIC: BLK\nDescription: Contres (Blocks)\n--------------------------------------------------------------------------------\n\nMETRIC: PF\nDescription: Fautes personnelles\n--------------------------------------------------------------------------------\n\nMETRIC: FP\nDescription: Fantasy Points\n--------------------------------------------------------------------------------\n\nMETRIC: DD2\nDescription: Double-doubles (≥10 dans deux catégories principales)\n--------------------------------------------------------------------------------\n\nMETRIC: TD3\nDescription: Triple-doubles (≥10 dans trois catégories principales)\n--------------------------------------------------------------------------------",
+          "score": 50.8509886264801,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (97/111) ===\nu/robeyn1o (0 upvotes):\n-15 j No-Molasses9136 ~15 j The last two girlfriends had ended up getting married within two years after we broke up; so imagine that's how Paul George kinda feels about this. 0 1\n",
+          "score": 50.342206954956055,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (40/111) ===\nu/GodWhyPlease (13 upvotes):\n~15 j Modifié il y a-15 j BruceBrownMVP ~15 j The same was said at the start of the season about how you guys and Denver fans wouldn't get toxic over the MVP since you have a shared love of Westbrook and we saw how that ended up\n",
+          "score": 50.324891805648804,
+          "source": "Reddit 2.pdf"
+        },
+        {
+          "text": "NBA Statistics Glossary\n================================================================================\n\nMETRIC: Player\nDescription: Nom du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: Team\nDescription: Équipe du joueur (code à 3 lettres)\n--------------------------------------------------------------------------------\n\nMETRIC: Age\nDescription: Âge du joueur\n--------------------------------------------------------------------------------\n\nMETRIC: GP\nDescription: Nombre de matchs joués (Games Played)\n--------------------------------------------------------------------------------\n\nMETRIC: W\nDescription: Nombre de victoires de l'équipe lors des matchs joués\n--------------------------------------------------------------------------------\n\nMETRIC: L\nDescription: Nombre de défaites\n--------------------------------------------------------------------------------\n\nMETRIC: Min\nDescription: Minutes moyennes jouées par match\n--------------------------------------------------------------------------------\n\nMETRIC: PTS\nDescription: Points marqués en moyenne par match\n--------------------------------------------------------------------------------\n\nMETRIC: FGM\nDescription: Tirs réussis par match (Field Goals Made)\n--------------------------------------------------------------------------------",
+          "score": 50.319108963012695,
+          "source": "regular NBA.xlsx"
+        },
+        {
+          "text": "=== REDDIT POST ===\nTitle: How is it that the two best teams in the playoffs based on stats, having a chance of\nAuthor: u/mokaloca82 | Upvotes: 457 | Comments: 440\nPost: playing against each other in the Finals, is considered to be a snoozefest? Why is the NBA media this biased and terrible at marketing their product to the point the potential of the two best teams in advanced stats in the playoffs is considered to b...\n\n=== COMMENT (91/111) ===\nu/UmphreysMcGee (0 upvotes):\n-14 j Shai had 4 FT attempts tonight and your team lost by 30. think dogs are just afraid of Thunder.\n",
+          "score": 50.2469527721405,
+          "source": "Reddit 2.pdf"
+        }
+      ],
+      "ragas_metrics": {
+        "faithfulness": 0.9,
+        "answer_relevancy": 0.85,
+        "answer_semantic_similarity": 0.9,
+        "answer_correctness": 0.88,
+        "context_precision": 0.0,
+        "context_recall": null,
+        "context_relevancy": 0.0
+      },
+      "processing_time_ms": 58961.848735809326,
+      "success": true,
+      "issues": [
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_precision score is 0.000 (below 0.7 threshold)"
+        },
+        {
+          "severity": "critical",
+          "type": "low_metric",
+          "message": "context_relevancy score is 0.000 (below 0.7 threshold)"
+        }
+      ]
+    }
+  ]
+}
