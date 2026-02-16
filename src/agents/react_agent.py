@@ -14,6 +14,7 @@ import time
 from google import genai
 
 from src.agents.query_classifier import QueryClassifier
+from src.agents.results_formatter import ResultsFormatter
 
 logger = logging.getLogger(__name__)
 
@@ -650,11 +651,11 @@ REWRITTEN QUESTION:"""
             sql_results_list = sql_data.get("results", [])
             sql_query = sql_data.get("sql", "")
 
-            if sql_results_list and self._should_visualize(sql_results_list):
+            if sql_results_list and ResultsFormatter.should_visualize(sql_results_list):
                 logger.info("Auto-generating visualization for SQL results")
                 try:
                     # Convert tuples to dicts if needed
-                    formatted_results = self._format_sql_results(sql_results_list, sql_query)
+                    formatted_results = ResultsFormatter.format_sql_results(sql_results_list, sql_query)
 
                     viz_observation = self._execute_tool(
                         tool_name="create_visualization",
@@ -693,7 +694,7 @@ REWRITTEN QUESTION:"""
         sql_data = self.tool_results.get("query_nba_database") if sql_result else None
         vector_data = self.tool_results.get("search_knowledge_base") if vector_result else None
 
-        prompt = self._build_combined_prompt(
+        prompt = ResultsFormatter.build_combined_prompt(
             question=question,
             conversation_history=conversation_history,
             sql_result=sql_data,
@@ -720,7 +721,7 @@ REWRITTEN QUESTION:"""
             sql_data = self.tool_results.get("query_nba_database") if sql_result else None
             vector_data = self.tool_results.get("search_knowledge_base") if vector_result else None
 
-            answer_with_citations = self._ensure_citations(
+            answer_with_citations = ResultsFormatter.ensure_citations(
                 answer=answer,
                 sql_result=sql_data,
                 vector_result=vector_data
@@ -737,310 +738,3 @@ REWRITTEN QUESTION:"""
         except Exception as e:
             logger.error(f"LLM call failed: {e}")
             raise Exception(f"LLM call failed: {str(e)}") from e
-
-    def _ensure_citations(
-        self,
-        answer: str,
-        sql_result: Any,
-        vector_result: Any
-    ) -> str:
-        """Ensure answer includes source citations for faithfulness.
-
-        Args:
-            answer: Generated answer text
-            sql_result: SQL query results (if executed)
-            vector_result: Vector search results (if executed)
-
-        Returns:
-            Answer with citations appended if not already present
-        """
-        # Check if answer already has citations
-        if "Sources:" in answer or "Source:" in answer:
-            return answer  # LLM already included citations
-
-        # Build citations list
-        citations = []
-
-        if sql_result:
-            citations.append("NBA Database")
-
-        if vector_result and isinstance(vector_result, dict):
-            # Add Reddit citations with real metadata (post author + upvotes)
-            if "results" in vector_result:
-                results = vector_result["results"][:5]  # Limit to top 5
-                logger.info(f"Adding {len(results)} Reddit citations with metadata (total results: {len(vector_result['results'])})")
-
-                for result in results:
-                    # Extract metadata from chunk
-                    metadata = result.get("metadata", {})
-                    post_author = metadata.get("post_author", "unknown")
-                    post_upvotes = metadata.get("post_upvotes", 0)
-
-                    # Format citation: u/username (upvotes)
-                    citation = f"u/{post_author} ({post_upvotes} upvotes)"
-                    citations.append(citation)
-                    logger.debug(f"Added citation: {citation}")
-
-        # Append citations if any sources were used
-        if citations:
-            # Remove trailing whitespace and add citations
-            answer = answer.rstrip()
-            if not answer.endswith("."):
-                answer += "."
-            answer += f"\n\nSources: {', '.join(citations)}"
-            logger.info(f"Added citations: {', '.join(citations)}")
-
-        return answer
-
-    def _build_combined_prompt(
-        self,
-        question: str,
-        conversation_history: str,
-        sql_result: Any,
-        vector_result: Any,
-        query_type: str,
-    ) -> str:
-        """Build prompt with executed tool results for single LLM call.
-
-        Args:
-            question: User question
-            conversation_history: Previous conversation context
-            sql_result: Results from SQL database query (None if not executed)
-            vector_result: Results from vector search (None if not executed)
-            query_type: Classification result ("sql_only", "vector_only", "hybrid")
-
-        Returns:
-            Prompt string with available results
-        """
-        # Format SQL results if available
-        sql_formatted = json.dumps(sql_result, indent=2) if sql_result else "Not retrieved (not needed for this query type)"
-
-        # Format vector results if available
-        vector_formatted = json.dumps(vector_result, indent=2) if vector_result else "Not retrieved (not needed for this query type)"
-
-        # Build instructions based on what was retrieved
-        if query_type == "sql_only":
-            instructions = """QUERY TYPE: Statistical (SQL-only)
-Your task: Answer using the SQL database results below. This is a pure statistical query.
-
-CRITICAL RULES FOR RELEVANCY:
-1. Read the question carefully and answer EXACTLY what is asked
-2. Don't add information not requested in the question
-3. If the question asks for specific details (top N, comparisons, etc.), provide exactly that
-4. Stay focused on the user's specific question - don't go off-topic
-
-CRITICAL RULES FOR FAITHFULNESS:
-1. ONLY use information present in the SQL results - no speculation, no assumptions
-2. Every number, stat, or fact MUST come directly from the SQL results
-3. If SQL results are empty or incomplete, say gracefully: "I don't have that information"
-4. Never infer or calculate stats not explicitly provided
-5. DO NOT mention "SQL", "database", or technical terms
-
-BANNED BEHAVIORS:
-❌ Adding facts not in SQL results
-❌ Speculating about reasons or context
-❌ Answering a different question than asked"""
-
-        elif query_type == "vector_only":
-            instructions = """QUERY TYPE: Contextual (Vector-only)
-Your task: Answer using the vector search results below. This is a contextual/opinion query.
-
-CRITICAL RULES FOR RELEVANCY:
-1. Answer the EXACT question asked - don't provide related but different information
-2. If the question asks "why", explain reasons; if "what do fans think", share opinions
-3. Match the scope of your answer to the question (don't over-explain or under-explain)
-
-CRITICAL RULES FOR FAITHFULNESS:
-1. ONLY use information present in the vector search results
-2. Every claim, opinion, or fact MUST come from the retrieved documents
-3. Summarize opinions naturally WITHOUT inline citations (no usernames, no parenthetical references)
-4. If results don't answer the question, admit it gracefully: "I don't have information about [topic]"
-5. DO NOT mention "vector search", "knowledge base", usernames, or technical terms
-6. Never make up opinions, debates, or context not in the results
-
-BANNED BEHAVIORS:
-❌ Inventing opinions or debates not in results
-❌ Generalizing beyond what the documents say
-❌ Answering a related but different question
-❌ Adding inline citations like (u/username) or (Reddit post)"""
-
-        else:  # hybrid
-            instructions = """QUERY TYPE: Hybrid (SQL + Vector)
-Your task: Combine both SQL and vector results to provide a comprehensive answer.
-
-CRITICAL RULES FOR RELEVANCY:
-1. Answer EXACTLY what the user asked - not more, not less
-2. If question has multiple parts (stats + context), address BOTH
-3. Don't add unrequested information or go off-topic
-4. Match your answer structure to the question structure
-
-CRITICAL RULES FOR FAITHFULNESS:
-1. SQL results are the ONLY source for numbers, stats, rankings - NEVER make up stats
-2. Vector results are the ONLY source for context, opinions, explanations - NEVER invent context
-3. Every claim must be traceable to either SQL or vector results
-4. If SQL and vector conflict on factual stats, ALWAYS trust SQL
-5. If information is missing from BOTH sources, admit it gracefully
-6. Combine sources intelligently: stats from SQL + context from vector
-
-GRACEFUL HONESTY - If information is missing or incomplete:
-- Focus on what information you DO have (stats OR context)
-- Be honest about limitations without technical jargon
-- NEVER mention "vector search", "SQL", "database", "knowledge base"
-- Instead say: "I don't have detailed analysis of [topic]" or "Based on available statistics..."
-- Example: "While I don't have specific analysis of their playing style, the efficiency metrics suggest..."
-
-BANNED BEHAVIORS:
-❌ Inventing stats not in SQL results
-❌ Making up context not in vector results
-❌ Speculating or inferring beyond what sources provide
-❌ Answering a different question than asked
-❌ Mentioning technical implementation details
-❌ Adding inline citations like (u/username) or (Reddit post)"""
-
-        # Note: Citations will be added automatically by _ensure_citations()
-        # No need to instruct LLM to add them (ensures consistent format)
-
-        # Add context awareness instructions if conversation history exists
-        context_instructions = ""
-        if conversation_history:
-            context_instructions = """
-CONTEXT AWARENESS (Multi-turn Conversation):
-✓ Use conversation history to resolve pronouns (he, she, they, their, his, her)
-✓ Pronouns like "they" or "he" refer to entities mentioned in previous turns
-✓ If the user asks "What team do they play for?", look at the previous conversation to identify who "they" refers to
-✓ Maintain conversational continuity - understand implicit references
-"""
-
-        prompt = f"""You are an NBA statistics assistant.
-
-{instructions}
-
-USER QUESTION:
-{question}
-
-SQL DATABASE RESULTS (FACTUAL STATS):
-{sql_formatted}
-
-VECTOR SEARCH RESULTS (CONTEXT & OPINIONS):
-{vector_formatted}
-
-CONVERSATION HISTORY:
-{conversation_history or "None"}
-{context_instructions}
-
-IMPORTANT REMINDERS:
-✓ RELEVANCY: Answer EXACTLY what the user asked - stay on topic
-✓ FAITHFULNESS: Use ONLY information from the results above - no speculation or assumptions
-✓ HONESTY: If you don't have the information, admit it gracefully
-
-Your answer:"""
-
-        return prompt
-
-    def _execute_tool(
-        self, tool_name: str, tool_input: dict[str, Any]
-    ) -> str:
-        """Execute tool, store result, and return observation string."""
-        if tool_name not in self.tools:
-            return f"Error: Unknown tool '{tool_name}'"
-
-        tool = self.tools[tool_name]
-        try:
-            result = tool.function(**tool_input)
-
-            # Store structured result for direct access (no string parsing needed!)
-            self.tool_results[tool_name] = result
-
-            # Return truncated string observation for prompt
-            return str(result)[:1200]  # Increased from 800 to reduce info loss
-        except Exception as e:
-            logger.error(f"Tool {tool_name} execution failed: {e}")
-            return f"Error executing {tool_name}: {str(e)}"
-
-    def _call_llm(self, prompt: str) -> str:
-        """Call LLM with retry logic."""
-        max_retries = 3
-        for attempt in range(max_retries):
-            try:
-                response = self.llm_client.models.generate_content(
-                    model=self.model,
-                    contents=prompt,
-                    config={"temperature": self.temperature},  # Use configured temperature
-                )
-                logger.debug(f"LLM Response (first 500 chars): {response.text[:500]}")
-                return response.text
-            except Exception as e:
-                if attempt >= max_retries - 1:
-                    raise Exception(f"LLM call failed after {max_retries} attempts: {e}")
-                time.sleep(2 ** attempt)  # Exponential backoff
-
-    def _should_visualize(self, sql_results: list) -> bool:
-        """Determine if SQL results should be visualized.
-
-        Simple rule: Visualize if 2+ rows (likely a ranking/comparison)
-
-        Args:
-            sql_results: SQL query results (list of tuples or dicts)
-
-        Returns:
-            True if results should be visualized
-        """
-        # Simple: visualize if we have 2+ rows (rankings, comparisons, top N)
-        # Single row = single player/team stats (no chart needed)
-        return (
-            sql_results
-            and isinstance(sql_results, list)
-            and len(sql_results) >= 2
-        )
-
-    def _format_sql_results(self, results: list, sql_query: str) -> list[dict]:
-        """Convert SQL results to list of dicts for visualization.
-
-        Uses simple heuristics:
-        - If already dicts → return as-is
-        - If tuples with 2 cols → assume (name, value)
-        - Otherwise → use generic col0, col1, etc.
-
-        Args:
-            results: SQL results (list of tuples or dicts)
-            sql_query: SQL query string (for future enhancement)
-
-        Returns:
-            List of dictionaries with column names as keys
-        """
-        if not results:
-            return []
-
-        # DEBUG LOGGING
-        logger.debug(f"_format_sql_results received results type: {type(results)}")
-        logger.debug(f"_format_sql_results received results[0] type: {type(results[0])}")
-        logger.debug(f"_format_sql_results received results[0] content: {results[0]}")
-
-        # If already dicts, return as-is
-        if isinstance(results[0], dict):
-            logger.debug("Results already dicts, returning as-is")
-            return results
-
-        # SAFETY CHECK: Ensure results[0] is iterable (tuple/list), not a string
-        if isinstance(results[0], str):
-            logger.error(f"_format_sql_results ERROR: results[0] is a STRING: {results[0]}")
-            logger.error(f"Full results: {results}")
-            # Try to recover: assume single-column data
-            return [{"value": row} for row in results]
-
-        # Simple heuristic: Most top N queries have (name, value) format
-        num_cols = len(results[0])
-        logger.debug(f"Detected {num_cols} columns")
-
-        if num_cols == 2:
-            # Assume: (name, value) - most common case
-            column_names = ["name", "value"]
-        else:
-            # Generic column names
-            column_names = [f"col{i}" for i in range(num_cols)]
-
-        # Convert tuples to dicts
-        return [
-            {col: value for col, value in zip(column_names, row)}
-            for row in results
-        ]
