@@ -92,6 +92,43 @@ class ReActAgent:
         # Tool results storage (structured access for direct extraction)
         self.tool_results: dict[str, Any] = {}
 
+    def _execute_tool(self, tool_name: str, tool_input: dict[str, Any]) -> dict[str, Any]:
+        """Execute a tool and store its result.
+
+        Args:
+            tool_name: Name of the tool to execute
+            tool_input: Input parameters for the tool
+
+        Returns:
+            Tool execution result dictionary
+
+        Raises:
+            ValueError: If tool not found
+        """
+        if tool_name not in self.tools:
+            raise ValueError(f"Tool '{tool_name}' not found. Available: {list(self.tools.keys())}")
+
+        tool = self.tools[tool_name]
+
+        try:
+            logger.debug(f"Executing tool: {tool_name} with input: {tool_input}")
+
+            # Call the tool's function with the input parameters
+            result = tool.function(**tool_input)
+
+            # Store result for later access
+            self.tool_results[tool_name] = result
+
+            logger.debug(f"Tool {tool_name} executed successfully")
+            return result
+
+        except Exception as e:
+            logger.exception(f"Tool {tool_name} execution failed: {e}")
+            # Return error result
+            error_result = {"error": str(e), "success": False}
+            self.tool_results[tool_name] = error_result
+            return error_result
+
     def _extract_entities_from_sql(self, sql_result: dict) -> list[str]:
         """Extract entity names (players, teams) from SQL results.
 
