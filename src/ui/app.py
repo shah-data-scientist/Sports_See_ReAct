@@ -602,6 +602,7 @@ def main() -> None:
                         "role": "assistant",
                         "content": error_msg,
                         "interaction_id": None,
+                    })
                 except requests.exceptions.ConnectionError:
                     logger.error("API connection error - cannot reach server")
                     error_msg = "🔌 Cannot reach the API server. Please check your connection and try again."
@@ -610,6 +611,7 @@ def main() -> None:
                         "role": "assistant",
                         "content": error_msg,
                         "interaction_id": None,
+                    })
                 except requests.exceptions.JSONDecodeError as e:
                     logger.error(f"Invalid JSON response from API: {e}")
                     error_msg = "⚠️ Received invalid response from server. Please try again."
@@ -618,6 +620,7 @@ def main() -> None:
                         "role": "assistant",
                         "content": error_msg,
                         "interaction_id": None,
+                    })
                 except Exception as e:
                     logger.exception(f"Unexpected API error: {e}")
                     error_msg = get_user_friendly_error_message(e)
