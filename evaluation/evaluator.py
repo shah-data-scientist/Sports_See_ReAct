@@ -928,8 +928,11 @@ def main():
     args = parser.parse_args()
 
     # Print statistics
-    from evaluation.unified_test_cases import print_statistics
-    print_statistics()
+    stats = get_statistics()
+    logger.info(f"Total test cases: {stats['total']}")
+    logger.info(f"  SQL: {stats['sql']}")
+    logger.info(f"  Vector: {stats['vector']}")
+    logger.info(f"  Hybrid: {stats['hybrid']}")
 
     test_indices = None
     if args.mini:

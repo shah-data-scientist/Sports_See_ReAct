@@ -8,12 +8,6 @@ Tests:
 4. Vector query (all metrics calculated)
 """
 
-import sys
-from pathlib import Path
-
-# Add project root to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 from evaluation.metrics import calculate_ragas_metrics, format_ragas_report
 
 
