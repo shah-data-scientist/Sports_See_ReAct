@@ -939,7 +939,7 @@ def main():
             test_indices = [0, 3, 5, 22]  # simple, noisy, conversational, complex
         elif args.type == "hybrid":
             test_indices = [0, 4, 10, 18]  # tier1, tier2, tier3, tier4
-        print(f"\nMini mode: running limited test cases")
+        logger.info("Mini mode: running limited test cases")
 
     try:
         results, json_path = run_unified_evaluation(
@@ -948,16 +948,16 @@ def main():
             test_indices=test_indices
         )
 
-        print("\n" + "="*80)
-        print(f"EVALUATION COMPLETE{' (MINI)' if args.mini else ''}")
-        print("="*80)
-        print(f"\nResults saved to:")
-        print(f"  - JSON: {json_path}")
-        print(f"  - Report: {json_path.replace('.json', '_report.md')}")
-        print("\n" + "="*80)
+        logger.info("=" * 80)
+        logger.info(f"EVALUATION COMPLETE{' (MINI)' if args.mini else ''}")
+        logger.info("=" * 80)
+        logger.info("Results saved to:")
+        logger.info(f"  - JSON: {json_path}")
+        logger.info(f"  - Report: {json_path.replace('.json', '_report.md')}")
+        logger.info("=" * 80)
 
     except KeyboardInterrupt:
-        print("\n\n⚠️ Evaluation interrupted by user. Re-run to resume from checkpoint.")
+        logger.warning("⚠️ Evaluation interrupted by user. Re-run to resume from checkpoint.")
         sys.exit(1)
     except Exception as e:
         logger.error(f"Evaluation failed: {str(e)}", exc_info=True)

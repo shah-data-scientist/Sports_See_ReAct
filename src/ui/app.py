@@ -594,8 +594,32 @@ def main() -> None:
                         render_feedback_buttons(interaction_id, len(st.session_state.messages) - 1, client)
                     logger.info(f"[UI-DEBUG] Feedback buttons rendered successfully")
 
-                except (requests.exceptions.Timeout, requests.exceptions.ConnectionError, Exception) as e:
-                    logger.exception("API error: %s", e)
+                except requests.exceptions.Timeout:
+                    logger.error("API timeout - request took too long")
+                    error_msg = "⏱️ Request timed out. The server is taking too long to respond. Please try again."
+                    st.error(error_msg)
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": error_msg,
+                        "interaction_id": None,
+                except requests.exceptions.ConnectionError:
+                    logger.error("API connection error - cannot reach server")
+                    error_msg = "🔌 Cannot reach the API server. Please check your connection and try again."
+                    st.error(error_msg)
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": error_msg,
+                        "interaction_id": None,
+                except requests.exceptions.JSONDecodeError as e:
+                    logger.error(f"Invalid JSON response from API: {e}")
+                    error_msg = "⚠️ Received invalid response from server. Please try again."
+                    st.error(error_msg)
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": error_msg,
+                        "interaction_id": None,
+                except Exception as e:
+                    logger.exception(f"Unexpected API error: {e}")
                     error_msg = get_user_friendly_error_message(e)
                     st.error(error_msg)
                     st.session_state.messages.append({

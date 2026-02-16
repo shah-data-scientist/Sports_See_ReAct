@@ -415,9 +415,19 @@ class VectorStoreRepository:
                         ))
                         for chunk, score in results
                     ]
+                except ImportError:
+                    # BM25 library not installed
+                    logger.warning("BM25 library (rank-bm25) not installed, using cosine + quality only")
+                    results = [
+                        (chunk, min(
+                            score + self._compute_quality_boost(chunk),
+                            100.0,
+                        ))
+                        for chunk, score in results
+                    ]
                 except Exception as e:
-                    # BM25 calculation failed, fall back to cosine + quality
-                    logger.warning(f"BM25 calculation failed ({e}), using cosine + quality only")
+                    # BM25 calculation error (not import related)
+                    logger.error(f"BM25 calculation error: {e}", exc_info=True)
                     results = [
                         (chunk, min(
                             score + self._compute_quality_boost(chunk),

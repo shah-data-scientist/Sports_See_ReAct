@@ -17,6 +17,9 @@ Empty fields are allowed for test cases that don't need certain expectations.
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class TestType(Enum):
@@ -300,34 +303,34 @@ def validate_test_cases(test_cases: list[UnifiedTestCase]) -> dict[str, Any]:
 
 def print_validation_report(report: dict[str, Any]) -> None:
     """Print formatted validation report."""
-    print("\n" + "=" * 80)
-    print("UNIFIED TEST CASE VALIDATION REPORT")
-    print("=" * 80)
-    print(f"Total Test Cases: {report['total']}")
-    print(f"Valid: {report['valid']} ({report['valid']/report['total']*100:.1f}%)")
-    print(f"Invalid: {report['invalid']} ({report['invalid']/report['total']*100:.1f}%)")
-    print("\n" + "-" * 80)
-    print("By Type:")
+    logger.info("=" * 80)
+    logger.info("UNIFIED TEST CASE VALIDATION REPORT")
+    logger.info("=" * 80)
+    logger.info(f"Total Test Cases: {report['total']}")
+    logger.info(f"Valid: {report['valid']} ({report['valid']/report['total']*100:.1f}%)")
+    logger.info(f"Invalid: {report['invalid']} ({report['invalid']/report['total']*100:.1f}%)")
+    logger.info("-" * 80)
+    logger.info("By Type:")
     for test_type, stats in report["by_type"].items():
-        print(f"  {test_type.upper()}: {stats['count']} total, {stats['valid']} valid, {stats['invalid']} invalid")
+        logger.info(f"  {test_type.upper()}: {stats['count']} total, {stats['valid']} valid, {stats['invalid']} invalid")
 
-    print("\n" + "-" * 80)
-    print("Missing Fields Summary:")
-    print(f"  Test cases missing SQL fields: {report['missing_fields_summary']['sql_fields']}")
-    print(f"  Test cases missing Vector fields: {report['missing_fields_summary']['vector_fields']}")
-    print(f"  Test cases missing Answer fields: {report['missing_fields_summary']['answer_fields']}")
+    logger.info("-" * 80)
+    logger.info("Missing Fields Summary:")
+    logger.info(f"  Test cases missing SQL fields: {report['missing_fields_summary']['sql_fields']}")
+    logger.info(f"  Test cases missing Vector fields: {report['missing_fields_summary']['vector_fields']}")
+    logger.info(f"  Test cases missing Answer fields: {report['missing_fields_summary']['answer_fields']}")
 
     if report["issues"]:
-        print("\n" + "-" * 80)
-        print(f"Validation Issues ({len(report['issues'])} test cases):")
+        logger.info("-" * 80)
+        logger.info(f"Validation Issues ({len(report['issues'])} test cases):")
         for issue in report["issues"][:10]:  # Show first 10
-            print(f"\n  [{issue['index']}] {issue['type'].upper()}: {issue['question']}")
+            logger.info(f"\n  [{issue['index']}] {issue['type'].upper()}: {issue['question']}")
             for issue_detail in issue['issues']:
-                print(f"    - {issue_detail}")
+                logger.info(f"    - {issue_detail}")
         if len(report["issues"]) > 10:
-            print(f"\n  ... and {len(report['issues']) - 10} more issues")
+            logger.info(f"\n  ... and {len(report['issues']) - 10} more issues")
 
-    print("=" * 80 + "\n")
+    logger.info("=" * 80)
 
 
 # ============================================================================

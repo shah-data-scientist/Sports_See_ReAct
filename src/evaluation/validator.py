@@ -13,10 +13,14 @@ RESPONSIBILITIES:
 Usage:
     poetry run python src/evaluation/validator.py              # Verify all test cases
 """
+import json
+import logging
 import sqlite3
 import sys
 from pathlib import Path
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
@@ -105,9 +109,9 @@ def compare_results(expected: Any, actual: list[dict]) -> tuple[bool, str, dict]
 
 def verify_all_test_cases() -> dict:
     """Verify all test cases and generate missing ground truth where possible."""
-    print(f"\n{'=' * 80}")
-    print(f"GROUND TRUTH VERIFICATION ({len(ALL_TEST_CASES)} test cases)")
-    print(f"{'=' * 80}")
+    logger.info("=" * 80)
+    logger.info(f"GROUND TRUTH VERIFICATION ({len(ALL_TEST_CASES)} test cases)")
+    logger.info("=" * 80)
 
     results = {"passed": [], "failed": []}
 
@@ -115,8 +119,8 @@ def verify_all_test_cases() -> dict:
         question = test_case.question
         category = test_case.category
 
-        print(f"\n[{i}/{len(ALL_TEST_CASES)}] {category}")
-        print(f"Q: {question[:80]}...")
+        logger.info(f"[{i}/{len(ALL_TEST_CASES)}] {category}")
+        logger.info(f"Q: {question[:80]}...")
 
         # Check if test case has query and data fields
         has_query = test_case.expected_sql is not None and test_case.expected_sql.strip() != ""
@@ -125,9 +129,9 @@ def verify_all_test_cases() -> dict:
         # Try to validate/generate expected_sql and ground_truth_data
         if not has_query:
             # Missing expected_sql - cannot auto-generate SQL from question
-            print(f"  ⚠️  Missing expected_sql")
-            print(f"  💡 RESULT: expected_sql = \"no result\"")
-            print(f"  💡 RESULT: ground_truth_data = \"no result\"")
+            logger.warning("  Missing expected_sql")
+            logger.info("  💡 RESULT: expected_sql = \"no result\"")
+            logger.info("  💡 RESULT: ground_truth_data = \"no result\"")
             results["failed"].append({
                 "test_case": test_case,
                 "message": "Missing expected_sql",
@@ -143,25 +147,24 @@ def verify_all_test_cases() -> dict:
             is_match, message, details = compare_results(test_case.ground_truth_data, actual_data)
 
             if not is_match:
-                print(f"  ❌ DATA MISMATCH: {message}")
+                logger.error(f"  ❌ DATA MISMATCH: {message}")
                 if "mismatches" in details:
                     for mm in details["mismatches"][:3]:
-                        print(f"     Row {mm['row']}, {mm['key']}: expected {mm['expected']}, got {mm['actual']}")
+                        logger.error(f"     Row {mm['row']}, {mm['key']}: expected {mm['expected']}, got {mm['actual']}")
                 results["failed"].append({"test_case": test_case, "message": message, "details": details})
             else:
-                print(f"  ✅ PASS: {message}")
+                logger.info(f"  ✅ PASS: {message}")
                 results["passed"].append(test_case)
 
         elif has_query and not has_data:
             # Has query but missing data - try to generate it
-            print(f"  ⚠️  Missing ground_truth_data - Attempting to generate...")
+            logger.warning("  Missing ground_truth_data - Attempting to generate...")
             actual_data = query_db(test_case.expected_sql)
 
             if actual_data and "__error__" not in actual_data[0]:
-                import json
                 suggested_value = actual_data[0] if len(actual_data) == 1 else actual_data
-                print(f"  💡 GENERATED ground_truth_data:")
-                print(f"     {json.dumps(suggested_value, indent=2)[:200]}...")
+                logger.info("  💡 GENERATED ground_truth_data:")
+                logger.info(f"     {json.dumps(suggested_value, indent=2)[:200]}...")
                 results["failed"].append({
                     "test_case": test_case,
                     "message": "Missing ground_truth_data (but generated successfully)",
@@ -169,8 +172,8 @@ def verify_all_test_cases() -> dict:
                 })
             else:
                 # Cannot execute query - set to "no result"
-                print(f"  ❌ Cannot generate - Query error: {actual_data[0].get('__error__', 'Unknown')}")
-                print(f"  💡 RESULT: ground_truth_data = \"no result\"")
+                logger.error(f"  ❌ Cannot generate - Query error: {actual_data[0].get('__error__', 'Unknown')}")
+                logger.info("  💡 RESULT: ground_truth_data = \"no result\"")
                 results["failed"].append({
                     "test_case": test_case,
                     "message": "Cannot generate ground_truth_data",
@@ -179,36 +182,36 @@ def verify_all_test_cases() -> dict:
 
 
     # Summary
-    print(f"\n{'=' * 80}")
-    print(f"SUMMARY")
-    print(f"{'=' * 80}")
-    print(f"✅ Passed:  {len(results['passed'])}/{len(ALL_TEST_CASES)}")
-    print(f"❌ Failed:  {len(results['failed'])}/{len(ALL_TEST_CASES)}")
+    logger.info("=" * 80)
+    logger.info("SUMMARY")
+    logger.info("=" * 80)
+    logger.info(f"✅ Passed:  {len(results['passed'])}/{len(ALL_TEST_CASES)}")
+    logger.info(f"❌ Failed:  {len(results['failed'])}/{len(ALL_TEST_CASES)}")
 
     if results["failed"]:
-        print(f"\n❌ FAILED TEST CASES:")
+        logger.info("❌ FAILED TEST CASES:")
         for item in results["failed"]:
             tc = item["test_case"]
-            print(f"\n  [{tc.category}] {tc.question[:70]}...")
-            print(f"  Issue: {item['message']}")
+            logger.info(f"\n  [{tc.category}] {tc.question[:70]}...")
+            logger.info(f"  Issue: {item['message']}")
             if "no_answer" in item["details"]:
-                print(f"    ⚠️  No answer available - {item['details'].get('reason', 'Cannot generate data')}")
+                logger.warning(f"    No answer available - {item['details'].get('reason', 'Cannot generate data')}")
             elif "generated" in item["details"]:
-                print(f"    💡 Generated value has been displayed above")
+                logger.info("    💡 Generated value has been displayed above")
             elif "mismatches" in item["details"]:
                 for mm in item["details"]["mismatches"][:5]:
-                    print(f"    - {mm['key']}: expected {mm['expected']}, got {mm['actual']}")
+                    logger.error(f"    - {mm['key']}: expected {mm['expected']}, got {mm['actual']}")
 
     if len(ALL_TEST_CASES) > 0:
         success_rate = len(results['passed']) / len(ALL_TEST_CASES) * 100
-        print(f"\n📊 Success Rate: {success_rate:.1f}%")
+        logger.info(f"📊 Success Rate: {success_rate:.1f}%")
 
     if len(results['failed']) == 0:
-        print(f"\n✅ ALL GROUND TRUTH IS CORRECT!")
+        logger.info("✅ ALL GROUND TRUTH IS CORRECT!")
     else:
-        print(f"\n⚠️  {len(results['failed'])} test cases need correction")
+        logger.warning(f"⚠️  {len(results['failed'])} test cases need correction")
 
-    print("=" * 80)
+    logger.info("=" * 80)
 
     return results
 

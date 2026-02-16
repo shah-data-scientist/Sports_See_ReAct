@@ -15,6 +15,35 @@ from google import genai
 
 logger = logging.getLogger(__name__)
 
+# ============================================================================
+# CONFIGURATION CONSTANTS
+# ============================================================================
+
+# Classification Confidence Thresholds
+HEURISTIC_CONFIDENCE_THRESHOLD = 0.9  # Use heuristic if confidence >= this
+CONFIDENCE_VERY_HIGH = 0.98  # Very high confidence (strong signals)
+CONFIDENCE_HIGH = 0.95  # High confidence (clear indicators)
+CONFIDENCE_MEDIUM_HIGH = 0.90  # Medium-high confidence
+CONFIDENCE_MEDIUM = 0.85  # Medium confidence
+CONFIDENCE_LOW = 0.50  # Low confidence (triggers LLM classification)
+
+# Signal Counting Base Confidence
+HYBRID_BASE_CONFIDENCE = 0.75  # Base confidence for hybrid queries
+VECTOR_BASE_CONFIDENCE = 0.80  # Base confidence for vector-only queries
+SQL_BASE_CONFIDENCE = 0.85  # Base confidence for SQL-only queries
+VECTOR_MAX_CONFIDENCE = 0.92  # Maximum confidence for vector-only
+SQL_MAX_CONFIDENCE = 0.95  # Maximum confidence for SQL-only
+
+# Re-ranking Configuration
+RERANKING_QUALITY_THRESHOLD = 0.70  # Re-rank if top-1 score < this (70%)
+RERANKING_OVERFETCH_MULTIPLIER = 1.5  # Retrieve k*1.5 chunks for re-ranking
+SCORE_NORMALIZATION_FACTOR = 100.0  # Raw scores are 0-100, normalize to 0-1
+
+# Confidence Adjustment Factors
+CONFIDENCE_BOOST_PER_HYBRID_SIGNAL = 0.05  # +5% per matching signal
+CONFIDENCE_BOOST_PER_VECTOR_SIGNAL = 0.03  # +3% per vector-only signal
+CONFIDENCE_BOOST_PER_SQL_SIGNAL = 0.02  # +2% per SQL-only signal
+
 
 @dataclass
 class Tool:
@@ -95,7 +124,7 @@ class ReActAgent:
         confidence, query_type = self._heuristic_classify_with_confidence(question)
 
         # If high confidence, use heuristic result
-        if confidence >= 0.9:
+        if confidence >= HEURISTIC_CONFIDENCE_THRESHOLD:
             logger.debug(f"Heuristic classification (confidence={confidence:.2f}): {query_type}")
             return query_type
 
@@ -167,7 +196,7 @@ class ReActAgent:
         for pattern in all_sql_patterns:
             if re.search(pattern, q_lower):
                 logger.debug(f"Matched SQL pattern: {pattern}")
-                return (0.98, "sql_only")  # Very high confidence
+                return (CONFIDENCE_VERY_HIGH, "sql_only")  # Very high confidence
 
         # COMPREHENSIVE VECTOR-ONLY PATTERNS: Anticipate all opinion/discussion variations
         # Strong vector-only signals (override other signals)
@@ -263,11 +292,11 @@ class ReActAgent:
 
         # Check strong vector signals first (highest priority - very confident)
         if any(signal in q_lower for signal in strong_vector_signals):
-            return (0.95, "vector_only")  # High confidence
+            return (CONFIDENCE_HIGH, "vector_only")  # High confidence
 
         # Check hybrid (biographical queries - very confident)
         if any(signal in q_lower for signal in hybrid_signals):
-            return (0.95, "hybrid")  # High confidence
+            return (CONFIDENCE_HIGH, "hybrid")  # High confidence
 
         # Count signals for each type
         vector_count = sum(1 for signal in vector_signals if signal in q_lower)
@@ -279,26 +308,26 @@ class ReActAgent:
         if has_strong_opinion and vector_count > 0:
             # If also asking for stats (e.g., "why did he score so many points?"), it's hybrid
             if any(word in q_lower for word in ["scored", "points", "stats", "average"]):
-                return (0.85, "hybrid")  # Medium-high confidence
-            return (0.90, "vector_only")  # High confidence
+                return (CONFIDENCE_MEDIUM, "hybrid")  # Medium-high confidence
+            return (CONFIDENCE_MEDIUM_HIGH, "vector_only")  # High confidence
 
         # If both have signals, it's hybrid (but lower confidence)
         if vector_count > 0 and sql_count > 0:
-            confidence = 0.75 + (min(vector_count, sql_count) * 0.05)  # 0.75-0.85 range
-            return (min(confidence, 0.90), "hybrid")
+            confidence = HYBRID_BASE_CONFIDENCE + (min(vector_count, sql_count) * CONFIDENCE_BOOST_PER_HYBRID_SIGNAL)
+            return (min(confidence, CONFIDENCE_MEDIUM_HIGH), "hybrid")
 
         # If only vector signals
         if vector_count > 0:
-            confidence = 0.80 + (vector_count * 0.03)  # More signals = higher confidence
-            return (min(confidence, 0.92), "vector_only")
+            confidence = VECTOR_BASE_CONFIDENCE + (vector_count * CONFIDENCE_BOOST_PER_VECTOR_SIGNAL)
+            return (min(confidence, VECTOR_MAX_CONFIDENCE), "vector_only")
 
         # If only SQL signals
         if sql_count > 0:
-            confidence = 0.85 + (sql_count * 0.02)  # More signals = higher confidence
-            return (min(confidence, 0.95), "sql_only")
+            confidence = SQL_BASE_CONFIDENCE + (sql_count * CONFIDENCE_BOOST_PER_SQL_SIGNAL)
+            return (min(confidence, SQL_MAX_CONFIDENCE), "sql_only")
 
         # Ambiguous query (no clear signals) - low confidence, default to SQL
-        return (0.50, "sql_only")  # Low confidence - will trigger LLM classification
+        return (CONFIDENCE_LOW, "sql_only")  # Low confidence - will trigger LLM classification
 
     def _llm_classify(self, question: str) -> str:
         """Classify query using LLM with prompt caching.
@@ -874,9 +903,9 @@ REWRITTEN QUESTION:"""
                         logger.info(f"Dynamic query rewriting: '{question}' → '{vector_query}'")
 
                 # Determine optimal k based on query complexity
-                # Retrieve more chunks initially (k*1.5) for re-ranking
+                # Retrieve more chunks initially for re-ranking
                 k_initial = self._determine_k(vector_query, query_type)
-                k_retrieve = int(k_initial * 1.5)  # Retrieve 50% more for re-ranking
+                k_retrieve = int(k_initial * RERANKING_OVERFETCH_MULTIPLIER)  # Retrieve 50% more for re-ranking
 
                 logger.debug(f"Executing search_knowledge_base with query: '{vector_query}', k={k_retrieve}")
                 vector_result = self._execute_tool(
@@ -888,23 +917,23 @@ REWRITTEN QUESTION:"""
                 # Access actual result from tool_results (vector_result is just a string observation)
                 vector_data = self.tool_results.get("search_knowledge_base", {})
                 if vector_data and "results" in vector_data:
-                    chunks = vector_data["results"]
+                    chunks = vector_data.get("results", [])  # Safe access with default
 
                     # Check top-1 score to decide if re-ranking is needed
                     should_rerank = False
-                    if chunks and len(chunks) > 0:
+                    if chunks and len(chunks) > 0 and isinstance(chunks[0], dict):
                         # Get top-1 score (in 0-100 range from vector store)
-                        top_score_raw = chunks[0].get("score", 100.0) if isinstance(chunks[0], dict) else 100.0
+                        top_score_raw = chunks[0].get("score", SCORE_NORMALIZATION_FACTOR)
 
                         # Normalize to 0-1 range for threshold comparison
-                        top_score_normalized = top_score_raw / 100.0
+                        top_score_normalized = top_score_raw / SCORE_NORMALIZATION_FACTOR
 
-                        # Only re-rank if top score is low (< 0.70 = 70% = poor quality)
-                        if top_score_normalized < 0.70 and len(chunks) > k_initial:
+                        # Only re-rank if top score is low (poor quality)
+                        if top_score_normalized < RERANKING_QUALITY_THRESHOLD and len(chunks) > k_initial:
                             should_rerank = True
-                            logger.info(f"Top-1 score {top_score_normalized:.3f} ({top_score_raw:.1f}%) < 0.70, re-ranking {len(chunks)} chunks")
+                            logger.info(f"Top-1 score {top_score_normalized:.3f} ({top_score_raw:.1f}%) < {RERANKING_QUALITY_THRESHOLD}, re-ranking {len(chunks)} chunks")
                         else:
-                            logger.info(f"Top-1 score {top_score_normalized:.3f} ({top_score_raw:.1f}%) ≥ 0.70, skipping re-ranking (good quality)")
+                            logger.info(f"Top-1 score {top_score_normalized:.3f} ({top_score_raw:.1f}%) ≥ {RERANKING_QUALITY_THRESHOLD}, skipping re-ranking (good quality)")
 
                     if should_rerank:
                         # Retrieval quality is poor - use LLM to re-rank

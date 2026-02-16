@@ -19,7 +19,10 @@ CHANGES (2026-02-15):
 - Judge LLM generates expected answer from ground_truth_data and ground_truth_vector
 """
 
+import logging
 from src.evaluation.models import UnifiedTestCase, TestType
+
+logger = logging.getLogger(__name__)
 
 # ============================================================================
 # ALL TEST CASES (206 total)
@@ -3205,7 +3208,7 @@ def get_statistics():
 
 if __name__ == "__main__":
     stats = get_statistics()
-    print(f"Total test cases: {stats['total']}")
-    print(f"  SQL: {stats['sql']}")
-    print(f"  Vector: {stats['vector']}")
-    print(f"  Hybrid: {stats['hybrid']}")
+    logger.info(f"Total test cases: {stats['total']}")
+    logger.info(f"  SQL: {stats['sql']}")
+    logger.info(f"  Vector: {stats['vector']}")
+    logger.info(f"  Hybrid: {stats['hybrid']}")
