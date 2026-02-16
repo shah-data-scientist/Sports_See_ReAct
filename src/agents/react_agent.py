@@ -12,6 +12,7 @@ import logging
 import re
 import time
 from google import genai
+from google.genai import types
 
 from src.agents.query_classifier import QueryClassifier
 from src.agents.results_formatter import ResultsFormatter
@@ -502,6 +503,29 @@ Your scores:"""
         except Exception as e:
             logger.warning(f"LLM re-ranking failed ({e}), returning original chunks")
             return chunks[:top_n]
+
+    def _call_llm(self, prompt: str) -> str:
+        """Call LLM with a prompt and return the response.
+
+        Args:
+            prompt: Prompt to send to the LLM
+
+        Returns:
+            LLM response text
+        """
+        try:
+            response = self.llm_client.models.generate_content(
+                model=self.model,
+                contents=prompt,
+                config=genai.types.GenerateContentConfig(
+                    temperature=self.temperature,
+                    max_output_tokens=2048,
+                )
+            )
+            return response.text.strip()
+        except Exception as e:
+            logger.exception(f"LLM call failed: {e}")
+            raise
 
     def _rewrite_question_with_context(
         self, question: str, conversation_history: str
