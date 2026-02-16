@@ -4,7 +4,10 @@ Description: Tool wrappers for ReAct agent
 Created: 2026-02-14
 """
 
+import logging
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 
 class NBAToolkit:
@@ -67,6 +70,8 @@ class NBAToolkit:
             }
 
         except Exception as e:
+            # Log full exception with traceback for debugging
+            logger.exception(f"SQL tool execution failed for question: {question[:100]}")
             return {
                 "sql": "",
                 "results": [],
@@ -139,6 +144,8 @@ class NBAToolkit:
             }
 
         except Exception as e:
+            # Log full exception with traceback for debugging
+            logger.exception(f"Vector search failed for query: {query[:100]}")
             return {
                 "results": [],
                 "sources": [],

@@ -254,20 +254,23 @@ class ChatService:
             return ""
 
         try:
-            # Get last 5 turns (or turn_number-1, whichever is smaller)
-            history_turns = min(5, turn_number - 1)
-            interactions = self.feedback_repo.get_conversation_history(
-                conversation_id, limit=history_turns
+            # Get all messages in conversation
+            interactions = self.feedback_repo.get_messages_by_conversation(
+                conversation_id
             )
 
             if not interactions:
                 return ""
 
+            # Get last 5 turns (or turn_number-1, whichever is smaller)
+            history_turns = min(5, turn_number - 1)
+            recent_interactions = interactions[-history_turns:] if len(interactions) > history_turns else interactions
+
             # Format as Q&A pairs
             history_lines = []
-            for interaction in reversed(interactions):
-                history_lines.append(f"User: {interaction.user_query}")
-                history_lines.append(f"Assistant: {interaction.assistant_response}")
+            for interaction in recent_interactions:
+                history_lines.append(f"User: {interaction.query}")
+                history_lines.append(f"Assistant: {interaction.response}")
 
             return "\n".join(history_lines)
 
@@ -287,26 +290,30 @@ class ChatService:
         generated_sql: Optional[str] = None,
     ):
         """Save chat interaction to database."""
+        if not conversation_id:
+            logger.debug("No conversation_id provided, skipping interaction save")
+            return
+
         try:
-            if not conversation_id:
-                return
+            # Convert sources to list of strings for storage
+            source_strings = [s.source if hasattr(s, 'source') else str(s) for s in sources]
 
             interaction = ChatInteractionCreate(
+                query=query,  # Fixed: was user_query
+                response=response,  # Fixed: was assistant_response
+                sources=source_strings,  # Fixed: was sources_used (and now list of strings)
+                processing_time_ms=int(processing_time_ms),
                 conversation_id=conversation_id,
                 turn_number=turn_number,
-                user_query=query,
-                assistant_response=response,
-                query_type=query_type,
-                sources_used=len(sources),
-                processing_time_ms=processing_time_ms,
-                model_used=self.model,
-                generated_sql=generated_sql,
             )
 
-            self.feedback_repo.create_interaction(interaction)
+            self.feedback_repo.save_interaction(interaction)  # Fixed: was create_interaction
+            logger.debug(f"Interaction saved for conversation {conversation_id}, turn {turn_number}")
 
         except Exception as e:
-            logger.error(f"Error saving interaction: {e}")
+            logger.exception(f"Failed to save interaction for conversation {conversation_id}")
+            # Re-raise to make failure visible
+            raise RuntimeError(f"Interaction save failed: {e}") from e
 
     def _save_interaction_async(
         self,
@@ -334,7 +341,9 @@ class ChatService:
                     generated_sql=generated_sql,
                 )
             except Exception as e:
-                logger.error(f"Background DB save failed: {e}")
+                # Use logger.exception to get full traceback for debugging
+                # Note: Background threads are fire-and-forget by design
+                logger.exception(f"Background DB save failed: {e}")
 
         # Start background thread (don't wait for completion)
         thread = threading.Thread(target=_save_in_thread, daemon=True)
