@@ -70,7 +70,8 @@ async def readiness_check() -> dict:
     try:
         service = get_chat_service()
         ready = service.is_ready
-    except Exception:
+    except Exception as e:
+        logger.exception("Readiness check failed")
         ready = False
 
     return {"ready": ready}
