@@ -210,6 +210,8 @@ class NBAToolkit:
                 }
 
         except Exception as e:
+            # Log full exception with traceback for debugging
+            logger.exception(f"Visualization tool execution failed: {e}")
             return {
                 "error": str(e),
                 "chart_type": None,
