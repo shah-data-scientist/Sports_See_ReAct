@@ -28,16 +28,13 @@ from src.core.exceptions import (
     RateLimitError,
     ValidationError,
 )
+from src.core.logging_config import configure_local_logging
 from src.services.chat import ChatService
 
-logger = logging.getLogger(__name__)
+# Configure local structured logging (JSON files with rotation)
+configure_local_logging()
 
-# Configure logging to ensure application logs are visible
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(levelname)s - %(name)s - %(message)s',
-    force=True  # Override any existing configuration
-)
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager

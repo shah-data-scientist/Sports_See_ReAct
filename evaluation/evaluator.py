@@ -33,8 +33,9 @@ from evaluation.test_data import ALL_TEST_CASES, get_statistics
 from evaluation.models import UnifiedTestCase, TestType, UnifiedEvaluationResult
 from evaluation.metrics import calculate_ragas_metrics
 from src.models.feedback import ChatInteractionCreate
-from src.core.observability import logger
 from src.core.config import settings
+
+logger = logging.getLogger(__name__)
 
 # Rate limiting configuration (Gemini free tier: 15 RPM)
 RATE_LIMIT_DELAY_SECONDS = 20

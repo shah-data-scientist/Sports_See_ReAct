@@ -15,7 +15,6 @@ from mistralai.models import SDKError
 
 from src.core.config import settings
 from src.core.exceptions import EmbeddingError
-from src.core.observability import logfire
 
 logger = logging.getLogger(__name__)
 
@@ -76,7 +75,6 @@ class EmbeddingService:
         embeddings = self.embed_batch([text])
         return embeddings[0]
 
-    @logfire.instrument("EmbeddingService.embed_batch")
     def embed_batch(self, texts: Sequence[str]) -> np.ndarray:
         """Generate embeddings for multiple texts.
 

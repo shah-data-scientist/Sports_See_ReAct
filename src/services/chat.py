@@ -58,7 +58,6 @@ def _initialize_lazy_imports():
 # Import only lightweight modules at module level
 from src.core.config import settings
 from src.core.exceptions import IndexNotFoundError, LLMError
-from src.core.observability import logfire
 from src.core.security import sanitize_query, validate_search_params
 from src.models.chat import ChatRequest, ChatResponse, SearchResult, Visualization
 from src.models.feedback import ChatInteractionCreate
@@ -349,7 +348,6 @@ class ChatService:
         thread = threading.Thread(target=_save_in_thread, daemon=True)
         thread.start()
 
-    @logfire.instrument("ChatService.chat")
     def chat(self, request: ChatRequest) -> ChatResponse:
         """Process chat request with ReAct agent.
 

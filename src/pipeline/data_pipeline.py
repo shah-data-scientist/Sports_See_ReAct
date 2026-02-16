@@ -20,7 +20,6 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from src.pipeline.reddit_chunker import RedditThreadChunker
 
 from src.core.config import settings
-from src.core.observability import logfire
 from src.models.document import DocumentChunk
 from src.pipeline.models import (
     ChunkData,
@@ -73,7 +72,6 @@ class DataPipeline:
         self._quality_sample_size = quality_sample_size
         self._quality_threshold = quality_threshold
 
-    @logfire.instrument("Pipeline.load")
     def load(self, input_data: LoadStageInput) -> LoadStageOutput:
         """Stage 1: Load and parse documents from directory.
 
@@ -115,7 +113,6 @@ class DataPipeline:
             errors=errors,
         )
 
-    @logfire.instrument("Pipeline.clean")
     def clean(self, documents: list[RawDocument]) -> CleanStageOutput:
         """Stage 2: Clean and validate document text.
 
@@ -377,7 +374,6 @@ class DataPipeline:
         )
         return filtered
 
-    @logfire.instrument("Pipeline.chunk")
     def chunk(
         self,
         documents: list[CleanedDocument],
@@ -468,7 +464,6 @@ class DataPipeline:
             chunk_count=len(all_chunks),
         )
 
-    @logfire.instrument("Pipeline.quality_check")
     def quality_check(self, chunks: list[ChunkData]) -> list[QualityCheckResult]:
         """Stage 3b (optional): LLM-powered chunk quality validation.
 
@@ -500,7 +495,6 @@ class DataPipeline:
 
         return results
 
-    @logfire.instrument("Pipeline.embed")
     def embed(self, texts: list[str]) -> tuple[EmbedStageOutput, "np.ndarray"]:
         """Stage 4: Generate embeddings for chunk texts.
 
@@ -518,7 +512,6 @@ class DataPipeline:
         )
         return output, embeddings
 
-    @logfire.instrument("Pipeline.index")
     def index(
         self,
         chunks: list[ChunkData],
@@ -544,7 +537,6 @@ class DataPipeline:
             chunks_path=str(settings.document_chunks_path),
         )
 
-    @logfire.instrument("Pipeline.run")
     def run(
         self,
         input_dir: str | None = None,

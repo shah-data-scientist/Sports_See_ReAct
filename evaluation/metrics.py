@@ -34,10 +34,12 @@ Current implementation:
 TODO: Full integration with RAGAS 0.4.3+ API for answer quality metrics
 """
 
+import logging
 from typing import Any
 from google import genai
 from src.core.config import settings
-from src.core.observability import logger
+
+logger = logging.getLogger(__name__)
 
 
 def _llm_judge_chunk_relevance(question: str, chunk_text: str, chunk_index: int) -> bool:

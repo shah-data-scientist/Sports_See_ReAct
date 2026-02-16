@@ -16,7 +16,6 @@ import numpy as np
 
 from src.core.config import settings
 from src.core.exceptions import IndexNotFoundError, SearchError
-from src.core.observability import logfire
 from src.models.document import DocumentChunk
 
 logger = logging.getLogger(__name__)
@@ -255,7 +254,6 @@ class VectorStoreRepository:
             return 0.0
         return float(quality_score) * 5.0
 
-    @logfire.instrument("VectorStoreRepository.search {k=}")
     def search(
         self,
         query_embedding: np.ndarray,
