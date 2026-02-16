@@ -48,32 +48,40 @@ except ImportError:
 
 
 def configure_observability() -> None:
-    """Initialize Logfire observability.
+    """Initialize observability system (Logfire or local logging).
 
-    Configures Logfire with project settings and instruments
-    Pydantic AI agents for tracing. Fails gracefully if Logfire
-    is not installed or not configured.
+    Priority order:
+    1. Try Logfire if enabled and token provided (external observability)
+    2. Fall back to local file-based logging (no external API needed)
+
+    Local logging provides:
+    - Structured JSON logs with rotation
+    - Separate files for app, api, agent, errors
+    - Streamlit log viewer at /Logs page
     """
     try:
         from src.core.config import settings
 
-        # Check if Logfire is enabled and token is present
-        if not getattr(settings, "logfire_enabled", False):
-            logger.debug("Logfire disabled in settings")
-            return
+        # Try Logfire first if enabled
+        if getattr(settings, "logfire_enabled", False) and settings.logfire_token:
+            try:
+                logfire.configure(
+                    token=settings.logfire_token,
+                    service_name="sports-see",
+                    service_version="0.1.0",
+                )
+                logfire.instrument_pydantic_ai()
+                logger.info("✓ Logfire observability configured successfully")
+                return
+            except Exception as e:
+                logger.warning(f"Logfire configuration failed: {e}")
+                logger.info("Falling back to local logging...")
 
-        if not settings.logfire_token:
-            logger.debug("Logfire token not provided, skipping configuration")
-            return
+        # Fall back to local file-based logging
+        from src.core.logging_config import configure_local_logging
 
-        # Configure Logfire with token and project settings
-        logfire.configure(
-            token=settings.logfire_token,
-            service_name="sports-see",
-            service_version="0.1.0",
-        )
-        logfire.instrument_pydantic_ai()
-        logger.info("✓ Logfire observability configured successfully")
+        configure_local_logging()
+        logger.info("✓ Local file-based logging configured (no external API)")
 
     except Exception as e:
-        logger.warning("Failed to configure Logfire: %s", e)
+        logger.error(f"Failed to configure observability: {e}", exc_info=True)
