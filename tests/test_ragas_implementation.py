@@ -14,7 +14,7 @@ from pathlib import Path
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.evaluation.metrics import calculate_ragas_metrics, format_ragas_report
+from evaluation.metrics import calculate_ragas_metrics, format_ragas_report
 
 
 def test_sql_only_query():

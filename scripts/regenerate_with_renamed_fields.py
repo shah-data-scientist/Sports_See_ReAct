@@ -8,8 +8,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.evaluation.test_data import ALL_TEST_CASES
-from src.evaluation.models import TestType
+from evaluation.test_data import ALL_TEST_CASES
+from evaluation.models import TestType
 
 def regenerate_test_cases():
     """Regenerate consolidated_test_cases.py with renamed fields."""
@@ -39,7 +39,7 @@ def regenerate_test_cases():
         f.write('- Judge LLM generates expected answer from ground_truth_data and ground_truth_vector\n')
         f.write('"""\n\n')
 
-        f.write('from src.evaluation.models import UnifiedTestCase, TestType\n\n')
+        f.write('from evaluation.models import UnifiedTestCase, TestType\n\n')
 
         f.write('# ============================================================================\n')
         f.write('# ALL TEST CASES (206 total)\n')

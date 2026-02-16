@@ -8,8 +8,8 @@ MAINTAINER: Shahu
 
 import pytest
 
-from src.evaluation.models.sql_models import QueryType, SQLEvaluationTestCase
-from src.evaluation.test_cases.sql_test_cases import (
+from evaluation.models.sql_models import QueryType, SQLEvaluationTestCase
+from evaluation.test_cases.sql_test_cases import (
     AGGREGATION_SQL_CASES,
     COMPARISON_SQL_CASES,
     COMPLEX_SQL_CASES,

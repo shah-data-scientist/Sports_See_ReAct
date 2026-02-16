@@ -19,11 +19,11 @@ from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_excep
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.evaluation.test_data import ALL_TEST_CASES
-from src.evaluation.models import TestType, UnifiedTestCase
+from evaluation.test_data import ALL_TEST_CASES
+from evaluation.models import TestType, UnifiedTestCase
 from src.services.chat import ChatService
 from src.models.chat import ChatRequest
-from src.evaluation.metrics import calculate_ragas_metrics
+from evaluation.metrics import calculate_ragas_metrics
 from src.repositories.feedback import FeedbackRepository
 from src.models.feedback import ChatInteractionCreate
 

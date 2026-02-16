@@ -16,10 +16,10 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
-from src.evaluation.test_cases.vector_test_cases import EVALUATION_TEST_CASES as VECTOR_TEST_CASES
-from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
-from src.evaluation.models import (
+from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+from evaluation.test_cases.vector_test_cases import EVALUATION_TEST_CASES as VECTOR_TEST_CASES
+from evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+from evaluation.models import (
     UnifiedTestCase,
     migrate_from_sql_test_case,
     migrate_from_vector_test_case,
@@ -167,7 +167,7 @@ def save_unified_test_cases(test_cases: list[UnifiedTestCase]):
         f.write('- Fill missing fields as needed for comprehensive evaluation\n')
         f.write('"""\n\n')
 
-        f.write('from src.evaluation.models import UnifiedTestCase, TestType, QueryType\n\n')
+        f.write('from evaluation.models import UnifiedTestCase, TestType, QueryType\n\n')
 
         f.write('# ============================================================================\n')
         f.write('# ALL TEST CASES (206 total)\n')

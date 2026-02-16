@@ -11,7 +11,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.evaluation.runners.run_sql_evaluation import (
+from evaluation.runners.run_sql_evaluation import (
     generate_comprehensive_report,
     run_sql_evaluation,
 )

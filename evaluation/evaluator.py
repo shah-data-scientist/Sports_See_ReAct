@@ -29,9 +29,9 @@ from starlette.testclient import TestClient
 
 from src.api.main import create_app
 from src.api.dependencies import get_chat_service
-from src.evaluation.test_data import ALL_TEST_CASES, get_statistics
-from src.evaluation.models import UnifiedTestCase, TestType, UnifiedEvaluationResult
-from src.evaluation.metrics import calculate_ragas_metrics
+from evaluation.test_data import ALL_TEST_CASES, get_statistics
+from evaluation.models import UnifiedTestCase, TestType, UnifiedEvaluationResult
+from evaluation.metrics import calculate_ragas_metrics
 from src.models.feedback import ChatInteractionCreate
 from src.core.observability import logger
 from src.core.config import settings
@@ -696,7 +696,7 @@ def generate_summary_report(
     misclassifications: list
 ) -> str:
     """Generate comprehensive markdown report with quality analysis and RAGAS metrics."""
-    from src.evaluation.analyzer import analyze_results
+    from evaluation.analyzer import analyze_results
 
     report_path = Path("evaluation_results") / f"evaluation_{test_type}_report_{timestamp}.md"
 
@@ -927,7 +927,7 @@ def main():
     args = parser.parse_args()
 
     # Print statistics
-    from src.evaluation.unified_test_cases import print_statistics
+    from evaluation.unified_test_cases import print_statistics
     print_statistics()
 
     test_indices = None

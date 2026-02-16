@@ -36,7 +36,7 @@ def mock_conversation_service():
 @pytest.fixture
 def sample_sql_test_cases():
     """Sample SQL test cases for integration testing."""
-    from src.evaluation.models.sql_models import QueryType, SQLEvaluationTestCase
+    from evaluation.models.sql_models import QueryType, SQLEvaluationTestCase
 
     return [
         SQLEvaluationTestCase(
@@ -71,7 +71,7 @@ def sample_sql_test_cases():
 @pytest.fixture
 def sample_vector_test_cases():
     """Sample Vector test cases for integration testing."""
-    from src.evaluation.models.vector_models import EvaluationTestCase, TestCategory
+    from evaluation.models.vector_models import EvaluationTestCase, TestCategory
 
     return [
         EvaluationTestCase(
@@ -95,7 +95,7 @@ def sample_vector_test_cases():
 @pytest.fixture
 def sample_hybrid_test_cases():
     """Sample Hybrid test cases for integration testing."""
-    from src.evaluation.models.vector_models import EvaluationTestCase, TestCategory
+    from evaluation.models.vector_models import EvaluationTestCase, TestCategory
 
     return [
         EvaluationTestCase(
@@ -233,7 +233,7 @@ class TestSQLEvaluationIntegration:
         self, mock_chat_service, mock_conversation_service
     ):
         """Test SQL evaluation properly handles conversational test cases."""
-        from src.evaluation.models.sql_models import QueryType, SQLEvaluationTestCase
+        from evaluation.models.sql_models import QueryType, SQLEvaluationTestCase
 
         conversational_cases = [
             SQLEvaluationTestCase(

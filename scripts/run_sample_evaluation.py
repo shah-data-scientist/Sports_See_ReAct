@@ -28,10 +28,10 @@ if sys.platform == "win32":
 from starlette.testclient import TestClient
 
 from src.api.main import create_app
-from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
-from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
-from src.evaluation.test_cases.vector_test_cases import EVALUATION_TEST_CASES
-from src.evaluation.models.vector_models import TestCategory
+from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+from evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+from evaluation.test_cases.vector_test_cases import EVALUATION_TEST_CASES
+from evaluation.models.vector_models import TestCategory
 
 logging.basicConfig(
     level=logging.INFO,

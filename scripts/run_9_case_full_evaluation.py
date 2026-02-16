@@ -19,8 +19,8 @@ from pathlib import Path
 
 from src.services.chat import ChatService
 from src.models.chat import ChatRequest
-from src.evaluation.analyzer import analyze_results
-from src.evaluation.metrics import calculate_ragas_metrics
+from evaluation.analyzer import analyze_results
+from evaluation.metrics import calculate_ragas_metrics
 
 # Test cases (same 9 from validation)
 TEST_CASES = [

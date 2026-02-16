@@ -17,7 +17,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from src.evaluation.analysis.sql_quality_analysis import (
+from evaluation.analysis.sql_quality_analysis import (
     analyze_column_selection,
     analyze_error_taxonomy,
     analyze_fallback_patterns,
@@ -25,7 +25,7 @@ from src.evaluation.analysis.sql_quality_analysis import (
     analyze_query_structure,
     analyze_response_quality,
 )
-from src.evaluation.analysis.vector_quality_analysis import (
+from evaluation.analysis.vector_quality_analysis import (
     analyze_response_patterns,
     analyze_retrieval_performance,
     analyze_source_quality,

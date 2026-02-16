@@ -32,7 +32,7 @@ def load_latest_evaluation() -> dict:
 
 def load_test_cases() -> list[dict]:
     """Load test cases with ground truth from the test case module."""
-    from src.evaluation.sql_test_cases import SQL_TEST_CASES
+    from evaluation.sql_test_cases import SQL_TEST_CASES
     cases = []
     for tc in SQL_TEST_CASES:
         cases.append({

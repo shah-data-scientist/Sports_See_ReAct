@@ -11,6 +11,6 @@ Tests for src.evaluation.runners.run_hybrid_evaluation module.
 
 def test_run_hybrid_evaluation_module_exists():
     """Test that run_hybrid_evaluation module can be imported."""
-    from src.evaluation.runners import run_hybrid_evaluation
+    from evaluation.runners import run_hybrid_evaluation
 
     assert run_hybrid_evaluation is not None

@@ -11,7 +11,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.evaluation.runners.run_sql_evaluation import generate_comprehensive_report
+from evaluation.runners.run_sql_evaluation import generate_comprehensive_report
 
 
 def main():

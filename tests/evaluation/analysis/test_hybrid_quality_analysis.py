@@ -11,6 +11,6 @@ Tests for src.evaluation.analysis.hybrid_quality_analysis module.
 
 def test_hybrid_quality_analysis_module_exists():
     """Test that hybrid_quality_analysis module can be imported."""
-    from src.evaluation.analysis import hybrid_quality_analysis
+    from evaluation.analysis import hybrid_quality_analysis
 
     assert hybrid_quality_analysis is not None

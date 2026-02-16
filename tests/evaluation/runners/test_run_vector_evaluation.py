@@ -14,7 +14,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.evaluation.runners.run_vector_evaluation import (
+from evaluation.runners.run_vector_evaluation import (
     _cleanup_checkpoint,
     _load_checkpoint,
     _retry_api_call,

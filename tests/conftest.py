@@ -91,7 +91,7 @@ def mock_chat_response_hybrid():
 @pytest.fixture
 def sample_sql_test_cases():
     """Sample SQL test cases for testing (5 cases)."""
-    from src.evaluation.models.sql_models import QueryType, SQLEvaluationTestCase
+    from evaluation.models.sql_models import QueryType, SQLEvaluationTestCase
 
     return [
         SQLEvaluationTestCase(
@@ -141,7 +141,7 @@ def sample_sql_test_cases():
 @pytest.fixture
 def sample_vector_test_cases():
     """Sample Vector test cases for testing (5 cases)."""
-    from src.evaluation.models.vector_models import EvaluationTestCase, TestCategory
+    from evaluation.models.vector_models import EvaluationTestCase, TestCategory
 
     return [
         EvaluationTestCase(
@@ -175,7 +175,7 @@ def sample_vector_test_cases():
 @pytest.fixture
 def sample_hybrid_test_cases():
     """Sample Hybrid test cases for testing (5 cases)."""
-    from src.evaluation.models.vector_models import EvaluationTestCase, TestCategory
+    from evaluation.models.vector_models import EvaluationTestCase, TestCategory
 
     return [
         EvaluationTestCase(

@@ -8,7 +8,7 @@ MAINTAINER: Shahu
 
 import pytest
 from unittest.mock import MagicMock, patch
-from src.evaluation.validator import (
+from evaluation.validator import (
     normalize_value,
     compare_results,
     query_db,

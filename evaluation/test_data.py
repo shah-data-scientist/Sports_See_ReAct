@@ -20,7 +20,7 @@ CHANGES (2026-02-15):
 """
 
 import logging
-from src.evaluation.models import UnifiedTestCase, TestType
+from evaluation.models import UnifiedTestCase, TestType
 
 logger = logging.getLogger(__name__)
 

@@ -104,7 +104,7 @@ def main():
     
     # 4. Regenerate report
     print(f"\n4. Regenerating report...")
-    from src.evaluation.runners.run_sql_evaluation import _generate_report
+    from evaluation.runners.run_sql_evaluation import _generate_report
     
     new_md = results_dir / f"sql_evaluation_report_{timestamp}.md"
     _generate_report(results, new_md, new_json.name)

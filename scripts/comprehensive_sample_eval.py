@@ -13,9 +13,9 @@ from datetime import datetime
 from pathlib import Path
 
 from src.core.observability import logger
-from src.evaluation.analyzer import analyze_results
-from src.evaluation.test_data import ALL_TEST_CASES
-from src.evaluation.models import TestType
+from evaluation.analyzer import analyze_results
+from evaluation.test_data import ALL_TEST_CASES
+from evaluation.models import TestType
 from src.models.chat import ChatRequest
 from src.services.chat import ChatService
 

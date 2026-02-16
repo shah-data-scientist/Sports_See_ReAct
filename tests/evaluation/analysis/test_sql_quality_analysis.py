@@ -8,7 +8,7 @@ MAINTAINER: Shahu
 
 import pytest
 
-from src.evaluation.analysis.sql_quality_analysis import (
+from evaluation.analysis.sql_quality_analysis import (
     analyze_column_selection,
     analyze_error_taxonomy,
     analyze_fallback_patterns,

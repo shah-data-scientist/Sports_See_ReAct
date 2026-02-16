@@ -4,7 +4,7 @@ Generate SQL evaluation report from checkpoint results.
 import json
 from datetime import datetime
 from pathlib import Path
-from src.evaluation.runners.run_sql_evaluation import generate_comprehensive_report
+from evaluation.runners.run_sql_evaluation import generate_comprehensive_report
 
 def generate_report():
     """Generate comprehensive SQL evaluation report from checkpoint."""

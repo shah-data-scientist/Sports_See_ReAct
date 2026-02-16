@@ -11,8 +11,8 @@ from datetime import datetime
 from pathlib import Path
 
 # Run existing evaluation runners with small sample sets
-from src.evaluation.runners.run_sql_evaluation import run_evaluation as run_sql_eval
-from src.evaluation.runners.run_vector_evaluation import run_evaluation as run_vector_eval
+from evaluation.runners.run_sql_evaluation import run_evaluation as run_sql_eval
+from evaluation.runners.run_vector_evaluation import run_evaluation as run_vector_eval
 
 TEST_OUTPUT_DIR = Path("evaluation_results/test_run_2026_02_12")
 

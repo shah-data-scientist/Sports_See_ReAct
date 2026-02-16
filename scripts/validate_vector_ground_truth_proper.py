@@ -29,7 +29,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from starlette.testclient import TestClient
 from src.api.main import create_app
-from src.evaluation.vector_test_cases import EVALUATION_TEST_CASES
+from evaluation.vector_test_cases import EVALUATION_TEST_CASES
 
 
 def parse_specification(ground_truth: str) -> dict:

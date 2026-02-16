@@ -8,7 +8,7 @@ MAINTAINER: Shahu
 
 import pytest
 
-from src.evaluation.models.vector_models import (
+from evaluation.models.vector_models import (
     CategoryResult,
     EvaluationReport,
     EvaluationSample,
@@ -16,7 +16,7 @@ from src.evaluation.models.vector_models import (
     MetricScores,
     TestCategory,
 )
-from src.evaluation.test_cases.vector_test_cases import EVALUATION_TEST_CASES
+from evaluation.test_cases.vector_test_cases import EVALUATION_TEST_CASES
 
 
 class TestEvaluationModels:
@@ -117,7 +117,7 @@ class TestTestCases:
         assert len(conv) >= 10
 
     def test_statistics_function(self):
-        from src.evaluation.test_cases.vector_test_cases import get_test_case_statistics
+        from evaluation.test_cases.vector_test_cases import get_test_case_statistics
 
         stats = get_test_case_statistics()
         assert stats["total"] == len(EVALUATION_TEST_CASES)

@@ -22,7 +22,7 @@ if sys.platform == "win32":
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.evaluation.vector_test_cases import EVALUATION_TEST_CASES
+from evaluation.vector_test_cases import EVALUATION_TEST_CASES
 
 # ==============================================================================
 # KNOWN CONTENT IN VECTOR STORE (from manual inspection)

@@ -17,7 +17,7 @@ CHANGES (2026-02-15):
 - UPDATED: analyze_ragas_metrics() - Now handles all 7 RAGAS metrics with nuclear explanations
 
 USAGE:
-    from src.evaluation.analyzer import analyze_results
+    from evaluation.analyzer import analyze_results
 
     analysis = analyze_results(results, test_cases)
     # Automatically detects test type and runs appropriate analyses

@@ -10,7 +10,7 @@ from collections import Counter
 
 import pytest
 
-from src.evaluation.models.vector_models import TestCategory
+from evaluation.models.vector_models import TestCategory
 
 
 class TestSQLReviewedTestCases:
@@ -18,7 +18,7 @@ class TestSQLReviewedTestCases:
 
     def test_sql_reviewed_loads(self):
         """Test that SQL reviewed test cases can be imported and loaded."""
-        from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+        from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
 
         assert SQL_TEST_CASES is not None
         assert isinstance(SQL_TEST_CASES, list)
@@ -26,7 +26,7 @@ class TestSQLReviewedTestCases:
 
     def test_sql_reviewed_no_duplicates(self):
         """Test that there are no duplicate questions in SQL test cases."""
-        from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+        from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
 
         questions = [tc.question for tc in SQL_TEST_CASES]
         duplicates = [q for q, count in Counter(questions).items() if count > 1]
@@ -35,7 +35,7 @@ class TestSQLReviewedTestCases:
 
     def test_sql_reviewed_has_variety(self):
         """Test that SQL test cases have different query types."""
-        from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+        from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
 
         # Check for variety of query patterns
         query_keywords = {
@@ -60,7 +60,7 @@ class TestSQLReviewedTestCases:
 
     def test_sql_reviewed_ground_truth(self):
         """Test that all SQL test cases have expected_sql."""
-        from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+        from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
 
         missing_ground_truth = []
         for tc in SQL_TEST_CASES:
@@ -73,14 +73,14 @@ class TestSQLReviewedTestCases:
 
     def test_sql_reviewed_count(self):
         """Test that SQL test cases count is within expected range (~70)."""
-        from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+        from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
 
         # Should have around 70 cases (allow some flexibility)
         assert 60 <= len(SQL_TEST_CASES) <= 80, f"Expected ~70 cases, got {len(SQL_TEST_CASES)}"
 
     def test_sql_reviewed_categories_exist(self):
         """Test that SQL test cases have proper categories."""
-        from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+        from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
 
         categories = [tc.category for tc in SQL_TEST_CASES]
         assert len(categories) == len(SQL_TEST_CASES)
@@ -92,7 +92,7 @@ class TestSQLReviewedTestCases:
 
     def test_sql_reviewed_expected_sql_format(self):
         """Test that expected SQL is properly formatted."""
-        from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+        from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
 
         for tc in SQL_TEST_CASES:
             if hasattr(tc, "expected_sql") and tc.expected_sql:
@@ -107,7 +107,7 @@ class TestHybridReviewedTestCases:
 
     def test_hybrid_reviewed_loads(self):
         """Test that Hybrid reviewed test cases can be imported and loaded."""
-        from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+        from evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
 
         assert HYBRID_TEST_CASES is not None
         assert isinstance(HYBRID_TEST_CASES, list)
@@ -115,7 +115,7 @@ class TestHybridReviewedTestCases:
 
     def test_hybrid_reviewed_no_duplicates(self):
         """Test that there are no duplicate questions in Hybrid test cases."""
-        from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+        from evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
 
         questions = [tc.question for tc in HYBRID_TEST_CASES]
         duplicates = [q for q, count in Counter(questions).items() if count > 1]
@@ -124,7 +124,7 @@ class TestHybridReviewedTestCases:
 
     def test_hybrid_reviewed_is_hybrid(self):
         """Test that all cases require both SQL + Vector (true hybrid)."""
-        from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+        from evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
 
         # Check for hybrid indicators in questions or ground truth
         hybrid_indicators = ["and ", "AND ", " + ", "then ", "also "]
@@ -158,7 +158,7 @@ class TestHybridReviewedTestCases:
 
     def test_hybrid_reviewed_ground_truth(self):
         """Test that all hybrid test cases have proper ground truth."""
-        from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+        from evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
 
         missing_ground_truth = []
         for tc in HYBRID_TEST_CASES:
@@ -171,7 +171,7 @@ class TestHybridReviewedTestCases:
 
     def test_hybrid_reviewed_count(self):
         """Test that Hybrid test cases count is within expected range (~18)."""
-        from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+        from evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
 
         # Should have around 50 cases (allow some flexibility)
         assert 40 <= len(HYBRID_TEST_CASES) <= 60, (
@@ -180,7 +180,7 @@ class TestHybridReviewedTestCases:
 
     def test_hybrid_reviewed_categories(self):
         """Test that Hybrid test cases have proper category distribution."""
-        from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+        from evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
 
         categories = [tc.category for tc in HYBRID_TEST_CASES]
         category_counts = Counter(categories)
@@ -194,7 +194,7 @@ class TestHybridReviewedTestCases:
 
     def test_hybrid_reviewed_questions_are_complex(self):
         """Test that hybrid questions are sufficiently complex."""
-        from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+        from evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
 
         # Hybrid questions should be longer and more complex
         short_questions = []
@@ -215,8 +215,8 @@ class TestReviewedTestCasesComparison:
 
     def test_no_overlap_between_sql_and_hybrid(self):
         """Test that SQL and Hybrid test cases don't have overlapping questions."""
-        from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
-        from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+        from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+        from evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
 
         sql_questions = {tc.question.lower().strip() for tc in SQL_TEST_CASES}
         hybrid_questions = {tc.question.lower().strip() for tc in HYBRID_TEST_CASES}
@@ -226,8 +226,8 @@ class TestReviewedTestCasesComparison:
 
     def test_total_case_count(self):
         """Test that total case count across both files is reasonable."""
-        from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
-        from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+        from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+        from evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
 
         total_cases = len(SQL_TEST_CASES) + len(HYBRID_TEST_CASES)
 
@@ -236,8 +236,8 @@ class TestReviewedTestCasesComparison:
 
     def test_all_questions_unique_across_files(self):
         """Test that all questions are unique across both files."""
-        from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
-        from src.evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
+        from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+        from evaluation.test_cases.hybrid_test_cases import HYBRID_TEST_CASES
 
         all_questions = [tc.question for tc in SQL_TEST_CASES + HYBRID_TEST_CASES]
         duplicates = [q for q, count in Counter(all_questions).items() if count > 1]

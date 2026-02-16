@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from src.evaluation.test_data import ALL_TEST_CASES
+from evaluation.test_data import ALL_TEST_CASES
 
 DB_PATH = Path(__file__).parent.parent.parent / "data" / "sql" / "nba_stats.db"
 

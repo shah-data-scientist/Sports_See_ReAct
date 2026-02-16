@@ -8,8 +8,8 @@ def add_explicit_none_values():
     """Add explicit None values to all test cases."""
 
     # Load existing test cases
-    from src.evaluation.test_data import ALL_TEST_CASES
-    from src.evaluation.models import TestType, QueryType
+    from evaluation.test_data import ALL_TEST_CASES
+    from evaluation.models import TestType, QueryType
 
     output_file = Path("src/evaluation/test_data.py")
 
@@ -34,7 +34,7 @@ def add_explicit_none_values():
         f.write('- See missing_fields_report.txt for details on what to fill\n')
         f.write('"""\n\n')
 
-        f.write('from src.evaluation.models import UnifiedTestCase, TestType, QueryType\n\n')
+        f.write('from evaluation.models import UnifiedTestCase, TestType, QueryType\n\n')
 
         f.write('# ============================================================================\n')
         f.write('# ALL TEST CASES (206 total)\n')

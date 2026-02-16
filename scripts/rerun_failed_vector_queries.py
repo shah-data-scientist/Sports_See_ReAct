@@ -7,7 +7,7 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 
 from src.api.main import app
-from src.evaluation.test_cases.vector_test_cases import EVALUATION_TEST_CASES
+from evaluation.test_cases.vector_test_cases import EVALUATION_TEST_CASES
 
 # Load previous results
 results_file = Path("evaluation_results/vector_evaluation_20260213_185715.json")

@@ -8,13 +8,13 @@ MAINTAINER: Shahu
 
 import pytest
 
-from src.evaluation.models.sql_models import (
+from evaluation.models.sql_models import (
     QueryType,
     SQLAccuracyMetrics,
     SQLEvaluationTestCase,
     SQLExecutionResult,
 )
-from src.evaluation.models.hybrid_models import (
+from evaluation.models.hybrid_models import (
     HybridEvaluationMetrics,
     HybridEvaluationReport,
     HybridEvaluationSample,

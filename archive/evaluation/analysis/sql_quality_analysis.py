@@ -506,7 +506,7 @@ class SQLOracle:
 
     def __init__(self):
         """Initialize oracle with ground truth from test cases."""
-        from src.evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
+        from evaluation.test_cases.sql_test_cases import SQL_TEST_CASES
         self.oracle = self._build_oracle(SQL_TEST_CASES)
 
     def _build_oracle(self, test_cases) -> dict[str, dict[str, Any]]:

@@ -10,7 +10,7 @@ Tests all 5 analysis functions with various scenarios.
 
 import pytest
 
-from src.evaluation.analysis.vector_quality_analysis import (
+from evaluation.analysis.vector_quality_analysis import (
     analyze_category_performance,
     analyze_ragas_metrics,
     analyze_response_patterns,

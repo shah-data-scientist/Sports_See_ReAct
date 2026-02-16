@@ -20,7 +20,7 @@ if sys.platform == "win32":
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.evaluation.sql_test_cases import SQL_TEST_CASES
+from evaluation.sql_test_cases import SQL_TEST_CASES
 
 
 def calculate_sql_accuracy(results_file: str):
