@@ -368,6 +368,9 @@
           <li>EmbeddingService (Google embeddings)</li>
           <li>VisualizationService (Altair charts)</li>
         </ul>
+        <strong>Architecture:</strong> Single-pass execution<br>
+        • Classify query → Execute tools → Generate answer<br>
+        <em>No multi-step iteration loops</em>
       </div>
     </div>
 
@@ -1228,7 +1231,7 @@ Fans describe him as having 'the best passing for a big man in NBA history' and 
         <li><code>answer</code> — Formatted answer text</li>
         <li><code>error</code> — Error message (if any)</li>
         <li><code>row_count</code> — Number of rows returned</li>
-        <li><code>agent_steps</code> — Reasoning steps taken</li>
+        <li><code>execution_time</code> — Query execution time (ms)</li>
       </ul>
       <strong>Success Rate:</strong> 87%<br>
       <strong>Avg Execution Time:</strong> 1.5-3s

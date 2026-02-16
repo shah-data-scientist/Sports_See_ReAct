@@ -79,7 +79,7 @@ class TestPlayerOperations:
         temp_db.add_team(session, "LAL", "Los Angeles Lakers")
         session.commit()
 
-        temp_db.add_player(session, "LeBron James", "Los Angeles Lakers", "LAL", 39)
+        temp_db.add_player(session, "LeBron James", "LAL", 39)
         session.commit()
 
         player = temp_db.get_player_by_name(session, "LeBron James")
@@ -94,8 +94,8 @@ class TestPlayerOperations:
         temp_db.add_team(session, "LAL", "Los Angeles Lakers")
         session.commit()
 
-        temp_db.add_player(session, "Player One", "Los Angeles Lakers", "LAL", 25)
-        temp_db.add_player(session, "Player Two", "Los Angeles Lakers", "LAL", 28)
+        temp_db.add_player(session, "Player One", "LAL", 25)
+        temp_db.add_player(session, "Player Two", "LAL", 28)
         session.commit()
 
         players = temp_db.get_all_players(session)
@@ -118,7 +118,7 @@ class TestCountRecords:
         temp_db.add_team(session, "LAL", "Los Angeles Lakers")
         session.commit()
 
-        temp_db.add_player(session, "Test Player", "Los Angeles Lakers", "LAL", 25)
+        temp_db.add_player(session, "Test Player", "LAL", 25)
         session.commit()
 
         counts = temp_db.count_records(session)
@@ -135,7 +135,7 @@ class TestModelRepr:
         assert "Los Angeles Lakers" in r
 
     def test_player_repr(self):
-        player = PlayerModel(name="LeBron", team="Los Angeles Lakers", team_abbr="LAL", age=39)
+        player = PlayerModel(name="LeBron", team_abbr="LAL", age=39)
         r = repr(player)
         assert "LeBron" in r
         assert "LAL" in r

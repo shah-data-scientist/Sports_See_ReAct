@@ -152,9 +152,9 @@ class TestNBAToolkit:
     def test_create_visualization_success(self):
         """Test visualization creation with valid SQL results."""
         mock_viz_service = Mock()
-        mock_viz_service.generate_visualization.return_value = {
+        mock_viz_service.generate_chart.return_value = {
             "plotly_json": '{"data": [], "layout": {}}',
-            "chart_type": "bar",
+            "chart_type": "horizontal_bar",
         }
 
         toolkit = NBAToolkit(
@@ -172,7 +172,7 @@ class TestNBAToolkit:
         result = toolkit.create_visualization("Top scorers", sql_results)
 
         assert result["error"] is None
-        assert result["chart_type"] == "bar"
+        assert result["chart_type"] == "horizontal_bar"
         assert result["plotly_json"] is not None
 
     def test_create_visualization_empty_results(self):
@@ -192,7 +192,7 @@ class TestNBAToolkit:
     def test_create_visualization_exception(self):
         """Test visualization handles exceptions."""
         mock_viz_service = Mock()
-        mock_viz_service.generate_visualization.side_effect = Exception("Viz error")
+        mock_viz_service.generate_chart.side_effect = Exception("Viz error")
 
         toolkit = NBAToolkit(
             sql_tool=Mock(),

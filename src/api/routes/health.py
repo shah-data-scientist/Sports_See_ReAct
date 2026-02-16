@@ -6,11 +6,15 @@ LAST MAJOR UPDATE: 2026-02-06
 MAINTAINER: Shahu
 """
 
+import logging
+
 from fastapi import APIRouter, Depends
 
 from src.api.dependencies import get_chat_service
 from src.models.chat import HealthResponse
 from src.services.chat import ChatService
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -27,9 +31,6 @@ async def health_check() -> HealthResponse:
     Returns:
         HealthResponse with service status and index information
     """
-    import logging
-    logger = logging.getLogger(__name__)
-
     try:
         service = get_chat_service()
         logger.info(f"Got service: {service}")

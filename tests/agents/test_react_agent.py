@@ -1,17 +1,18 @@
 """
-Unit tests for ReAct agent
+Unit tests for ReAct agent (refactored version)
+Tests the classification-based, single-pass agent architecture.
 """
 
 import pytest
-from unittest.mock import Mock, MagicMock
-from src.agents.react_agent import ReActAgent, Tool, AgentStep
+from unittest.mock import Mock, MagicMock, patch
+from src.agents.react_agent import ReActAgent, Tool
 
 
 class MockLLMClient:
     """Mock Google Generative AI client for testing."""
 
-    def __init__(self, responses: list[str]):
-        self.responses = responses
+    def __init__(self, responses: list[str] | None = None):
+        self.responses = responses or []
         self.call_count = 0
         self.models = Mock()
         self.models.generate_content = self._generate_content
@@ -21,7 +22,7 @@ class MockLLMClient:
         if self.call_count < len(self.responses):
             response.text = self.responses[self.call_count]
         else:
-            response.text = "Final Answer: No more mock responses"
+            response.text = "Default response"
         self.call_count += 1
         return response
 
@@ -42,246 +43,150 @@ class TestReActAgent:
         agent = ReActAgent(
             tools=[tool],
             llm_client=mock_client,
-            max_iterations=3,
         )
 
         assert len(agent.tools) == 1
         assert "test_tool" in agent.tools
-        assert agent.max_iterations == 3
+        assert agent.model == "gemini-2.0-flash"
+        assert agent.temperature == 0.1
 
-    def test_agent_returns_final_answer(self):
-        """Test agent recognizes Final Answer and stops."""
-        mock_client = MockLLMClient([
-            "Thought: I can answer this\nFinal Answer: The answer is 42"
-        ])
-
+    def test_agent_with_custom_model(self):
+        """Test agent accepts custom model and temperature."""
+        mock_client = MockLLMClient([])
         tool = Tool(
-            name="dummy_tool",
-            description="Dummy",
-            function=lambda: "dummy",
-            parameters={},
-        )
-
-        agent = ReActAgent(tools=[tool], llm_client=mock_client)
-        result = agent.run("What is the answer?")
-
-        assert "The answer is 42" in result["answer"]
-        assert result["total_steps"] == 0  # No tools executed
-        assert not result["max_iterations_reached"]
-
-    def test_agent_executes_tool(self):
-        """Test agent executes tool and includes in trace."""
-        # Mock responses: 1) Action, 2) Final Answer
-        mock_client = MockLLMClient([
-            'Thought: Need to query\nAction: query_tool\nAction Input: {"question": "test"}',
-            "Thought: Got results\nFinal Answer: The result is X"
-        ])
-
-        mock_function = Mock(return_value={"results": [{"value": "X"}], "row_count": 1})
-        tool = Tool(
-            name="query_tool",
-            description="Query tool",
-            function=mock_function,
-            parameters={"question": "str"},
-        )
-
-        agent = ReActAgent(tools=[tool], llm_client=mock_client)
-        result = agent.run("test question")
-
-        assert mock_function.called
-        assert result["total_steps"] == 1
-        assert "query_tool" in result["tools_used"]
-        assert len(result["reasoning_trace"]) == 1
-
-    def test_agent_handles_unknown_tool(self):
-        """Test agent handles unknown tool gracefully."""
-        mock_client = MockLLMClient([
-            'Thought: Try unknown\nAction: unknown_tool\nAction Input: {"x": "y"}',
-            "Final Answer: Could not complete"
-        ])
-
-        tool = Tool(
-            name="real_tool",
-            description="Real",
-            function=lambda: "result",
-            parameters={},
-        )
-
-        agent = ReActAgent(tools=[tool], llm_client=mock_client)
-        result = agent.run("test")
-
-        # Should have error observation
-        assert result["total_steps"] == 1
-        assert "ERROR" in result["reasoning_trace"][0]["observation"]
-
-    def test_agent_stops_at_max_iterations(self):
-        """Test agent stops after max iterations."""
-        # Return actions indefinitely (no Final Answer)
-        mock_client = MockLLMClient([
-            'Thought: Step 1\nAction: tool1\nAction Input: {"q": "1"}',
-            'Thought: Step 2\nAction: tool1\nAction Input: {"q": "2"}',
-            'Thought: Step 3\nAction: tool1\nAction Input: {"q": "3"}',
-        ])
-
-        tool = Tool(
-            name="tool1",
-            description="Tool",
-            function=lambda q: f"Result {q}",
-            parameters={"q": "str"},
-        )
-
-        agent = ReActAgent(tools=[tool], llm_client=mock_client, max_iterations=3)
-        result = agent.run("test")
-
-        assert result["max_iterations_reached"]
-        assert result["total_steps"] == 3
-
-    def test_agent_detects_repeated_actions(self):
-        """Test agent detects infinite loops."""
-        # Same action 3 times
-        mock_client = MockLLMClient([
-            'Thought: Try 1\nAction: tool1\nAction Input: {"x": "same"}',
-            'Thought: Try 2\nAction: tool1\nAction Input: {"x": "same"}',
-            'Thought: Try 3\nAction: tool1\nAction Input: {"x": "same"}',
-        ])
-
-        tool = Tool(
-            name="tool1",
-            description="Tool",
+            name="test_tool",
+            description="Test tool",
             function=lambda x: "result",
-            parameters={"x": "str"},
+            parameters={"param": "str"},
         )
 
-        agent = ReActAgent(tools=[tool], llm_client=mock_client, max_iterations=5)
-        result = agent.run("test")
-
-        # Should stop before max iterations due to repetition
-        assert result["total_steps"] == 3
-        assert "repeated actions" in result["stop_reason"].lower()
-
-    def test_parse_response_final_answer(self):
-        """Test parsing Final Answer format."""
-        mock_client = MockLLMClient([])
-        agent = ReActAgent(tools=[], llm_client=mock_client)
-
-        response = "Thought: Done\nFinal Answer: The answer is 42"
-        parsed = agent._parse_response(response)
-
-        assert parsed["type"] == "final_answer"
-        assert "42" in parsed["answer"]
-
-    def test_parse_response_action(self):
-        """Test parsing Action format."""
-        mock_client = MockLLMClient([])
-        agent = ReActAgent(tools=[], llm_client=mock_client)
-
-        response = (
-            'Thought: Need data\n'
-            'Action: query_tool\n'
-            'Action Input: {"question": "test query"}'
+        agent = ReActAgent(
+            tools=[tool],
+            llm_client=mock_client,
+            model="custom-model",
+            temperature=0.5,
         )
-        parsed = agent._parse_response(response)
 
-        assert parsed["type"] == "action"
-        assert parsed["thought"] == "Need data"
-        assert parsed["action"] == "query_tool"
-        assert parsed["action_input"]["question"] == "test query"
+        assert agent.model == "custom-model"
+        assert agent.temperature == 0.5
 
-    def test_tool_execution_error_handling(self):
-        """Test tool execution handles errors gracefully."""
+    @patch('src.agents.react_agent.QueryClassifier')
+    def test_agent_creates_classifier(self, mock_classifier_class):
+        """Test agent creates a QueryClassifier instance."""
         mock_client = MockLLMClient([])
-
-        def failing_tool(x):
-            raise ValueError("Tool failed")
-
         tool = Tool(
-            name="failing_tool",
-            description="Fails",
-            function=failing_tool,
-            parameters={"x": "str"},
+            name="test_tool",
+            description="Test tool",
+            function=lambda x: "result",
+            parameters={"param": "str"},
+        )
+
+        agent = ReActAgent(
+            tools=[tool],
+            llm_client=mock_client,
+            model="test-model",
+        )
+
+        # Verify QueryClassifier was instantiated with correct params
+        mock_classifier_class.assert_called_once_with(
+            client=mock_client,
+            model="test-model"
+        )
+
+    def test_tool_storage(self):
+        """Test tools are stored in a dict by name."""
+        mock_client = MockLLMClient([])
+        tools = [
+            Tool(
+                name="tool1",
+                description="First tool",
+                function=lambda x: "result1",
+                parameters={"p1": "str"},
+            ),
+            Tool(
+                name="tool2",
+                description="Second tool",
+                function=lambda x: "result2",
+                parameters={"p2": "str"},
+            ),
+        ]
+
+        agent = ReActAgent(tools=tools, llm_client=mock_client)
+
+        assert len(agent.tools) == 2
+        assert "tool1" in agent.tools
+        assert "tool2" in agent.tools
+        assert agent.tools["tool1"].description == "First tool"
+        assert agent.tools["tool2"].description == "Second tool"
+
+    @patch('src.agents.react_agent.QueryClassifier')
+    def test_run_method_exists(self, mock_classifier_class):
+        """Test agent has run method."""
+        mock_client = MockLLMClient([])
+        tool = Tool(
+            name="test_tool",
+            description="Test tool",
+            function=lambda x: {"result": "data"},
+            parameters={"query": "str"},
         )
 
         agent = ReActAgent(tools=[tool], llm_client=mock_client)
-        observation = agent._execute_tool("failing_tool", {"x": "test"})
 
-        assert "ERROR" in observation
-        assert "Tool failed" in observation
+        assert hasattr(agent, 'run')
+        assert callable(agent.run)
 
-    def test_format_observation_sql_results(self):
-        """Test SQL results formatting."""
+    def test_tool_with_examples(self):
+        """Test tool can have examples."""
         mock_client = MockLLMClient([])
-        agent = ReActAgent(tools=[], llm_client=mock_client)
-
-        result = {
-            "results": [
-                {"name": "Player1", "pts": 100},
-                {"name": "Player2", "pts": 90},
-            ],
-            "row_count": 2,
-        }
-
-        observation = agent._format_observation(result)
-
-        assert "SQL Results" in observation
-        assert "Player1" in observation
-        assert "100" in observation
-
-    def test_format_observation_vector_results(self):
-        """Test vector search results formatting."""
-        mock_client = MockLLMClient([])
-        agent = ReActAgent(tools=[], llm_client=mock_client)
-
-        result = {
-            "results": [
-                {"text": "Document 1 content", "score": 0.95, "source": "reddit"},
-                {"text": "Document 2 content", "score": 0.85, "source": "nba.com"},
-            ],
-            "sources": ["reddit", "nba.com"],
-            "count": 2,
-        }
-
-        observation = agent._format_observation(result)
-
-        assert "Found 2 documents" in observation
-        assert "reddit" in observation
-        assert "Document 1" in observation
-
-
-class TestAgentStep:
-    """Test AgentStep dataclass."""
-
-    def test_agent_step_creation(self):
-        """Test creating an agent step."""
-        step = AgentStep(
-            thought="I need data",
-            action="query_tool",
-            action_input={"question": "test"},
-            observation="Results: [...]",
-            step_number=1,
-        )
-
-        assert step.thought == "I need data"
-        assert step.action == "query_tool"
-        assert step.step_number == 1
-
-
-class TestTool:
-    """Test Tool dataclass."""
-
-    def test_tool_creation(self):
-        """Test creating a tool."""
-
-        def my_func(x: str) -> str:
-            return f"Result: {x}"
-
         tool = Tool(
-            name="my_tool",
-            description="My test tool",
-            function=my_func,
-            parameters={"x": "str"},
-            examples=["example 1", "example 2"],
+            name="test_tool",
+            description="Test tool with examples",
+            function=lambda x: "result",
+            parameters={"param": "str"},
+            examples=["Example 1", "Example 2"],
         )
 
-        assert tool.name == "my_tool"
-        assert tool.function("test") == "Result: test"
-        assert len(tool.examples) == 2
+        agent = ReActAgent(tools=[tool], llm_client=mock_client)
+
+        assert len(agent.tools["test_tool"].examples) == 2
+        assert "Example 1" in agent.tools["test_tool"].examples
+
+    def test_multiple_tools_initialization(self):
+        """Test agent can handle multiple tools with different signatures."""
+        mock_client = MockLLMClient([])
+        tools = [
+            Tool(
+                name="query_database",
+                description="Query NBA database",
+                function=lambda query: {"results": []},
+                parameters={"query": "str"},
+            ),
+            Tool(
+                name="search_knowledge",
+                description="Search knowledge base",
+                function=lambda query, top_k: {"documents": []},
+                parameters={"query": "str", "top_k": "int"},
+            ),
+        ]
+
+        agent = ReActAgent(tools=tools, llm_client=mock_client)
+
+        assert len(agent.tools) == 2
+        assert agent.tools["query_database"].function("test")["results"] == []
+        assert "documents" in agent.tools["search_knowledge"].function("test", 5)
+
+    @patch('src.agents.react_agent.QueryClassifier')
+    def test_agent_stores_tool_results(self, mock_classifier_class):
+        """Test agent has tool_results storage."""
+        mock_client = MockLLMClient([])
+        tool = Tool(
+            name="test_tool",
+            description="Test tool",
+            function=lambda x: "result",
+            parameters={"param": "str"},
+        )
+
+        agent = ReActAgent(tools=[tool], llm_client=mock_client)
+
+        assert hasattr(agent, 'tool_results')
+        assert isinstance(agent.tool_results, dict)

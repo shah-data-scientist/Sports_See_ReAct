@@ -36,15 +36,7 @@ def mock_vector_store():
 
 
 @pytest.fixture
-def mock_embedding_service():
-    """Mock embedding service."""
-    service = MagicMock()
-    service.embed_query.return_value = np.random.rand(64).astype(np.float32)
-    return service
-
-
-@pytest.fixture
-def mock_feedback_repository():
+def mock_feedback_repo():
     """Mock feedback repository with conversation history."""
     repo = MagicMock()
 
@@ -65,16 +57,14 @@ def mock_client():
 
 
 @pytest.fixture
-def chat_service_with_conversation(mock_vector_store, mock_embedding_service, mock_feedback_repository, mock_client):
-    """Create ChatService with mocked dependencies including conversation support."""
+def chat_service_with_conversation(mock_vector_store, mock_feedback_repo, mock_client):
+    """Create ChatService with mocked dependencies (current API)."""
     service = ChatService(
         vector_store=mock_vector_store,
-        embedding_service=mock_embedding_service,
-        feedback_repository=mock_feedback_repository,
-        api_key="test-key",
-        model="test-model",
+        feedback_repo=mock_feedback_repo,
         enable_sql=False,  # Disable SQL for simpler testing
-        conversation_history_limit=5,
+        model="test-model",
+        temperature=0.1,
     )
     service._client = mock_client
     return service
@@ -83,7 +73,7 @@ def chat_service_with_conversation(mock_vector_store, mock_embedding_service, mo
 class TestChatWithConversation:
     """Tests for chat with conversation context."""
 
-    def test_chat_without_conversation_id(self, chat_service_with_conversation, mock_feedback_repository):
+    def test_chat_without_conversation_id(self, chat_service_with_conversation, mock_feedback_repo):
         """Test chat without conversation_id (no history)."""
         request = ChatRequest(
             query="Who scored the most points?",
@@ -98,11 +88,11 @@ class TestChatWithConversation:
         assert response.turn_number == 1
 
         # Should not call get_messages_by_conversation
-        mock_feedback_repository.get_messages_by_conversation.assert_not_called()
+        mock_feedback_repo.get_messages_by_conversation.assert_not_called()
 
-    def test_chat_with_conversation_id_no_history(self, chat_service_with_conversation, mock_feedback_repository):
+    def test_chat_with_conversation_id_no_history(self, chat_service_with_conversation, mock_feedback_repo):
         """Test chat with conversation_id but no previous messages."""
-        mock_feedback_repository.get_messages_by_conversation.return_value = []
+        mock_feedback_repo.get_messages_by_conversation.return_value = []
 
         request = ChatRequest(
             query="Who scored the most points?",
@@ -116,9 +106,9 @@ class TestChatWithConversation:
         assert response.turn_number == 1
 
         # Should call get_messages but get empty list
-        mock_feedback_repository.get_messages_by_conversation.assert_called_once_with("conv-123")
+        mock_feedback_repo.get_messages_by_conversation.assert_called_once_with("conv-123")
 
-    def test_chat_with_conversation_history(self, chat_service_with_conversation, mock_feedback_repository, mock_client):
+    def test_chat_with_conversation_history(self, chat_service_with_conversation, mock_feedback_repo, mock_client):
         """Test chat with conversation history."""
         # Setup conversation history
         previous_messages = [
@@ -133,7 +123,7 @@ class TestChatWithConversation:
                 turn_number=1,
             )
         ]
-        mock_feedback_repository.get_messages_by_conversation.return_value = previous_messages
+        mock_feedback_repo.get_messages_by_conversation.return_value = previous_messages
 
         # Mock LLM response
         mock_response = MagicMock()
@@ -152,7 +142,7 @@ class TestChatWithConversation:
         assert response.turn_number == 2
 
         # Verify conversation history was retrieved
-        mock_feedback_repository.get_messages_by_conversation.assert_called_once_with("conv-123")
+        mock_feedback_repo.get_messages_by_conversation.assert_called_once_with("conv-123")
 
         # Verify LLM was called with prompt containing conversation history
         call_args = mock_client.models.generate_content.call_args
@@ -162,7 +152,7 @@ class TestChatWithConversation:
         assert "User: Who scored the most points?" in prompt
         assert "Assistant: LeBron James scored 30 points." in prompt
 
-    def test_conversation_history_limit(self, chat_service_with_conversation, mock_feedback_repository, mock_client):
+    def test_conversation_history_limit(self, chat_service_with_conversation, mock_feedback_repo, mock_client):
         """Test that conversation history is limited to last N turns."""
         # Create 10 messages (should only include last 5)
         messages = []
@@ -178,7 +168,7 @@ class TestChatWithConversation:
                 turn_number=i,
             ))
 
-        mock_feedback_repository.get_messages_by_conversation.return_value = messages
+        mock_feedback_repo.get_messages_by_conversation.return_value = messages
 
         request = ChatRequest(
             query="Follow-up question",
@@ -205,7 +195,7 @@ class TestChatWithConversation:
         assert "User: Question 1\n" not in history_section
         assert "User: Question 5\n" not in history_section
 
-    def test_conversation_history_excludes_current_turn(self, chat_service_with_conversation, mock_feedback_repository, mock_client):
+    def test_conversation_history_excludes_current_turn(self, chat_service_with_conversation, mock_feedback_repo, mock_client):
         """Test that conversation history excludes the current turn."""
         # Messages with turn numbers 1, 2, 3
         messages = [
@@ -241,7 +231,7 @@ class TestChatWithConversation:
             ),
         ]
 
-        mock_feedback_repository.get_messages_by_conversation.return_value = messages
+        mock_feedback_repo.get_messages_by_conversation.return_value = messages
 
         request = ChatRequest(
             query="Question 3",  # Turn 3
@@ -263,7 +253,7 @@ class TestChatWithConversation:
         # The current question appears in the prompt, but not as conversation history
         assert prompt.count("Question 3") == 1  # Only in USER QUESTION section
 
-    def test_build_conversation_context_format(self, chat_service_with_conversation, mock_feedback_repository):
+    def test_build_conversation_context_format(self, chat_service_with_conversation, mock_feedback_repo):
         """Test the format of conversation context."""
         messages = [
             ChatInteractionResponse(
@@ -277,7 +267,7 @@ class TestChatWithConversation:
                 turn_number=1,
             ),
         ]
-        mock_feedback_repository.get_messages_by_conversation.return_value = messages
+        mock_feedback_repo.get_messages_by_conversation.return_value = messages
 
         # Call _build_conversation_context directly
         context = chat_service_with_conversation._build_conversation_context("conv-123", 2)
@@ -288,9 +278,9 @@ class TestChatWithConversation:
         assert "Assistant: LeBron James is a basketball player." in context
         assert context.endswith("---\n")
 
-    def test_build_conversation_context_empty(self, chat_service_with_conversation, mock_feedback_repository):
+    def test_build_conversation_context_empty(self, chat_service_with_conversation, mock_feedback_repo):
         """Test conversation context when no history exists."""
-        mock_feedback_repository.get_messages_by_conversation.return_value = []
+        mock_feedback_repo.get_messages_by_conversation.return_value = []
 
         context = chat_service_with_conversation._build_conversation_context("conv-123", 1)
 
@@ -310,7 +300,7 @@ class TestChatWithConversation:
         assert response.turn_number == 5
         assert response.query == "Test question"
 
-    def test_pronoun_resolution_scenario(self, chat_service_with_conversation, mock_feedback_repository, mock_client):
+    def test_pronoun_resolution_scenario(self, chat_service_with_conversation, mock_feedback_repo, mock_client):
         """Test realistic pronoun resolution scenario."""
         # Conversation: "Who has the most points?" -> "LeBron" -> "What about his assists?"
         previous_messages = [
@@ -325,7 +315,7 @@ class TestChatWithConversation:
                 turn_number=1,
             ),
         ]
-        mock_feedback_repository.get_messages_by_conversation.return_value = previous_messages
+        mock_feedback_repo.get_messages_by_conversation.return_value = previous_messages
 
         # Mock LLM to demonstrate it has context to resolve "his"
         mock_response = MagicMock()
@@ -348,16 +338,14 @@ class TestChatWithConversation:
         assert "LeBron James" in prompt
         assert "his assists?" in prompt
 
-    def test_conversation_context_with_sql_enabled(self, mock_vector_store, mock_embedding_service, mock_feedback_repository, mock_client):
-        """Test conversation context works with SQL tool enabled."""
+    def test_conversation_context_with_sql_enabled(self, mock_vector_store, mock_feedback_repo, mock_client):
+        """Test conversation context works with SQL tool enabled (current API)."""
         service = ChatService(
             vector_store=mock_vector_store,
-            embedding_service=mock_embedding_service,
-            feedback_repository=mock_feedback_repository,
-            api_key="test-key",
-            model="test-model",
+            feedback_repo=mock_feedback_repo,
             enable_sql=True,  # Enable SQL
-            conversation_history_limit=5,
+            model="test-model",
+            temperature=0.1,
         )
         service._client = mock_client
 
@@ -376,7 +364,7 @@ class TestChatWithConversation:
                 turn_number=1,
             ),
         ]
-        mock_feedback_repository.get_messages_by_conversation.return_value = previous_messages
+        mock_feedback_repo.get_messages_by_conversation.return_value = previous_messages
 
         request = ChatRequest(
             query="Follow-up question",
