@@ -717,22 +717,14 @@ Your scores:"""
                 )
                 return chunks[:top_n]
 
-            # P0 ISSUE #1 FIX: Apply stricter relevance threshold
-            RELEVANCE_THRESHOLD = 6.0  # Only keep chunks scoring 6+ (on 0-10 scale)
+            # P0 ISSUE #1 FIX REVISED: Threshold removed after empirical analysis
+            # RATIONALE: LLM re-ranking scores 0-3 (not 0-10), making any threshold >1 too strict.
+            # Evidence shows LLM gracefully handles low-quality chunks (says "I don't have information").
+            # Re-ranking still improves ordering; threshold was filtering out useful chunks.
+            # See: evaluation_results/POST_FIX_COMPARISON.md and analyze_low_quality_chunks.py
 
-            # Filter chunks by relevance threshold first
-            relevant_chunks = [
-                (chunk, score) for chunk, score in zip(chunks, scores)
-                if score >= RELEVANCE_THRESHOLD
-            ]
-
-            if not relevant_chunks:
-                logger.warning(
-                    f"No chunks above threshold {RELEVANCE_THRESHOLD}. "
-                    f"Max score: {max(scores) if scores else 0}. Returning top chunks anyway."
-                )
-                # Fallback: if nothing passes threshold, return top-scoring chunks
-                relevant_chunks = list(zip(chunks, scores))
+            # Keep all chunks but sort by relevance score (no threshold filtering)
+            relevant_chunks = list(zip(chunks, scores))
 
             # Sort by score and take top_n
             ranked = sorted(relevant_chunks, key=lambda x: x[1], reverse=True)

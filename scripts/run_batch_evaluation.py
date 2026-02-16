@@ -275,12 +275,12 @@ def run_batch_evaluation(batch_num: int):
                 "category": test_case.category,
                 "success": False,
                 "error": str(e),
+                "processing_time_ms": 0,  # Add default value for failed queries
             })
 
         # RATE LIMIT FIX: Add delay between queries to avoid 429 errors
         # Skip delay after last query
         if i < len(batch_queries):
-            import time
             time.sleep(3)  # 3 second delay between queries
 
     end_time = datetime.now()
